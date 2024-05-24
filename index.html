@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -14,25 +15,83 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="/conantcg/">
+  <!-- <base href="/conantcg/"> -->
+  <base href="/conan_cardgame/">
+
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project">
+  <meta name="description"
+    content="コナンTCG便利ツールは、コナンカードゲームのデッキ作成(デッキビルダー(deckBuilder)、デッキクリエイター(deckCreator))ができるツールです。ゲームの戦略を計画し、カードの統計を追跡し、ゲームプレイを向上させるための便利なツールを提供します。">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="conantcg">
+  <meta name="apple-mobile-web-app-title" content="conan_cardgame">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PR4L22G5TW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-PR4L22G5TW');
+  </script>
+
+  <meta property="og:title" content="コナンTCG便利ツール" />
+  <meta property="og:description"
+    content="コナンTCG便利ツールは、コナンカードゲームのデッキ作成(デッキビルダー(deckBuilder)、デッキクリエイター(deckCreator))ができるツールです。ゲームの戦略を計画し、カードの統計を追跡し、ゲームプレイを向上させるための便利なツールを提供します。" />
+  <!-- <meta property="og:image" content="https://nohminist.github.io/conan_cardgame.png" /> -->
+  <meta property="og:url" content="https://nohminist.github.io/" />
+  <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@nohminism" />
+  <meta name="twitter:title" content="コナンTCG便利ツール" />
+  <meta name="twitter:description"
+    content="コナンTCG便利ツールは、コナンカードゲームのデッキ作成(デッキビルダー(deckBuilder)、デッキクリエイター(deckCreator))ができるツールです。ゲームの戦略を計画し、カードの統計を追跡し、ゲームプレイを向上させるための便利なツールを提供します。" />
+  <!-- <meta name="twitter:image" content="" /> -->
+
+
+
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>コナンTCG便利ツール</title>
   <link rel="manifest" href="manifest.json">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2638532378115029"
+    crossorigin="anonymous"></script>
+
+
+
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    const serviceWorkerVersion = "3880191409";
+  </script>
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
 </head>
+
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    window.addEventListener('load', function (ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
 </body>
+
 </html>
