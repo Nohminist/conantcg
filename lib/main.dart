@@ -73,7 +73,7 @@ class MyApp extends StatelessWidget {
         Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
       },
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'コナンTCG便利ツール',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,

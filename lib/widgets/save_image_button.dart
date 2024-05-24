@@ -1,14 +1,31 @@
-import '../widgets/card_image.dart';
 import '../widgets/save_area.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'dart:typed_data';
-import 'dart:html' as html;
-import '../utils/color.dart';
 import '../providers/card_provider.dart';
 import 'dart:math';
-import 'package:intl/intl.dart'; // DateFormatを使用するために必要
+import 'dart:io';
+import 'package:path_provider/path_provider.dart'; // 追加
+// import 'package:flutter/material.dart';
+// import 'package:screenshot/screenshot.dart';
+import 'package:screenshot/screenshot.dart';
+// import 'dart:html' as html;
+import 'package:flutter/services.dart';
+import 'package:universal_html/html.dart' as html;
+
+
+
+
+// saveImageToFile メソッドを定義
+
+Future<File> saveImageToFile(ByteData byteData, String fileName) async {
+  final directory = await getApplicationDocumentsDirectory();
+  final path = '${directory.path}/$fileName';
+  final file = File(path);
+  await file.writeAsBytes(byteData.buffer.asUint8List());
+  return file;
+}
 
 class SaveImageButton extends StatelessWidget {
   GlobalKey _globalKey = GlobalKey();
@@ -28,7 +45,7 @@ class SaveImageButton extends StatelessWidget {
 
     return IconButton(
       onPressed: canSaveImage
-          ? () {
+          ? () async {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
@@ -37,106 +54,141 @@ class SaveImageButton extends StatelessWidget {
                   // 縦か横の小さい方の90%を取得
                   var size = min(screenSize.width, screenSize.height) * 0.9;
 
-                  return Dialog(
-                    insetPadding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SaveImageIcon(_globalKey, cardSet),
-                            IconButton(
-                              icon: Icon(Icons.close),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        ),
-                        Container(
-                          width: size,
-                          height: size,
-                          child: RepaintBoundary(
-                            key: _globalKey,
-                            child: SaveArea(
-                              cardSet: cardSet,
-                              size: size,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
+                  return Modal(globalKey: _globalKey, size: size, cardSet: cardSet);
                 },
               );
             }
-          : null, // 条件を満たさない場合はnullを設定
+          : null, // 条件を
       icon: Icon(Icons.image),
-      tooltip: '保存用の画像にする（条件：カードが揃っていること）',
+      tooltip: 'モーダルを開く（条件：カードが揃っていること）',
     );
   }
 }
 
-class SaveImageIcon extends StatelessWidget {
-  final GlobalKey _globalKey;
-  final CardSetNo cardSet; // cardSetをこのクラスでも利用するために追加
 
-  SaveImageIcon(this._globalKey, this.cardSet); // コンストラクタにcardSetを追加
+
+
+
+class Modal extends StatelessWidget {
+  Modal({
+    Key? key,
+    required GlobalKey<State<StatefulWidget>> globalKey,
+    required this.size,
+    required this.cardSet,
+  })  : _globalKey = globalKey,
+        super(key: key);
+
+  final GlobalKey<State<StatefulWidget>> _globalKey;
+  final double size;
+  final CardSetNo cardSet;
+  final ScreenshotController screenshotController = ScreenshotController();
+
+  Future<void> _saveScreenshot() async {
+    final image = await screenshotController.capture();
+    if (image != null) {
+      final blob = html.Blob([image]);
+      final url = html.Url.createObjectUrlFromBlob(blob);
+      final anchor = html.AnchorElement(href: url)
+        ..setAttribute('download', 'screenshot.png')
+        ..click();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(Icons.save_alt), // 保存アイコンを使用
-      onPressed: () {
-        WidgetsBinding.instance!.addPostFrameCallback((_) async {
-          RenderRepaintBoundary? boundary = _globalKey.currentContext
-              ?.findRenderObject() as RenderRepaintBoundary?;
-          if (boundary != null) {
-            // 画像の目標解像度
-            final targetWidth = 1080;
-            final targetHeight = 1080;
+    return Dialog(
+      insetPadding: EdgeInsets.all(10.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _saveScreenshot,
+                child: Text('画像で保存する'),
+              ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+          Container(
+            width: size,
+            height: size,
+            child: Screenshot(
+              controller: screenshotController,
+              child: RepaintBoundary(
+                key: _globalKey, // キーを設定
+                child: SaveArea(
+                  cardSet: cardSet,
+                  size: size,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-            // boundaryの現在のサイズを取得
-            final boundarySize = boundary.size;
 
-            // 適切なpixelRatioを計算
-            final pixelRatio = max(targetWidth / boundarySize.width,
-                targetHeight / boundarySize.height);
 
-            ui.Image? image = await boundary.toImage(pixelRatio: pixelRatio);
 
-            if (image != null) {
-              ByteData? byteData =
-                  await image.toByteData(format: ui.ImageByteFormat.png);
-              if (byteData != null) {
-                final pngBytes = byteData.buffer.asUint8List();
-                final blob = html.Blob([pngBytes]);
-                final url = html.Url.createObjectUrlFromBlob(blob);
-                final anchor = html.document.createElement('a')
-                    as html.AnchorElement
-                  ..href = url
-                  ..style.display = 'none'
-                  // ファイル名を指定の形式に変更
-                  ..download =
-                      '${cardSet.name}(${DateFormat('yyyy-MM-dd_HH-mm-ss').format(cardSet.date)}).png';
-                html.document.body!.children.add(anchor);
-                anchor.click();
-                html.document.body!.children.remove(anchor);
-                html.Url.revokeObjectUrl(url);
-                print('画像が保存されました: ${anchor.download}');
-              } else {
-                print('ByteData is null. Failed to convert image to ByteData.');
-              }
-            } else {
-              print(
-                  'Image is null. Failed to capture image from RenderRepaintBoundary.');
-            }
-          } else {
-            print(
-                'RenderRepaintBoundary is null. Failed to find RenderRepaintBoundary.');
+
+
+class SaveButton extends StatelessWidget {
+  const SaveButton({
+    super.key,
+    required GlobalKey<State<StatefulWidget>> globalKey,
+  }) : _globalKey = globalKey;
+
+  final GlobalKey<State<StatefulWidget>> _globalKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        File? file; // ファイルをnull許容で定義
+        try {
+          // 画像変換
+          final boundary = _globalKey.currentContext!
+                  .findRenderObject()
+              as RenderRepaintBoundary;
+          final image =
+              await boundary.toImage(pixelRatio: 2.0);
+    
+          // 画像をバイトデータに変換
+          final byteData = await image.toByteData(
+              format: ui.ImageByteFormat.png);
+    
+          // バイトデータをファイルに保存
+          if (byteData != null) {
+            file = await saveImageToFile(
+                byteData, 'card_image.png');
           }
-        });
+        } catch (error) {
+          // エラー処理
+          print(error);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('画像の保存に失敗しました: ${error}'),
+            ),
+          );
+        }
+    
+        if (file != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('画像を保存しました: ${file.path}'),
+            ),
+          );
+        }
       },
+      child: Text('変換して保存'),
     );
   }
 }
