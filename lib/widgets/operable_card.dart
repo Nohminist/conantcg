@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
 import '../widgets/card_image.dart';
+import 'dart:html' as html;
 
 class OperableCard extends StatefulWidget {
   final String cardNo;
@@ -22,6 +23,16 @@ class _OperableCardState extends State<OperableCard> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onHover: (_) {
+        var userAgent = html.window.navigator.userAgent;
+        var isTouchDevice = userAgent.contains('Android') ||
+            userAgent.contains('iPhone') ||
+            userAgent.contains('iPad');
+
+        if (isTouchDevice) {
+          // タッチデバイスではonHoverイベントを無視
+          return;
+        }
+
         var screenWidth = MediaQuery.of(context).size.width;
         var hoverPosition = _.position.dx;
         var isLeftSideSelected = hoverPosition < (screenWidth / 2 + 20);
@@ -46,7 +57,8 @@ class _OperableCardState extends State<OperableCard> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return CardDetailModal(cards: widget.cards, initialCardNo: widget.cardNo);
+              return CardDetailModal(
+                  cards: widget.cards, initialCardNo: widget.cardNo);
             },
           );
         },
@@ -55,4 +67,3 @@ class _OperableCardState extends State<OperableCard> {
     );
   }
 }
-
