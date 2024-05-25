@@ -40198,7 +40198,7 @@ return A.fb(A.he(r,new A.nr(s.a.c,r),B.a0,!1,r,r,r,r,r,r,r,new A.ak4(s,a),r,new 
 A.ak9.prototype={
 $1(a){var s,r,q,p=window.navigator.userAgent
 p.toString
-if(B.d.n(p,"Android")||B.d.n(p,"iPhone")||B.d.n(p,"iPad"))return
+if(!B.d.n(p,"Android"))if(!B.d.n(p,"iPhone"))B.d.n(p,"iPad")
 p=this.b
 s=A.bu(p,null,t.w).w
 r=a.gbz(a)
