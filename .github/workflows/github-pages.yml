@@ -29,8 +29,7 @@ jobs:
           cache: true
       - run: flutter --version
       - run: flutter pub get
-      # - run: flutter build web --web-renderer canvaskit --base-href /${{ env.REPOSITORY }}/
-      - run: flutter build web --web-renderer --base-href /${{ env.REPOSITORY }}/
+      - run: flutter build web --web-renderer canvaskit --base-href /${{ env.REPOSITORY }}/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
