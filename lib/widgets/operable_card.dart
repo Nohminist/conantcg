@@ -39,8 +39,8 @@ class _OperableCardState extends State<OperableCard> {
           Provider.of<DetailCardNo>(context, listen: false).stopDragging();
         },
         onTap: () {
-          widget.onTap();
           Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
+          widget.onTap();
         },
         onLongPress: () {
           showDialog(
