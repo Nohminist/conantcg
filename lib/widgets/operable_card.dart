@@ -28,10 +28,10 @@ class _OperableCardState extends State<OperableCard> {
             userAgent.contains('iPhone') ||
             userAgent.contains('iPad');
 
-        if (isTouchDevice) {
-          // タッチデバイスではonHoverイベントを無視
-          return;
-        }
+        // if (isTouchDevice) {
+        //   // タッチデバイスではonHoverイベントを無視
+        //   return;
+        // }
 
         var screenWidth = MediaQuery.of(context).size.width;
         var hoverPosition = _.position.dx;
