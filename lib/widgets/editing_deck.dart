@@ -14,10 +14,16 @@ class DeckDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cardNoMapData = Provider.of<CardNoMapData>(context); // 追加
+    var uniqueDeckNos = deckNos.toSet().toList();
 
     // レベルごとにカードを分類
     List<List<String>> levelSortedDeck = List.generate(8, (_) => []);
     List<Map<String, int>> levelCardCounts = List.generate(8, (_) => {});
+
+
+
+
+
 
     for (var cardNo in deckNos) {
       // 変更
@@ -80,12 +86,16 @@ class DeckDisplay extends StatelessWidget {
               if (cardData == null || cardData['type'] == null) {
                 return Container();
               }
+
+
+
+
         
               return Stack(
                 children: [
                   OperableCard(
                     cardNo: cardNo,
-                    cards:deckNos,
+                    cards:uniqueDeckNos,
                     onTap: () {
                       Provider.of<CardSetNo>(context, listen: false)
                           .removeCardNoFromDeck(cardNo);

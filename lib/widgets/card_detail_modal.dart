@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../widgets/card_image.dart';
 import '../utils/csv_data.dart';
+import 'dart:math';
+
 
 class CardDetailModal extends StatefulWidget {
   final List<String> cards;
@@ -100,7 +102,7 @@ class _CardDetailModalState extends State<CardDetailModal> {
                           return SizedBox(
                             width: displayWidth,
                             height: dynamicHeight,
-                            child: CardImage9(
+                            child: CardImageModal(
                               cardNo: widget.cards[index],
                             ),
                           );
@@ -157,3 +159,35 @@ class ArrowButton extends StatelessWidget {
     );
   }
 }
+
+
+class CardImageModal extends StatelessWidget {
+  final String cardNo; // 変更
+
+  CardImageModal({required this.cardNo}); // 変更
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        // print('Max width: ${constraints.maxWidth}'); // この行を追加
+        // print('Max width: ${constraints.maxHeight}'); // この行を追加
+        return Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                max(constraints.maxWidth, constraints.maxHeight) /
+                    25), // 半径を幅に合わせる
+          ),
+          clipBehavior: Clip.antiAlias,
+          margin: EdgeInsets.all(0), // 余分なマージンを削除します
+          child: Image.asset(
+            'assets/images/${cardNo}.jpg', // 変更
+            // fit: BoxFit.cover,
+            fit: BoxFit.scaleDown,
+          ),
+        );
+      },
+    );
+  }
+}
+

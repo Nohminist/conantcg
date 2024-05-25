@@ -1,5 +1,4 @@
 // widgets/editing_card_set.dart
-
 import '../providers/card_provider.dart';
 import '../utils/color.dart';
 import '../widgets/card_image.dart';
@@ -96,7 +95,7 @@ class CardWidget extends StatelessWidget {
                 )
               : OperableCard(
                   cardNo: cardNo,
-                  cards:[],
+                  cards:[cardNo],
                   onTap: removeCard,
                 )
           : Container(
