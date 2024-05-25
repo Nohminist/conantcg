@@ -59,8 +59,9 @@ class CardGrid extends StatelessWidget {
 
                 return Stack(
                   children: [
-                    InteractiveCard(
+                    OperableCard(
                       cardNo: cardNo,
+                      cards:filteredCardNos,
                       onTap: () {
                         String? errorMessage;
                         switch (cardData['type']) {

@@ -10,7 +10,6 @@ class LevelIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8.0),
       child: Container(
         width: 30,
         height: 30,

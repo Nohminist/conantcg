@@ -83,8 +83,9 @@ class DeckDisplay extends StatelessWidget {
         
               return Stack(
                 children: [
-                  InteractiveCard(
+                  OperableCard(
                     cardNo: cardNo,
+                    cards:deckNos,
                     onTap: () {
                       Provider.of<CardSetNo>(context, listen: false)
                           .removeCardNoFromDeck(cardNo);

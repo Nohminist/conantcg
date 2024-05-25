@@ -94,8 +94,9 @@ class CardWidget extends StatelessWidget {
                   width: width,
                   height: height,
                 )
-              : InteractiveCard(
+              : OperableCard(
                   cardNo: cardNo,
+                  cards:[],
                   onTap: removeCard,
                 )
           : Container(

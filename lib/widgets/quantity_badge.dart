@@ -22,9 +22,9 @@ class QuantityBadge extends StatelessWidget {
         height: 20,
         decoration: BoxDecoration(
           color: type == 'キャラ'
-              ? Colors.blue
+              ? Colors.blue[300]
               : type == 'イベント'
-                  ? Colors.red
+                  ? Colors.red[300]
                   : getRelativeColor(context, 1),
           shape: BoxShape.circle,
           boxShadow: [BoxShadow(blurRadius: 3, color: Colors.black)],

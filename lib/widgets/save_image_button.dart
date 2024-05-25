@@ -60,7 +60,7 @@ class SaveImageButton extends StatelessWidget {
             }
           : null, // 条件を
       icon: Icon(Icons.image),
-      tooltip: 'モーダルを開く（条件：カードが揃っていること）',
+      tooltip: '保存用の画像にする（条件：カードが揃っていること）',
     );
   }
 }

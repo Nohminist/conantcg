@@ -97,7 +97,7 @@ class DeckAnalysis extends StatelessWidget {
                     height: topHeight,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.blue[300],
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(topHeight / 2),
                         bottomLeft: Radius.circular(topHeight / 2),
@@ -119,7 +119,7 @@ class DeckAnalysis extends StatelessWidget {
                     height: topHeight,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: Colors.red[300],
                       borderRadius: BorderRadius.only(
                         topRight: Radius.circular(topHeight / 2),
                         bottomRight: Radius.circular(topHeight / 2),
@@ -230,12 +230,12 @@ class DeckAnalysis extends StatelessWidget {
                           children: [
                             Container(
                               height: eventHeight,
-                              color: Colors.red, // ここで背景色を設定します
+                              color: Colors.red[300], // ここで背景色を設定します
                               width: width / 8 - 1,
                             ),
                             Container(
                               height: charaHeight,
-                              color: Colors.blue, // ここで背景色を設定します
+                              color: Colors.blue[300], // ここで背景色を設定します
                               width: width / 8 - 1,
                             ),
                           ],

@@ -15,8 +15,9 @@ class CardImage9 extends StatelessWidget {
         // print('Max width: ${constraints.maxHeight}'); // この行を追加
         return Card(
           shape: RoundedRectangleBorder(
-            borderRadius:
-                BorderRadius.circular(max(constraints.maxWidth, constraints.maxHeight) / 25), // 半径を幅に合わせる
+            borderRadius: BorderRadius.circular(
+                max(constraints.maxWidth, constraints.maxHeight) /
+                    25), // 半径を幅に合わせる
           ),
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(0), // 余分なマージンを削除します
@@ -30,7 +31,6 @@ class CardImage9 extends StatelessWidget {
     );
   }
 }
-
 
 class CardImage8 extends StatelessWidget {
   final String cardNo;
@@ -45,8 +45,7 @@ class CardImage8 extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         return Card(
           shape: RoundedRectangleBorder(
-            borderRadius:
-BorderRadius.circular(max(width, height) / 25),
+            borderRadius: BorderRadius.circular(max(width, height) / 25),
           ),
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(0), // 余分なマージンを削除します
@@ -60,6 +59,8 @@ BorderRadius.circular(max(width, height) / 25),
     );
   }
 }
+
+
 
 // class CardImage extends StatelessWidget {
 //   final Map<String, dynamic> cardData;

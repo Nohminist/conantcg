@@ -75,7 +75,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'コナンTCG便利ツール',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
           fontFamily: 'NotoSansJP',
         ),

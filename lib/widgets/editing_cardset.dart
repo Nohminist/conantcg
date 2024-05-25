@@ -46,8 +46,9 @@ class _EditingCardSetState extends State<EditingCardSet> {
               current: current, // currentを渡す
               widgetWidth: screenWidth / 2, // screenWidthを渡す
             ),
+            SizedBox(height:10),
             Padding(
-              padding: const EdgeInsets.all(5.0),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
               child: Row(
                 children: List.generate(8, (level) {
                   return Expanded(child: LevelIcon(level: level));
