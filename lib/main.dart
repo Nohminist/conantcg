@@ -17,6 +17,13 @@ import '../utils/common_utils.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // ローディング画面を表示
+  runApp(
+    MaterialApp(
+      home: SplashScreen(),
+    ),
+  );
+
   // ローカルストレージからデータを読み込む
   SharedPreferences prefs = await SharedPreferences.getInstance();
   List<String> cardSetsData = prefs.getStringList(getStorageKey('cardSets')) ?? [];
@@ -44,6 +51,9 @@ void main() async {
     ),
   );
 
+  // アプリケーションをロード
+  await Future.delayed(Duration(seconds: 3));
+
   runApp(
     MultiProvider(
       providers: [
@@ -61,6 +71,20 @@ void main() async {
       child: MyApp(),
     ),
   );
+}
+
+class SplashScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -84,56 +108,6 @@ class MyApp extends StatelessWidget {
         ),
         themeMode: Provider.of<ThemeModeProvider>(context).themeMode,
         home: MainMenu(),
-      ),
-    );
-  }
-}
-
-// 以下のコードはそのままで問題ありません。
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }

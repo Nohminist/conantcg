@@ -1,18 +1,47 @@
 // widgets/card_image.dart
+import 'package:conantcg/widgets/fade_in_image_without_placeholder.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class CardImage9 extends StatelessWidget {
-  final String cardNo; // 変更
+// class CardImage9 extends StatelessWidget {
+//   final String cardNo; // 変更
 
-  CardImage9({required this.cardNo}); // 変更
+//   CardImage9({required this.cardNo}); // 変更
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return LayoutBuilder(
+//       builder: (BuildContext context, BoxConstraints constraints) {
+//         // print('Max width: ${constraints.maxWidth}'); // この行を追加
+//         // print('Max width: ${constraints.maxHeight}'); // この行を追加
+//         return Card(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(
+//                 max(constraints.maxWidth, constraints.maxHeight) /
+//                     25), // 半径を幅に合わせる
+//           ),
+//           clipBehavior: Clip.antiAlias,
+//           margin: EdgeInsets.all(0), // 余分なマージンを削除します
+//           child: Image.asset(
+//             'assets/images/${cardNo}.jpg', // 変更
+//             // fit: BoxFit.cover,
+//             fit: BoxFit.scaleDown,
+//           ),
+//         );
+//       },
+//     );
+//   }
+// }
+
+class CardImage9 extends StatelessWidget {
+  final String cardNo;
+
+  CardImage9({required this.cardNo});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        // print('Max width: ${constraints.maxWidth}'); // この行を追加
-        // print('Max width: ${constraints.maxHeight}'); // この行を追加
         return Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
@@ -21,9 +50,8 @@ class CardImage9 extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(0), // 余分なマージンを削除します
-          child: Image.asset(
-            'assets/images/${cardNo}.jpg', // 変更
-            // fit: BoxFit.cover,
+          child: FadeInImageWithoutPlaceholder(
+            image: 'assets/images/${cardNo}.jpg', // 変更
             fit: BoxFit.scaleDown,
           ),
         );
@@ -31,6 +59,7 @@ class CardImage9 extends StatelessWidget {
     );
   }
 }
+
 
 class CardImage8 extends StatelessWidget {
   final String cardNo;
@@ -49,11 +78,17 @@ class CardImage8 extends StatelessWidget {
           ),
           clipBehavior: Clip.antiAlias,
           margin: EdgeInsets.all(0), // 余分なマージンを削除します
-          child: Image.asset(
-            'assets/images/${cardNo}.jpg', // 変更
-            // fit: BoxFit.cover,
+          // child: Image.asset(
+          //   'assets/images/${cardNo}.jpg', // 変更
+          //   // fit: BoxFit.cover,
+          //   fit: BoxFit.scaleDown,
+          // ),
+                    child: FadeInImageWithoutPlaceholder(
+            image: 'assets/images/${cardNo}.jpg', // 変更
             fit: BoxFit.scaleDown,
           ),
+
+          
         );
       },
     );
