@@ -40196,12 +40196,17 @@ A.RF.prototype={
 F(a){var s=this,r=null
 return A.fb(A.he(r,new A.nr(s.a.c,r),B.a0,!1,r,r,r,r,r,r,r,new A.ak4(s,a),r,new A.ak5(a),new A.ak6(a),r,r,r,r,r,new A.ak7(s,a),r,r,r,r,r,r),B.b1,r,r,new A.ak8(a),new A.ak9(s,a))}}
 A.ak9.prototype={
-$1(a){var s,r=this.b,q=A.bu(r,null,t.w).w,p=a.gbz(a)
-r=A.bJ(r,!1,t.X1)
-s=this.a.a.c
-if(!r.b){r.a=s
-r.c=p.a<q.a.a/2+20
-r.K()}},
+$1(a){var s,r,q,p=window.navigator.userAgent
+p.toString
+if(B.d.n(p,"Android")||B.d.n(p,"iPhone")||B.d.n(p,"iPad"))return
+p=this.b
+s=A.bu(p,null,t.w).w
+r=a.gbz(a)
+p=A.bJ(p,!1,t.X1)
+q=this.a.a.c
+if(!p.b){p.a=q
+p.c=r.a<s.a.a/2+20
+p.K()}},
 $S:104}
 A.ak8.prototype={
 $1(a){var s=A.bJ(this.a,!1,t.X1)
