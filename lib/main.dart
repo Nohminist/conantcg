@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
       },
       child: MaterialApp(
-        title: 'コナンTCG便利ツール',
+        title: 'コナンTCGデッキ構築ツール(仮)',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
