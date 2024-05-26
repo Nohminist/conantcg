@@ -39402,7 +39402,7 @@ E(a){var s=null
 return A.arI(B.o,A.eZ(new A.wa(s,s,s,new A.vs(B.l,t.ZU),s,s,s),s,s))}}
 A.JV.prototype={
 E(a){var s="NotoSansJP",r=null,q=A.mA(r,A.aEi(B.ai,B.d4),s,!0)
-return A.hh(r,A.aw2(A.mA(B.ad,r,r,r).adu(A.mA(B.ad,r,r,r).p2.Dk(s)),new A.Jw(r),q,A.bK(a,!0,t.FM).a,"\u30b3\u30ca\u30f3TCG\u4fbf\u5229\u30c4\u30fc\u30eb"),B.a0,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8c(a),r,r,r,r,r,r)}}
+return A.hh(r,A.aw2(A.mA(B.ad,r,r,r).adu(A.mA(B.ad,r,r,r).p2.Dk(s)),new A.Jw(r),q,A.bK(a,!0,t.FM).a,"\u30b3\u30ca\u30f3TCG\u30c7\u30c3\u30ad\u69cb\u7bc9\u30c4\u30fc\u30eb(\u4eee)"),B.a0,!1,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,r,new A.a8c(a),r,r,r,r,r,r)}}
 A.a8c.prototype={
 $0(){var s=A.bK(this.a,!1,t.X1)
 s.a=null
