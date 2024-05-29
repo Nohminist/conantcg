@@ -34,7 +34,7 @@ class CardGrid extends StatelessWidget {
             child: GridView.builder(
               addAutomaticKeepAlives: false, 
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
+                crossAxisCount: 8,
                 childAspectRatio: 1 / 1.4,
               ),
               itemCount: filteredCardNos.length,
