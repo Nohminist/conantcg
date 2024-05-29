@@ -61,16 +61,18 @@ class _FadeInImageWithoutPlaceholderState
     _controller.forward(from: 0.0);
   }
 
-  void _retryImage(dynamic exception, StackTrace? stackTrace) {
-    if (_retryCount < 3) { // 3回までリトライします
-      _retryCount++;
-      _loadImage();
-    } else {
-      setState(() {
-        _error = exception.toString(); // リトライが失敗した場合、エラーメッセージを保存します
-      });
-    }
+void _retryImage(dynamic exception, StackTrace? stackTrace) {
+  if (_retryCount < 3) { // 3回までリトライします
+    _retryCount++;
+    _imageStream.removeListener(ImageStreamListener(_updateImage, onError: _retryImage)); // リスナーを一度削除します
+    _loadImage(); // 画像の読み込みを再試行します
+  } else {
+    setState(() {
+      _error = exception.toString(); // リトライが失敗した場合、エラーメッセージを保存します
+    });
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
