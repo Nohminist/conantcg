@@ -21,6 +21,7 @@ class _FadeInImageWithoutPlaceholderState
   late ImageStream _imageStream;
   ImageInfo? _imageInfo;
   int _retryCount = 0;
+  String? _error; // エラーメッセージを保存するための新しい変数
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _FadeInImageWithoutPlaceholderState
   void _updateImage(ImageInfo imageInfo, bool synchronousCall) {
     setState(() {
       _imageInfo = imageInfo;
+      _error = null; // 画像が正常に読み込まれた場合、エラーメッセージをクリアします
     });
     _controller.forward(from: 0.0);
   }
@@ -63,23 +65,31 @@ class _FadeInImageWithoutPlaceholderState
     if (_retryCount < 3) { // 3回までリトライします
       _retryCount++;
       _loadImage();
+    } else {
+      setState(() {
+        _error = exception.toString(); // リトライが失敗した場合、エラーメッセージを保存します
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return _imageInfo != null
-        ? FadeTransition(
-            opacity: _controller,
-            child: RawImage(
-              image: _imageInfo!.image,
-              fit: widget.fit,
-            ),
-          )
-        : Container();
+    if (_error != null) {
+      // エラーメッセージが存在する場合、それを表示します
+      return Text('Error: $_error');
+    } else {
+      return _imageInfo != null
+          ? FadeTransition(
+              opacity: _controller,
+              child: RawImage(
+                image: _imageInfo!.image,
+                fit: widget.fit,
+              ),
+            )
+          : Container();
+    }
   }
 }
-
 
 
 
