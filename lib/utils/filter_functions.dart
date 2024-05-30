@@ -3,9 +3,9 @@ import '../utils/csv_data.dart';
 import '../providers/filter_provider.dart';
 
 List<String> getFilteredAndSortedData(List<String> cardNos,
-    FilterState filterState, CardNoMapData cardNoMapData) {
+    FilterState filterState, CardNoMap cardNoMap) {
   var filteredCardNos = cardNos.where((cardNo) {
-    var cardData = cardNoMapData.data[cardNo];
+    var cardData = cardNoMap.data[cardNo];
     if (cardData == null) {
       return false; // カードのデータが存在しない場合、フィルタリングの結果から除外します
     }
@@ -64,8 +64,8 @@ List<String> getFilteredAndSortedData(List<String> cardNos,
 
   // ソートの状態を反映
   filteredCardNos.sort((a, b) {
-    var aData = cardNoMapData.data[a];
-    var bData = cardNoMapData.data[b];
+    var aData = cardNoMap.data[a];
+    var bData = cardNoMap.data[b];
     if (aData == null || bData == null) {
       return 0; // カードのデータが存在しない場合、ソートの結果に影響を与えません
     }

@@ -7,7 +7,6 @@ import '../utils/csv_data.dart'; // PreCardSetをインポート
 import '../utils/update_local_too.dart';
 import 'package:intl/intl.dart'; // DateFormatをインポート
 
-
 class SelectCardSetButton2 extends StatefulWidget {
   @override
   _SelectCardSetButton2State createState() => _SelectCardSetButton2State();
@@ -20,7 +19,7 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
     final editingKey = Provider.of<EditingCardSetKey>(context);
 
     double screenWidth = MediaQuery.of(context).size.width; // 画面の幅を取得
-    double screenHeight = MediaQuery.of(context).size.height; 
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return IconButton(
       icon: Icon(Icons.format_list_bulleted),
@@ -29,95 +28,76 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
         List<CardSetNo> tempCardSets =
             List.from(cardSetsManager.cardSets); // 一時的なリストを作成
 
-showModalBottomSheet(
-  context: context,
-  isScrollControlled: true, // 追加
-  builder: (context) {
-    return StatefulBuilder(
-      builder: (BuildContext context, StateSetter setState) {
-        return FractionallySizedBox(
-          heightFactor: 0.9, // 画面の高さの90%を覆う
-          child: Container(
-            width: screenWidth / 2, // 幅を画面幅の半分に設定
-            child: ListView.builder(
-              itemCount: tempCardSets.length + 1, // 選択肢の数を追加
-              itemBuilder: (context, index) {
-                if (index < tempCardSets.length) {
-                  var cardSet = tempCardSets[index];
-                  return Dismissible(
-                    key: Key(cardSet.date.toString()),
-                    onDismissed: (direction) {
-                      setState(() {
-                        tempCardSets.removeAt(index); // 一時的なリストから削除
-                      });
-                    },
-                    child: CardSetOption(cardSet: cardSet, screenWidth: screenWidth, cardSetsManager: cardSetsManager),
-                  );
-                } else {
-                  return addedableCardSetOptions(
-                    // addedableCardSetOptionsを追加
-                    cardSetsManager: cardSetsManager,
-                    editingKey: editingKey,
-                    tempCardSets: tempCardSets,
-                    screenWidth: screenWidth, // tempCardSetsを渡す
-                  );
-                }
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true, // 追加
+          builder: (context) {
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return FractionallySizedBox(
+                  heightFactor: 0.9, // 画面の高さの90%を覆う
+                  child: Container(
+                    width: screenWidth / 2, // 幅を画面幅の半分に設定
+                    child: ListView.builder(
+                      itemCount: tempCardSets.length + 1, // 選択肢の数を追加
+                      itemBuilder: (context, index) {
+                        if (index < tempCardSets.length) {
+                          var cardSet = tempCardSets[index];
+                          return Dismissible(
+                            key: Key(cardSet.date.toString()),
+                            onDismissed: (direction) {
+                              setState(() {
+                                tempCardSets.removeAt(index); // 一時的なリストから削除
+                              });
+                            },
+                            child: CardSetOption(
+                                cardSet: cardSet,
+                                screenWidth: screenWidth,
+                                cardSetsManager: cardSetsManager),
+                          );
+                        } else {
+                          return addedableCardSetOptions(
+                            // addedableCardSetOptionsを追加
+                            cardSetsManager: cardSetsManager,
+                            editingKey: editingKey,
+                            tempCardSets: tempCardSets,
+                            screenWidth: screenWidth, // tempCardSetsを渡す
+                          );
+                        }
+                      },
+                    ),
+                  ),
+                );
               },
-            ),
-          ),
-        );
-      },
-    );
-  },
-).then((_) {
-  // モーダルが閉じるときに状態を更新(削除したり追加したのをここで反映させる)
-  cardSetsManager.cardSets = tempCardSets;
+            );
+          },
+        ).then((_) {
+          // モーダルが閉じるときに状態を更新(削除したり追加したのをここで反映させる)
+          cardSetsManager.cardSets = tempCardSets;
 
-  // tempCardSetsが空配列の場合の処理を追加
-  if (tempCardSets.isEmpty) {
-    var newCardSet = CardSetNo(); // 初期化されたcardSetを作成
-    editingKey.setDate(DateTime.now()); // editingKey.setDateに今の日時を入れる
-    cardSetsManager.cardSets = [
-      CardSetNo.copy(newCardSet)
-    ]; // 配列長さ1で初期化されたcardSetをディープコピーする
-    Provider.of<CardSetNo>(context, listen: false)
-        .copyFrom(cardSetsManager.cardSets[0]);
-  } else {
-    // cardSets[i].dateのいずれもeditingKeyに一致しない場合。つまり、編集中のCardSetを削除した場合。
-    if (!cardSetsManager.cardSets
-        .any((cardSet) => cardSet.date == editingKey.date)) {
-      editingKey.setDate(cardSetsManager.cardSets[0].date);
-      Provider.of<CardSetNo>(context, listen: false)
-          .copyFrom(cardSetsManager.cardSets[0]);
-    }
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          // tempCardSetsが空配列の場合の処理を追加
+          if (tempCardSets.isEmpty) {
+            var newCardSet = CardSetNo(); // 初期化されたcardSetを作成
+            editingKey.setDate(DateTime.now()); // editingKey.setDateに今の日時を入れる
+            cardSetsManager.cardSets = [
+              CardSetNo.copy(newCardSet)
+            ]; // 配列長さ1で初期化されたcardSetをディープコピーする
+            Provider.of<CardSetNo>(context, listen: false)
+                .copyFrom(cardSetsManager.cardSets[0]);
+          } else {
+            // cardSets[i].dateのいずれもeditingKeyに一致しない場合。つまり、編集中のCardSetを削除した場合。
+            if (!cardSetsManager.cardSets
+                .any((cardSet) => cardSet.date == editingKey.date)) {
+              editingKey.setDate(cardSetsManager.cardSets[0].date);
+              Provider.of<CardSetNo>(context, listen: false)
+                  .copyFrom(cardSetsManager.cardSets[0]);
+            }
+          }
+        });
       },
     );
   }
 }
-
-
 
 class CardSetOption extends StatelessWidget {
   const CardSetOption({
@@ -154,9 +134,10 @@ class CardSetOption extends StatelessWidget {
                   Icon(Icons.update),
                   Text(
                     DateFormat('yyyy/MM/dd HH:mm').format(cardSet.date),
-                    style: TextStyle(fontSize: 14,
-                    //  fontWeight: FontWeight.bold
-                     ),
+                    style: TextStyle(
+                      fontSize: 14,
+                      //  fontWeight: FontWeight.bold
+                    ),
                   ),
                 ],
               ),
@@ -224,7 +205,8 @@ class addedableCardSetOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final preCardSet = Provider.of<PreCardSet>(context);
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark; // テーマモードを取得
+    final isDarkMode =
+        Theme.of(context).brightness == Brightness.dark; // テーマモードを取得
 
     return Column(
       children: [
@@ -235,7 +217,9 @@ class addedableCardSetOptions extends StatelessWidget {
                 width: screenWidth / 2, // 幅をscreenWidth / 2に設定
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: isDarkMode ? Colors.green[900] : Colors.green[100], // テーマモードに基づいて色を設定
+                    backgroundColor: isDarkMode
+                        ? Colors.green[900]
+                        : Colors.green[100], // テーマモードに基づいて色を設定
                     alignment: Alignment.centerLeft, // ボタンの中身を左寄せに設定
                   ),
                   onPressed: () =>
@@ -256,7 +240,9 @@ class addedableCardSetOptions extends StatelessWidget {
           width: screenWidth / 2, // 幅をscreenWidth / 2に設定
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDarkMode ? Colors.green[900] : Colors.green[100], // テーマモードに基づいて色を設定
+              backgroundColor: isDarkMode
+                  ? Colors.green[900]
+                  : Colors.green[100], // テーマモードに基づいて色を設定
               alignment: Alignment.centerLeft, // ボタンの中身を左寄せに設定
             ),
             onPressed: () => _createNewCardSet(context, null, ''),
@@ -272,4 +258,3 @@ class addedableCardSetOptions extends StatelessWidget {
     );
   }
 }
-

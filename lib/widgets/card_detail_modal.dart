@@ -1,8 +1,7 @@
 // widgets/card_detail_modal.dart
+import 'package:conantcg/utils/csv_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/card_image.dart';
-import '../utils/csv_data.dart';
 import 'dart:math';
 
 
@@ -34,7 +33,7 @@ class _CardDetailModalState extends State<CardDetailModal> {
 
   @override
   Widget build(BuildContext context) {
-    var cardNoMapData = Provider.of<CardNoMapData>(context);
+    var cardNoMap = Provider.of<CardNoMap>(context);
 
     var screenWidth = MediaQuery.of(context).size.width;
     var screenHeight = MediaQuery.of(context).size.height;
@@ -94,7 +93,7 @@ class _CardDetailModalState extends State<CardDetailModal> {
                         itemBuilder: (context, index) {
                           // カードのタイプによって高さを変更する
                           var cardType =
-                              cardNoMapData.data[widget.cards[index]]?['type'];
+                              cardNoMap.data[widget.cards[index]]?['type'];
                           var dynamicHeight = cardType == '事件'
                               ? displayWidth / 1.4 / 1.4
                               : displayHeight;

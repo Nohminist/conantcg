@@ -1,4 +1,5 @@
 // main.dart
+import 'package:conantcg/widgets/hover_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/menu_provider.dart';
@@ -60,13 +61,13 @@ void main() async {
         ChangeNotifierProvider(create: (_) => ThemeModeProvider()),
         ChangeNotifierProvider(create: (context) => MenuProvider()),
         ChangeNotifierProvider(create: (context) => FilterState()),
-        ChangeNotifierProvider(create: (_) => DetailCardNo()),
+        ChangeNotifierProvider(create: (_) => HoverCardManage()),
         ChangeNotifierProvider(create: (_) => currentCardSet),
         ChangeNotifierProvider(create: (_) => CardSets(cardSets)),
         ChangeNotifierProvider(create: (_) => editingKey), // 更新
         ChangeNotifierProvider(create: (_) => CsvData()..load()),
         ChangeNotifierProvider(create: (_) => PreCardSet()..load()),
-        ChangeNotifierProvider(create: (_) => CardNoMapData()..load()),
+        ChangeNotifierProvider(create: (_) => CardNoMap()..load()),
       ],
       child: MyApp(),
     ),
@@ -94,7 +95,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
+        Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
       },
       child: MaterialApp(
         title: 'コナンTCGデッキ構築ツール(仮)',
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
           textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'NotoSansJP'),
         ),
         themeMode: Provider.of<ThemeModeProvider>(context).themeMode,
-        home: MainMenu(),
+        home: MainTop(),
       ),
     );
   }

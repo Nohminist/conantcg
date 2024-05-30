@@ -1,43 +1,18 @@
-// screens/all_cards.dart
+// widget/card_display_setting.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/filter_provider.dart';
 import '../utils/color.dart';
-import '../widgets/card_grid.dart';
+import 'card_grid.dart';
 import '../utils/csv_data.dart';
 
-class AllCards extends StatefulWidget {
+
+class HorizontalCardDisplaySetting extends StatefulWidget {
   @override
-  _AllCardsState createState() => _AllCardsState();
+  _HorizontalCardDisplaySettingState createState() => _HorizontalCardDisplaySettingState();
 }
 
-class _AllCardsState extends State<AllCards> {
-  @override
-  Widget build(BuildContext context) {
-    var filterState = Provider.of<FilterState>(context);
-    Map<String, Map<String, dynamic>> _data =
-        context.watch<CardNoMapData>().data; // ここでデータを取得
-    return Column(
-      children: [
-        FilterWidget(filterState: filterState),
-        Expanded(
-          child: CardGrid(), // _data.values.toList()でカードのデータのリストを取得
-        ),
-      ],
-    );
-  }
-}
-
-class FilterWidget extends StatefulWidget {
-  final FilterState filterState;
-
-  FilterWidget({required this.filterState});
-
-  @override
-  _FilterWidgetState createState() => _FilterWidgetState();
-}
-
-class _FilterWidgetState extends State<FilterWidget>
+class _HorizontalCardDisplaySettingState extends State<HorizontalCardDisplaySetting>
     with SingleTickerProviderStateMixin {
   bool _isExpanded = true;
   late AnimationController _controller;
@@ -98,7 +73,7 @@ class _FilterWidgetState extends State<FilterWidget>
           AnimatedCrossFade(
             duration: Duration(milliseconds: 200),
             firstChild: Container(),
-            secondChild: FilterOptions(filterState: widget.filterState),
+            secondChild: CardDisplaySettingOptions(),
             crossFadeState: _isExpanded
                 ? CrossFadeState.showSecond
                 : CrossFadeState.showFirst,
@@ -115,13 +90,11 @@ class _FilterWidgetState extends State<FilterWidget>
   }
 }
 
-class FilterOptions extends StatelessWidget {
-  final FilterState filterState;
-
-  FilterOptions({required this.filterState});
-
+class CardDisplaySettingOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var filterState = Provider.of<FilterState>(context);
+
     return Container(
       padding: EdgeInsets.all(10),
       child: Column(

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/foundation.dart';
 
-class CardNoMapData with ChangeNotifier {
+class CardNoMap with ChangeNotifier {
   Map<String, Map<String, dynamic>> _data = {};
 
   Map<String, Map<String, dynamic>> get data => _data;

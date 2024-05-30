@@ -11,7 +11,7 @@ class DeckAnalysis extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardData = Provider.of<CardNoMapData>(context).data;
+    final cardData = Provider.of<CardNoMap>(context).data;
 
     // Lvごとのカードの枚数を集計するマップ
     final Map<int, Map<String, int>> lvCount = {};

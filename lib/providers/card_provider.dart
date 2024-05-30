@@ -9,45 +9,45 @@ import '../utils/common_utils.dart';
 
 
 
-// DetailCardNoクラス：選択されたカードとドラッグ状態を管理します。
+// HoverCardManageクラス：選択されたカードとドラッグ状態を管理します。
 // _selectedCard：選択されたカード(詳細が表示されているカード)を保持します。
 // _isDragging：カードがドラッグ中かどうかを示します。
-class DetailCardNo with ChangeNotifier {
-  String? _selectedCardNo;
-  bool _isDragging = false;
-  bool _isLeftSideSelected = true; // 新しい状態を追加
+// class HoverCardManage with ChangeNotifier {
+//   String? _selectedCardNo;
+//   bool _isDragging = false;
+//   bool _isLeftSideSelected = true; // 新しい状態を追加
 
 
-  String? get selectedCardNo => _selectedCardNo;
-  bool get isDragging => _isDragging;
-  bool get isLeftSideSelected => _isLeftSideSelected; // 新しいゲッターを追加
+//   String? get selectedCardNo => _selectedCardNo;
+//   bool get isDragging => _isDragging;
+//   bool get isLeftSideSelected => _isLeftSideSelected; // 新しいゲッターを追加
 
 
-  void selectCardNo(String cardNo, bool isLeftSideSelected) { // メソッドのシグネチャを更新
+//   void selectCardNo(String cardNo, bool isLeftSideSelected) { // メソッドのシグネチャを更新
 
-    if (!_isDragging) {
-                // print(cardNo);
-                // print(isLeftSideSelected);
+//     if (!_isDragging) {
+//                 // print(cardNo);
+//                 // print(isLeftSideSelected);
 
-      _selectedCardNo = cardNo;
-      _isLeftSideSelected = isLeftSideSelected; // 状態を更新
-      notifyListeners();
-    }
-  }
+//       _selectedCardNo = cardNo;
+//       _isLeftSideSelected = isLeftSideSelected; // 状態を更新
+//       notifyListeners();
+//     }
+//   }
 
-  void startDragging() {
-    _isDragging = true;
-  }
+//   void startDragging() {
+//     _isDragging = true;
+//   }
 
-  void stopDragging() {
-    _isDragging = false;
-  }
+//   void stopDragging() {
+//     _isDragging = false;
+//   }
 
-  void deselectCardNo() {
-    _selectedCardNo = null;
-    notifyListeners();
-  }
-}
+//   void deselectCardNo() {
+//     _selectedCardNo = null;
+//     notifyListeners();
+//   }
+// }
 
 class CardSetNo with ChangeNotifier {
   List<String> _deck;
@@ -91,14 +91,14 @@ List<String> get deck => _deck;
   String get name => _name;
   DateTime get date => _date; // 追加
 
-  String? addCardNoToDeck(String cardNo, Map<String, Map<String, dynamic>> cardNoMapData) {
-    Map<String, dynamic>? card = cardNoMapData[cardNo];
+  String? addCardNoToDeck(String cardNo, Map<String, Map<String, dynamic>> cardNoMap) {
+    Map<String, dynamic>? card = cardNoMap[cardNo];
     if (card == null) {
       return 'カードが見つかりません'; // カードが見つからない場合はエラーメッセージを返す
     }
     if (card['type'] == 'キャラ' || card['type'] == 'イベント') {
       List<String> sameIdCards =
-          _deck.where((no) => cardNoMapData[no]?['ID'] == card['ID']).toList();
+          _deck.where((no) => cardNoMap[no]?['ID'] == card['ID']).toList();
       int sameCardCount = sameIdCards.length;
       if (sameCardCount < 3) {
         _deck.add(cardNo);
@@ -106,7 +106,7 @@ List<String> get deck => _deck;
         return null; // カードが追加された場合はnullを返す
       } else {
         List<String> sameIdDifferentNumbers = sameIdCards
-            .where((no) => cardNoMapData[no]?['No.'] != card['No.'])
+            .where((no) => cardNoMap[no]?['No.'] != card['No.'])
             .toList();
         if (sameIdDifferentNumbers.isEmpty) {
           return '同じカードは3枚まで'; // 同じIDの同じNo.のカードがすでに3枚ある場合

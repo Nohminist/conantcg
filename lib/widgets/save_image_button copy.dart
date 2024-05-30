@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'package:flutter/rendering.dart';
 import 'dart:typed_data';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 import '../utils/color.dart';
 import '../providers/card_provider.dart';
 import 'dart:math';
@@ -109,21 +109,21 @@ class SaveImageIcon extends StatelessWidget {
               ByteData? byteData =
                   await image.toByteData(format: ui.ImageByteFormat.png);
               if (byteData != null) {
-                final pngBytes = byteData.buffer.asUint8List();
-                final blob = html.Blob([pngBytes]);
-                final url = html.Url.createObjectUrlFromBlob(blob);
-                final anchor = html.document.createElement('a')
-                    as html.AnchorElement
-                  ..href = url
-                  ..style.display = 'none'
-                  // ファイル名を指定の形式に変更
-                  ..download =
-                      '${cardSet.name}(${DateFormat('yyyy-MM-dd_HH-mm-ss').format(cardSet.date)}).png';
-                html.document.body!.children.add(anchor);
-                anchor.click();
-                html.document.body!.children.remove(anchor);
-                html.Url.revokeObjectUrl(url);
-                print('画像が保存されました: ${anchor.download}');
+                // final pngBytes = byteData.buffer.asUint8List();
+                // final blob = html.Blob([pngBytes]);
+                // final url = html.Url.createObjectUrlFromBlob(blob);
+                // final anchor = html.document.createElement('a')
+                //     as html.AnchorElement
+                //   ..href = url
+                //   ..style.display = 'none'
+                //   // ファイル名を指定の形式に変更
+                //   ..download =
+                //       '${cardSet.name}(${DateFormat('yyyy-MM-dd_HH-mm-ss').format(cardSet.date)}).png';
+                // html.document.body!.children.add(anchor);
+                // anchor.click();
+                // html.document.body!.children.remove(anchor);
+                // html.Url.revokeObjectUrl(url);
+                // print('画像が保存されました: ${anchor.download}');
               } else {
                 print('ByteData is null. Failed to convert image to ByteData.');
               }

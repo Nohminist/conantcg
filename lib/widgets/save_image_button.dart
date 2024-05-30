@@ -7,12 +7,9 @@ import '../providers/card_provider.dart';
 import 'dart:math';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart'; // 追加
-// import 'package:flutter/material.dart';
-// import 'package:screenshot/screenshot.dart';
 import 'package:screenshot/screenshot.dart';
-// import 'dart:html' as html;
 import 'package:flutter/services.dart';
-import 'package:universal_html/html.dart' as html;
+// import 'package:universal_html/html.dart' as html;
 
 
 
@@ -86,11 +83,11 @@ class Modal extends StatelessWidget {
   Future<void> _saveScreenshot() async {
     final image = await screenshotController.capture();
     if (image != null) {
-      final blob = html.Blob([image]);
-      final url = html.Url.createObjectUrlFromBlob(blob);
-      final anchor = html.AnchorElement(href: url)
-        ..setAttribute('download', 'screenshot.png')
-        ..click();
+      // final blob = html.Blob([image]);
+      // final url = html.Url.createObjectUrlFromBlob(blob);
+      // final anchor = html.AnchorElement(href: url)
+      //   ..setAttribute('download', 'screenshot.png')
+      //   ..click();
     }
   }
 

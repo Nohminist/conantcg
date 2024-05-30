@@ -2,9 +2,9 @@
 import 'package:conantcg/widgets/card_detail_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../providers/card_provider.dart';
+import '../widgets/hover_card.dart';
 import '../widgets/card_image.dart';
-import 'dart:html' as html;
+// import 'dart:html' as html;
 
 class OperableCard extends StatefulWidget {
   final String cardNo;
@@ -23,10 +23,10 @@ class _OperableCardState extends State<OperableCard> {
   Widget build(BuildContext context) {
     return MouseRegion(
       onHover: (_) {
-        var userAgent = html.window.navigator.userAgent;
-        var isTouchDevice = userAgent.contains('Android') ||
-            userAgent.contains('iPhone') ||
-            userAgent.contains('iPad');
+        // var userAgent = html.window.navigator.userAgent;
+        // var isTouchDevice = userAgent.contains('Android') ||
+        //     userAgent.contains('iPhone') ||
+        //     userAgent.contains('iPad');
 
         // if (isTouchDevice) {
         //   // タッチデバイスではonHoverイベントを無視
@@ -35,22 +35,22 @@ class _OperableCardState extends State<OperableCard> {
 
         var screenWidth = MediaQuery.of(context).size.width;
         var hoverPosition = _.position.dx;
-        var isLeftSideSelected = hoverPosition < (screenWidth / 2 + 20);
-        Provider.of<DetailCardNo>(context, listen: false)
+        var isLeftSideSelected = hoverPosition < (screenWidth / 2);
+        Provider.of<HoverCardManage>(context, listen: false)
             .selectCardNo(widget.cardNo, isLeftSideSelected);
       },
       onExit: (_) {
-        Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
+        Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
       },
       child: GestureDetector(
         onPanStart: (_) {
-          Provider.of<DetailCardNo>(context, listen: false).startDragging();
+          Provider.of<HoverCardManage>(context, listen: false).startDragging();
         },
         onPanEnd: (_) {
-          Provider.of<DetailCardNo>(context, listen: false).stopDragging();
+          Provider.of<HoverCardManage>(context, listen: false).stopDragging();
         },
         onTap: () {
-          Provider.of<DetailCardNo>(context, listen: false).deselectCardNo();
+          Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
           widget.onTap();
         },
         onLongPress: () {

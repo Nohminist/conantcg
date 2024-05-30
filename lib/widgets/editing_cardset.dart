@@ -1,22 +1,12 @@
 // widgets/editing_card_set.dart
 import '../widgets/cardset_outline.dart';
-import '../widgets/deck_analysis.dart';
-import '../widgets/deck_analysis2.dart';
 import '../utils/update_local_too.dart';
-import '../utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
-import '../widgets/operable_card.dart';
 import '../widgets/cardset_operations2.dart';
 import '../widgets/editing_deck.dart';
 import '../widgets/level_icon.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import '../widgets/save_image_button.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditingCardSet extends StatefulWidget {
   @override
@@ -131,7 +121,7 @@ class EditMenus extends StatelessWidget {
             tooltip: '編集状態を確定する',
           ),
           SizedBox(width: 5),
-          SaveImageButton(cardSet: current),
+          // SaveImageButton(cardSet: current),機能しない
           SelectCardSetButton2(),
         ],
       ),

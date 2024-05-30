@@ -1,6 +1,6 @@
 // providers/menu_provider.dart
 import 'package:flutter/material.dart';
-import '../screens/deck_building.dart';
+import '../screens/card_set_building_top.dart';
 import '../screens/single_player_simulator_screen.dart';
 
 
@@ -15,9 +15,9 @@ class MenuItem {
 class MenuProvider with ChangeNotifier {
   List<MenuItem> _items = [
     MenuItem(
-      title: 'デッキ作成',
+      title: 'デッキ構築',
       icon: Icons.deck,
-      content: DeckBuildingScreen(),
+      content: CardSetBuildingTop(),
     ),
     // MenuItem(
     //   title: '1人回しシミュ',

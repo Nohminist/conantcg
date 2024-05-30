@@ -20,7 +20,7 @@ class DeckAnalysis2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardData = Provider.of<CardNoMapData>(context).data;
+    final cardData = Provider.of<CardNoMap>(context).data;
 
     // キーワードごとのカード枚数をカウントするマップを初期化
     Map<String, int> keywordCounts = {};

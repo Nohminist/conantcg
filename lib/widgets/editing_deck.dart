@@ -13,7 +13,7 @@ class DeckDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cardNoMapData = Provider.of<CardNoMapData>(context); // 追加
+    var cardNoMap = Provider.of<CardNoMap>(context); // 追加
     var uniqueDeckNos = deckNos.toSet().toList();
 
     // レベルごとにカードを分類
@@ -27,7 +27,7 @@ class DeckDisplay extends StatelessWidget {
 
     for (var cardNo in deckNos) {
       // 変更
-      var cardData = cardNoMapData.data[cardNo]; // 追加
+      var cardData = cardNoMap.data[cardNo]; // 追加
       if (cardData != null && cardData['Lv.'] != null) {
         levelSortedDeck[cardData['Lv.'] - 1].add(cardNo); // 変更
       }
@@ -81,7 +81,7 @@ class DeckDisplay extends StatelessWidget {
               // print('newArray[$index]: ${newArray[index]!.keys.first}');
               var cardNo = newArray[index]!.keys.first;
               var count = newArray[index]!.values.first;
-              var cardData = cardNoMapData.data[cardNo];
+              var cardData = cardNoMap.data[cardNo];
         
               if (cardData == null || cardData['type'] == null) {
                 return Container();
