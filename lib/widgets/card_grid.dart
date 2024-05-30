@@ -39,7 +39,7 @@ class CardGrid extends StatelessWidget {
               slivers: [
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 8,
+                    crossAxisCount: 4,
                     childAspectRatio: 1 / 1.4,
                   ),
                   delegate: SliverChildBuilderDelegate(
