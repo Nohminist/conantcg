@@ -54,44 +54,38 @@ class _CardDetailModalState extends State<CardDetailModal> {
             color: Colors.transparent,
           ),
         ),
-Center(
-  child: Container(
-    width: widgetWidth,
-    height: widgetHeight,
-    child: PageView.builder(
-      controller: _pageController,
-      itemCount: widget.cards.length,
-      itemBuilder: (context, index) {
-        var cardNo = widget.cards[index];
-        var card = cardNoMap.data[cardNo];
-        double cardWidth = widgetWidth;
-        double cardHeight = widgetHeight;
-        if (card?['type'] == '事件') cardHeight = cardWidth / 1.4 / 1.4;
+        Center(
+          child: Container(
+            width: widgetWidth,
+            height: widgetHeight,
+            child: PageView.builder(
+              controller: _pageController,
+              itemCount: widget.cards.length,
+              itemBuilder: (context, index) {
+                var cardNo = widget.cards[index];
+                var card = cardNoMap.data[cardNo];
+                double cardWidth = widgetWidth;
+                double cardHeight = widgetHeight;
+                if (card?['type'] == '事件') cardHeight = cardWidth / 1.4 / 1.4;
 
-        return GestureDetector(
-          onTap: () {},
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(cardHeight / 25),
-            child: Container(
-              // color: Colors.blue,
-              width: cardWidth,
-              height: cardHeight,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Image.asset(
-                  'assets/images/${cardNo}.jpg',
-                ),
-              ),
+                return GestureDetector(
+                  onTap: () {},
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(cardHeight / 25),
+                    child: SizedBox(
+                      // color: Colors.blue,
+                      width: cardWidth,
+                      height: cardHeight,
+                      child: Image.asset(
+                        'assets/images/${cardNo}.jpg',
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
-        );
-      },
-    ),
-  ),
-)
-
-
-
+        )
       ],
     );
   }

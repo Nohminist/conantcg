@@ -1,4 +1,6 @@
 // widgets/editing_card_set.dart
+import 'package:conantcg/widgets/level_icons.dart';
+
 import '../widgets/cardset_outline.dart';
 import '../utils/update_local_too.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
 import '../widgets/cardset_operations2.dart';
 import '../widgets/editing_deck.dart';
-import '../widgets/level_icon.dart';
 
 class EditingCardSet extends StatefulWidget {
   @override
@@ -36,15 +37,8 @@ class _EditingCardSetState extends State<EditingCardSet> {
               current: current, // currentを渡す
               widgetWidth: screenWidth / 2, // screenWidthを渡す
             ),
-            SizedBox(height:10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Row(
-                children: List.generate(8, (level) {
-                  return Expanded(child: LevelIcon(level: level));
-                }),
-              ),
-            ),
+            SizedBox(height: 10),
+            LevelIcons(),
             DeckDisplay(deckNos: current.deck),
           ],
         );
