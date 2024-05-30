@@ -1,32 +1,20 @@
 // widget/card_display_setting.dart
+import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
+import 'package:conantcg/widgets/transparent_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/filter_provider.dart';
 import '../utils/color.dart';
-import 'card_grid.dart';
-import '../utils/csv_data.dart';
-
 
 class HorizontalCardDisplaySetting extends StatefulWidget {
   @override
-  _HorizontalCardDisplaySettingState createState() => _HorizontalCardDisplaySettingState();
+  _HorizontalCardDisplaySettingState createState() =>
+      _HorizontalCardDisplaySettingState();
 }
 
-class _HorizontalCardDisplaySettingState extends State<HorizontalCardDisplaySetting>
-    with SingleTickerProviderStateMixin {
+class _HorizontalCardDisplaySettingState
+    extends State<HorizontalCardDisplaySetting> {
   bool _isExpanded = true;
-  late AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      duration: const Duration(milliseconds: 200),
-      vsync: this,
-      lowerBound: 0,
-      upperBound: 0.5, // これにより、アイコンは180度だけ回転します
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,36 +25,22 @@ class _HorizontalCardDisplaySettingState extends State<HorizontalCardDisplaySett
       ),
       child: Column(
         children: [
-          Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _isExpanded = !_isExpanded;
-                  if (_isExpanded) {
-                    _controller.forward();
-                  } else {
-                    _controller.reverse();
-                  }
-                });
-              },
-              highlightColor: Theme.of(context).highlightColor, // テーマのハイライト色
-              splashColor: Theme.of(context).splashColor, // テーマのスプラッシュ色
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  // Rowウィジェットを追加
-                  mainAxisAlignment: MainAxisAlignment.center, // アイコンを中央に配置
-                  children: [
-                    Icon(Icons.search), // 虫眼鏡アイコンを追加
-                    SizedBox(width: 10), // アイコンの間にスペースを追加
-                    RotationTransition(
-                      turns: _controller,
-                      child: Icon(Icons.arrow_drop_down),
-                    ),
-                  ],
-                ),
+          TransparentButton(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.search),
+                  SizedBox(width: 10),
+                  RotatingArrowDropIcon(isExpanded: _isExpanded),
+                ],
               ),
             ),
           ),
@@ -81,12 +55,6 @@ class _HorizontalCardDisplaySettingState extends State<HorizontalCardDisplaySett
         ],
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 }
 

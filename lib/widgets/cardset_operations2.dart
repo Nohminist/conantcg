@@ -37,7 +37,7 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
                 return FractionallySizedBox(
                   heightFactor: 0.9, // 画面の高さの90%を覆う
                   child: Container(
-                    width: screenWidth / 2, // 幅を画面幅の半分に設定
+                    width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, // 幅を画面幅の半分に設定
                     child: ListView.builder(
                       itemCount: tempCardSets.length + 1, // 選択肢の数を追加
                       itemBuilder: (context, index) {
@@ -53,6 +53,7 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
                             child: CardSetOption(
                                 cardSet: cardSet,
                                 screenWidth: screenWidth,
+                                screenHeight: screenHeight,
                                 cardSetsManager: cardSetsManager),
                           );
                         } else {
@@ -61,7 +62,8 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
                             cardSetsManager: cardSetsManager,
                             editingKey: editingKey,
                             tempCardSets: tempCardSets,
-                            screenWidth: screenWidth, // tempCardSetsを渡す
+                            screenWidth: screenWidth,
+                            screenHeight: screenHeight,
                           );
                         }
                       },
@@ -104,11 +106,13 @@ class CardSetOption extends StatelessWidget {
     Key? key,
     required this.cardSet,
     required this.screenWidth,
+    required this.screenHeight,
     required this.cardSetsManager,
   }) : super(key: key);
 
   final CardSetNo cardSet;
   final double screenWidth;
+  final double screenHeight;
   final CardSets cardSetsManager;
 
   @override
@@ -145,7 +149,7 @@ class CardSetOption extends StatelessWidget {
           ),
           CardSetOutline(
             current: cardSet,
-            widgetWidth: screenWidth / 2,
+            widgetWidth: screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
             isReadOnly: true,
           ),
         ],
@@ -168,12 +172,14 @@ class addedableCardSetOptions extends StatelessWidget {
   final EditingCardSetKey editingKey;
   final List<CardSetNo> tempCardSets; // tempCardSetsを追加
   final double screenWidth; // screenWidthを追加
+  final double screenHeight; // screenWidthを追加
 
   addedableCardSetOptions({
     required this.cardSetsManager,
     required this.editingKey,
     required this.tempCardSets, // tempCardSetsを追加
     required this.screenWidth, // screenWidthを追加
+    required this.screenHeight, // screenWidthを追加
   });
 
   void _createNewCardSet(BuildContext context,
@@ -214,7 +220,7 @@ class addedableCardSetOptions extends StatelessWidget {
           return Column(
             children: [
               Container(
-                width: screenWidth / 2, // 幅をscreenWidth / 2に設定
+                width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, 
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDarkMode
@@ -237,7 +243,7 @@ class addedableCardSetOptions extends StatelessWidget {
           );
         }).toList(),
         Container(
-          width: screenWidth / 2, // 幅をscreenWidth / 2に設定
+          width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, // 幅をscreenWidth / 2に設定
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: isDarkMode

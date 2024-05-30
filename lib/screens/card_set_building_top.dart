@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../widgets/card_display_setting.dart';
 import '../widgets/editing_cardset.dart';
 import '../widgets/card_grid.dart';
+import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
+import 'package:conantcg/widgets/transparent_button.dart';
 
 class CardSetBuildingTop extends StatefulWidget {
   @override
@@ -61,13 +63,25 @@ class HorizontalLayout extends StatelessWidget {
   }
 }
 
-class VerticalLayout extends StatelessWidget {
+class VerticalLayout extends StatefulWidget {
+  @override
+  _VerticalLayoutState createState() => _VerticalLayoutState();
+}
+
+class _VerticalLayoutState extends State<VerticalLayout> {
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Positioned.fill(
-          child: CardGrid(extraScroll:80),
+          child: Column(
+            children: [
+              ExpandableEditingCardSet(),
+              Expanded(
+                child: CardGrid(extraScroll: 80),
+              ),
+            ],
+          ),
         ),
         Positioned(
           bottom: 16.0,
@@ -89,4 +103,46 @@ class VerticalLayout extends StatelessWidget {
   }
 }
 
+class ExpandableEditingCardSet extends StatefulWidget {
+  @override
+  _ExpandableEditingCardSetState createState() =>
+      _ExpandableEditingCardSetState();
+}
 
+class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
+  bool _isExpanded = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: _isExpanded ? 1 : 0,
+      child: Column(
+        children: [
+          TransparentButton(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('デッキ'),
+                  SizedBox(width: 10),
+                  RotatingArrowDropIcon(isExpanded: _isExpanded),
+                ],
+              ),
+            ),
+          ),
+          if (_isExpanded)
+            Expanded(
+              child: EditingCardSet(),
+            ),
+        ],
+      ),
+    );
+  }
+}
