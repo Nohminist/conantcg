@@ -5,7 +5,7 @@ import '../providers/card_provider.dart';
 
 
 class CardSetNameEdit extends StatefulWidget {
-  const CardSetNameEdit({Key? key}) : super(key: key);
+  const CardSetNameEdit({super.key});
 
   @override
   _CardSetNameEditState createState() => _CardSetNameEditState();
@@ -17,8 +17,14 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
   @override
   void initState() {
     super.initState();
-    final current = Provider.of<CardSetNo>(context, listen: false);
-    _controller = TextEditingController(text: current.name);
+    _controller = TextEditingController();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final current = Provider.of<CardSetNo>(context);
+    _controller.text = current.name;
   }
 
   @override
@@ -44,3 +50,4 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
     super.dispose();
   }
 }
+
