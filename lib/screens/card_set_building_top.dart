@@ -15,57 +15,31 @@ class CardSetBuildingTop extends StatefulWidget {
   _CardSetBuildingTopState createState() => _CardSetBuildingTopState();
 }
 
-class _CardSetBuildingTopState extends State<CardSetBuildingTop> with WidgetsBindingObserver {
-  bool _keyboardVisible = false;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeMetrics() {
-    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
-    final newValue = bottomInset > 0.0;
-    if (newValue != _keyboardVisible) {
-      setState(() {
-        _keyboardVisible = newValue;
-      });
-    }
-  }
-
+class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-          resizeToAvoidBottomInset: false,
-          appBar: AppBar(
-            title: Text(
-              '_maxWidth: ${constraints.maxWidth.toStringAsFixed(2)}, maxHeight: ${constraints.maxHeight.toStringAsFixed(2)}, keyboardVisible: $_keyboardVisible',
-            ),
-          ),
-          body: constraints.maxWidth > constraints.maxHeight && !_keyboardVisible
-              ? Stack(
-                  children: [
-                    HorizontalLayout(),
-                    HoverCard(),
-                  ],
-                )
-              : VerticalLayout(),
-        );
-      },
+    final screenWidth = MediaQuery.of(context).size.width; // 画面の幅
+    final screenHeight = MediaQuery.of(context).size.height; // 画面の高さ
+    final keyboardHeight = MediaQuery.of(context).padding.bottom; // キーボードの高さ
+
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          'screenWidth: $screenWidth, screenHeight: $screenHeight, keyboardHeight: $keyboardHeight',
+        ),
+      ),
+      body: screenWidth > (screenHeight + keyboardHeight)
+          ? Stack(
+              children: [
+                HorizontalLayout(),
+                HoverCard(),
+              ],
+            )
+          : VerticalLayout(),
     );
   }
 }
-
 
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
