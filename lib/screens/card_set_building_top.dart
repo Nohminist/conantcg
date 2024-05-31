@@ -20,7 +20,7 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > constraints.maxHeight) {
+        // if (constraints.maxWidth > constraints.maxHeight) {
           // 横長の場合
           return Stack(
             children: [
@@ -28,10 +28,10 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
               HoverCard(),
             ],
           );
-        } else {
-          // 縦長の場合
-          return VerticalLayout();
-        }
+        // } else {
+        //   // 縦長の場合
+        //   return VerticalLayout();
+        // }
       },
     );
   }
@@ -107,8 +107,7 @@ class VerticalScreen extends StatelessWidget {
     return Column(
       children: [
         ExpandableEditingCardSet(),
-                CardSetNameEdit(),
-
+        CardSetNameEdit(),
         Expanded(
           child: CardGrid(extraScroll: 80),
         ),
