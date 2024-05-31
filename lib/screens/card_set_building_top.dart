@@ -1,4 +1,5 @@
 // screens/card_set_building_top.dart
+import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
 import 'package:conantcg/widgets/transparent_button.dart';
@@ -114,11 +115,79 @@ class VerticalScreen extends StatelessWidget {
   }
 }
 
+// class ExpandableEditingCardSet extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//         children: [
+//           TransparentButton(
+//             onTap: () {
+//               // ここで何も行わない
+//             },
+//             child: Container(
+//               width: double.infinity,
+//               padding: EdgeInsets.all(8.0),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Text('デッキ'),
+//                   SizedBox(width: 10),
+//                   // 常に同じ状態のアイコンを表示する
+//                   RotatingArrowDropIcon(isExpanded: true),
+//                 ],
+//               ),
+//             ),
+//           ),
+//           // 常にCardSetEdit2を表示する
+//           CardSetEdit2(),
+//         ],
+//     );
+//   }
+// }
+
+
+
 class ExpandableEditingCardSet extends StatefulWidget {
   @override
   _ExpandableEditingCardSetState createState() =>
       _ExpandableEditingCardSetState();
 }
+
+// class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
+//   bool _isExpanded = true;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//         children: [
+//           TransparentButton(
+//             onTap: () {
+//               setState(() {
+//                 _isExpanded = !_isExpanded;
+//               });
+//             },
+//             child: Container(
+//               width: double.infinity,
+//               padding: EdgeInsets.all(8.0),
+//               child: Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Text('デッキ'),
+//                   SizedBox(width: 10),
+//                   RotatingArrowDropIcon(isExpanded: _isExpanded),
+//                 ],
+//               ),
+//             ),
+//           ),
+//           // アニメーションを無効にするために、AnimatedCrossFadeを削除し、
+//           // 単純な条件付きレンダリングに置き換えます。
+//           if (_isExpanded)
+//             CardSetEdit2(),
+//         ],
+//     );
+//   }
+// }
+
 
 class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
   bool _isExpanded = true;
