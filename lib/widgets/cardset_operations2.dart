@@ -1,4 +1,6 @@
 // widget/cardset_operations2.dart
+import 'package:conantcg/widgets/updated_date.dart';
+
 import '../widgets/cardset_outline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +39,9 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
                 return FractionallySizedBox(
                   heightFactor: 0.9, // 画面の高さの90%を覆う
                   child: Container(
-                    width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, // 幅を画面幅の半分に設定
+                    width: screenWidth > screenHeight
+                        ? screenWidth / 2
+                        : screenWidth, // 幅を画面幅の半分に設定
                     child: ListView.builder(
                       itemCount: tempCardSets.length + 1, // 選択肢の数を追加
                       itemBuilder: (context, index) {
@@ -121,35 +125,15 @@ class CardSetOption extends StatelessWidget {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.baseline,
-            textBaseline: TextBaseline.alphabetic,
-            children: [
-              Expanded(
-                flex: 1,
-                child: Text(
-                  cardSet.name.isEmpty ? 'デッキ名' : cardSet.name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Row(
-                children: [
-                  Icon(Icons.update),
-                  Text(
-                    DateFormat('yyyy/MM/dd HH:mm').format(cardSet.date),
-                    style: TextStyle(
-                      fontSize: 14,
-                      //  fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          Text(
+            cardSet.name.isEmpty ? 'デッキ名' : cardSet.name,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          UpdatedDate(date: cardSet.date),
           CardSetOutline(
-            current: cardSet,
-            widgetWidth: screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
+            cardSetManage: cardSet,
+            widgetWidth:
+                screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
             isReadOnly: true,
           ),
         ],
@@ -220,7 +204,8 @@ class addedableCardSetOptions extends StatelessWidget {
           return Column(
             children: [
               Container(
-                width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, 
+                width:
+                    screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDarkMode
@@ -243,7 +228,9 @@ class addedableCardSetOptions extends StatelessWidget {
           );
         }).toList(),
         Container(
-          width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth, // 幅をscreenWidth / 2に設定
+          width: screenWidth > screenHeight
+              ? screenWidth / 2
+              : screenWidth, // 幅をscreenWidth / 2に設定
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: isDarkMode

@@ -15,7 +15,7 @@ class MenuItem {
 class MenuProvider with ChangeNotifier {
   List<MenuItem> _items = [
     MenuItem(
-      title: 'デッキ構築',
+      title: 'デッキ構築ツール',
       icon: Icons.deck,
       content: CardSetBuildingTop(),
     ),

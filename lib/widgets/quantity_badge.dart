@@ -18,8 +18,8 @@ class QuantityBadge extends StatelessWidget {
     return Positioned(
       right: 0,
       child: Container(
-        width: 20,
-        height: 20,
+        width: 24,
+        height: 24,
         decoration: BoxDecoration(
           color: type == 'キャラ'
               ? Colors.blue[300]
@@ -31,12 +31,12 @@ class QuantityBadge extends StatelessWidget {
         ),
         child: Center(
           child: type == '事件' || type == 'パートナー'
-                ? Icon(Icons.check, color: getRelativeColor(context, 0), size: 18.0) // チェックマークアイコンを表示
+                ? Icon(Icons.check, color: getRelativeColor(context, 0), size: 20.0) // チェックマークアイコンを表示
                 : Text(
                     toRoman(count), // ローマ数字を表示
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold
                     ),
                   ),

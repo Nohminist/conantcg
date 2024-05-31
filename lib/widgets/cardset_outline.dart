@@ -11,12 +11,12 @@ import 'dart:math';
 
 
 class CardSetOutline extends StatelessWidget {
-  final CardSetNo current;
+  final CardSetNo cardSetManage;
   final double widgetWidth;
   final bool isReadOnly;
 
   CardSetOutline({
-    required this.current,
+    required this.cardSetManage,
     required this.widgetWidth,
     this.isReadOnly = false,
   });
@@ -27,7 +27,7 @@ class CardSetOutline extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         CardWidget(
-          cardNo: current.partner!,
+          cardNo: cardSetManage.partner!,
           width: widgetWidth / 8,
           height: (widgetWidth / 8) * 1.4,
           isReadOnly: isReadOnly,
@@ -38,7 +38,7 @@ class CardSetOutline extends StatelessWidget {
         ),
         SizedBox(width: 5),
         CardWidget(
-          cardNo: current.caseCard!,
+          cardNo: cardSetManage.caseCard!,
           width: (widgetWidth / 8) * 1.4 * 1.4,
           height: widgetWidth / 8 * 1.4,
           isReadOnly: isReadOnly,
@@ -51,13 +51,13 @@ class CardSetOutline extends StatelessWidget {
         SizedBox(
           width: (widgetWidth / 8) * 1.4 * 1.4,
           height: (widgetWidth / 8) * 1.4,
-          child: DeckAnalysis(deckNos: current.deck),
+          child: DeckAnalysis(deckNos: cardSetManage.deck),
         ),
         SizedBox(width: 5),
         SizedBox(
           width: (widgetWidth / 8) * 1.4,
           height: (widgetWidth / 8) * 1.4,
-          child: DeckAnalysis2(deckNos: current.deck),
+          child: DeckAnalysis2(deckNos: cardSetManage.deck),
         ),
       ],
     );

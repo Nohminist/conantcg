@@ -1,4 +1,4 @@
-// widgets/editing_deck.dart
+// widgets/deck_edit.dart.dart
 import '../utils/csv_data.dart';
 import '../widgets/quantity_badge.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
 import '../widgets/operable_card.dart';
 
-class DeckDisplay extends StatelessWidget {
+class DeckEdit extends StatelessWidget {
   final List<String> deckNos;
 
-  DeckDisplay({required this.deckNos});
+  DeckEdit({required this.deckNos});
 
   @override
   Widget build(BuildContext context) {

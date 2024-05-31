@@ -9,10 +9,15 @@ import '../utils/csv_data.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class CardGrid extends StatelessWidget {
+  final double topExtraScroll;
   final double extraScroll; // 追加のスクロール領域
   final ScrollController? scrollController; // 追加：スクロールコントローラ
 
-  CardGrid({this.extraScroll = 0.0, this.scrollController}); // デフォルト値を0.0に設定
+  CardGrid({
+    this.topExtraScroll = 0.0,
+    this.extraScroll = 0.0,
+    this.scrollController,
+  }); // デフォルト値を0.0に設定
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +41,9 @@ class CardGrid extends StatelessWidget {
             child: CustomScrollView(
               controller: scrollController,
               slivers: [
+                SliverToBoxAdapter(
+                  child: SizedBox(height: topExtraScroll), // 追加のスクロール領域
+                ),
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 4,
@@ -106,7 +114,7 @@ class CardGrid extends StatelessWidget {
                 SliverToBoxAdapter(
                   child: SizedBox(height: extraScroll), // 追加のスクロール領域
                 ),
-                MyWidget(),
+                // MyWidget(),
               ],
             ),
           );
@@ -115,7 +123,6 @@ class CardGrid extends StatelessWidget {
     );
   }
 }
-
 
 class MyWidget extends StatefulWidget {
   @override

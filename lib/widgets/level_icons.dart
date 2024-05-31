@@ -40,7 +40,7 @@ class LevelIcon extends StatelessWidget {
               '${level + 1}',
               style: TextStyle(
                 color: getRelativeColor(context, 0),
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
               ),
             ),
