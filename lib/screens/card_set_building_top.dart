@@ -10,26 +10,14 @@ import '../widgets/card_grid.dart';
 import 'package:flutter/gestures.dart'; // 追加
 import 'package:flutter/rendering.dart';
 
-class CardSetBuildingTop extends StatefulWidget {
-  @override
-  _CardSetBuildingTopState createState() => _CardSetBuildingTopState();
-}
-
-class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
+class CardSetBuildingTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width; // 画面の幅
-    final screenHeight = MediaQuery.of(context).size.height; // 画面の高さ
-    final keyboardHeight = MediaQuery.of(context).padding.bottom; // キーボードの高さ
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(
-          'screenWidth: $screenWidth, screenHeight: $screenHeight, keyboardHeight: $keyboardHeight',
-        ),
-      ),
-      body: screenWidth > (screenHeight + keyboardHeight)
+      body: screenWidth > screenHeight
           ? Stack(
               children: [
                 HorizontalLayout(),
@@ -40,6 +28,7 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
     );
   }
 }
+
 
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
@@ -150,8 +139,6 @@ class VerticalScreen extends StatelessWidget {
 //   }
 // }
 
-
-
 class ExpandableEditingCardSet extends StatefulWidget {
   @override
   _ExpandableEditingCardSetState createState() =>
@@ -193,42 +180,41 @@ class ExpandableEditingCardSet extends StatefulWidget {
 //   }
 // }
 
-
 class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
   bool _isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          TransparentButton(
-            onTap: () {
-              setState(() {
-                _isExpanded = !_isExpanded;
-              });
-            },
-            child: Container(
-              width: double.infinity,
-              padding: EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('デッキ'),
-                  SizedBox(width: 10),
-                  RotatingArrowDropIcon(isExpanded: _isExpanded),
-                ],
-              ),
+      children: [
+        TransparentButton(
+          onTap: () {
+            setState(() {
+              _isExpanded = !_isExpanded;
+            });
+          },
+          child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('デッキ'),
+                SizedBox(width: 10),
+                RotatingArrowDropIcon(isExpanded: _isExpanded),
+              ],
             ),
           ),
-          AnimatedCrossFade(
-            duration: Duration(milliseconds: 200),
-            firstChild: Container(),
-            secondChild: CardSetEdit2(),
-            crossFadeState: _isExpanded
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-          ),
-        ],
+        ),
+        AnimatedCrossFade(
+          duration: Duration(milliseconds: 200),
+          firstChild: Container(),
+          secondChild: CardSetEdit2(),
+          crossFadeState: _isExpanded
+              ? CrossFadeState.showSecond
+              : CrossFadeState.showFirst,
+        ),
+      ],
     );
   }
 }
