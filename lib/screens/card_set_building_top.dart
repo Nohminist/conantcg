@@ -22,9 +22,10 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
+          resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              'maxWidth: ${constraints.maxWidth.toStringAsFixed(2)}, maxHeight: ${constraints.maxHeight.toStringAsFixed(2)}, keyboardHeight: $keyboardHeight',
+              '_maxWidth: ${constraints.maxWidth.toStringAsFixed(2)}, maxHeight: ${constraints.maxHeight.toStringAsFixed(2)}, keyboardHeight: $keyboardHeight',
             ),
           ),
           body: constraints.maxWidth > (constraints.maxHeight + keyboardHeight)
