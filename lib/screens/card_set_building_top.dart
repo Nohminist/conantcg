@@ -18,7 +18,7 @@ class CardSetBuildingTop extends StatefulWidget {
 class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
   @override
   Widget build(BuildContext context) {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final keyboardHeight = MediaQuery.of(context).padding.bottom; // 変更
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
@@ -41,6 +41,7 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
     );
   }
 }
+
 
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
