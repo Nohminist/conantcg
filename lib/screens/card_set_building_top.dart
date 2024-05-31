@@ -18,10 +18,9 @@ class CardSetBuildingTop extends StatefulWidget {
 class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
   @override
   Widget build(BuildContext context) {
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > (constraints.maxHeight + keyboardHeight)) {
+        // if (constraints.maxWidth > constraints.maxHeight) {
           // 横長の場合
           return Stack(
             children: [
@@ -29,15 +28,14 @@ class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
               HoverCard(),
             ],
           );
-        } else {
-          // 縦長の場合
-          return VerticalLayout();
-        }
+        // } else {
+        //   // 縦長の場合
+        //   return VerticalLayout();
+        // }
       },
     );
   }
 }
-
 
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
