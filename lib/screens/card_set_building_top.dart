@@ -100,7 +100,6 @@ class VerticalScreen extends StatelessWidget {
     return Column(
       children: [
         ExpandableEditingCardSet(),
-        CardSetNameEdit(),
         Expanded(
           child: CardGrid(extraScroll: 80),
         ),
