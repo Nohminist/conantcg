@@ -24,47 +24,16 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
   Widget build(BuildContext context) {
     final current = Provider.of<CardSetNo>(context);
 
-    return Row(
-      children: [
-        Text(current.name),
-        IconButton(
-          icon: Icon(Icons.edit),
-          onPressed: () {
-            _controller.text = current.name; // 追加
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: Text('デッキ名を編集'),
-                  content: TextField(
-                    controller: _controller,
-                    decoration: const InputDecoration(
-                      labelText: 'デッキ名',
-                      border: OutlineInputBorder(),
-                      prefixIcon: Icon(Icons.edit),
-                    ),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text('キャンセル'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                    TextButton(
-                      child: Text('保存'),
-                      onPressed: () {
-                        current.setName(_controller.text);
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          },
-        ),
-      ],
+    return TextField(
+      controller: _controller,
+      decoration: const InputDecoration(
+        labelText: 'デッキ名',
+        border: OutlineInputBorder(),
+        prefixIcon: Icon(Icons.edit),
+      ),
+      onSubmitted: (value) {
+        current.setName(value);
+      },
     );
   }
 
@@ -74,6 +43,9 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
     super.dispose();
   }
 }
+
+
+
 
 
 
