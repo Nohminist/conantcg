@@ -17,13 +17,13 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    final current = Provider.of<CardSetNo>(context, listen: false);
+    _controller = TextEditingController(text: current.name);
   }
 
   @override
   Widget build(BuildContext context) {
     final current = Provider.of<CardSetNo>(context);
-    _controller.text = current.name;
 
     return TextField(
       controller: _controller,
@@ -44,4 +44,3 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
     super.dispose();
   }
 }
-

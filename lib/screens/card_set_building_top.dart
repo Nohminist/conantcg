@@ -1,13 +1,9 @@
 // screens/card_set_building_top.dart
-import 'package:conantcg/utils/color.dart';
-import 'package:conantcg/widgets/card_set_save_button.dart';
-import 'package:conantcg/widgets/cardset_operations2.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:flutter/material.dart';
 import '../widgets/card_display_setting.dart';
 import '../widgets/card_set_edit.dart';
 import '../widgets/card_grid.dart';
-import 'package:flutter/widgets.dart'; // 追加
 import 'package:flutter/gestures.dart'; // 追加
 import 'package:flutter/rendering.dart';
 
