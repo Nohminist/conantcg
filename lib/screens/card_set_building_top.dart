@@ -15,20 +15,44 @@ class CardSetBuildingTop extends StatefulWidget {
   _CardSetBuildingTopState createState() => _CardSetBuildingTopState();
 }
 
-class _CardSetBuildingTopState extends State<CardSetBuildingTop> {
+class _CardSetBuildingTopState extends State<CardSetBuildingTop> with WidgetsBindingObserver {
+  bool _keyboardVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeMetrics() {
+    final bottomInset = WidgetsBinding.instance.window.viewInsets.bottom;
+    final newValue = bottomInset > 0.0;
+    if (newValue != _keyboardVisible) {
+      setState(() {
+        _keyboardVisible = newValue;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final keyboardHeight = MediaQuery.of(context).padding.bottom; // 変更
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: AppBar(
             title: Text(
-              '_maxWidth: ${constraints.maxWidth.toStringAsFixed(2)}, maxHeight: ${constraints.maxHeight.toStringAsFixed(2)}, keyboardHeight: $keyboardHeight',
+              '_maxWidth: ${constraints.maxWidth.toStringAsFixed(2)}, maxHeight: ${constraints.maxHeight.toStringAsFixed(2)}, keyboardVisible: $_keyboardVisible',
             ),
           ),
-          body: constraints.maxWidth > (constraints.maxHeight + keyboardHeight)
+          body: constraints.maxWidth > constraints.maxHeight && !_keyboardVisible
               ? Stack(
                   children: [
                     HorizontalLayout(),
