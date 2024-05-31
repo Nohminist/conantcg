@@ -1,5 +1,7 @@
 // screens/card_set_building_top.dart
 import 'package:conantcg/widgets/hover_card.dart';
+import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
+import 'package:conantcg/widgets/transparent_button.dart';
 import 'package:flutter/material.dart';
 import '../widgets/card_display_setting.dart';
 import '../widgets/card_set_edit.dart';
@@ -69,41 +71,11 @@ class VerticalLayout extends StatefulWidget {
 }
 
 class _VerticalLayoutState extends State<VerticalLayout> {
-  late ScrollController _scrollController;
-  bool _showAppBar = true;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        if (_scrollController.position.userScrollDirection ==
-            ScrollDirection.reverse) {
-          if (_showAppBar == true) {
-            setState(() {
-              _showAppBar = false;
-            });
-          }
-        }
-        if (_scrollController.position.userScrollDirection ==
-            ScrollDirection.forward) {
-          if (_showAppBar == false) {
-            setState(() {
-              _showAppBar = true;
-            });
-          }
-        }
-      });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CardGridGroup(
-          scrollController: _scrollController,
-          showAppBar: _showAppBar,
-        ),
+        VerticalScreen(),
         Positioned(
           bottom: 16.0,
           right: 16.0,
@@ -124,33 +96,196 @@ class _VerticalLayoutState extends State<VerticalLayout> {
   }
 }
 
-class CardGridGroup extends StatelessWidget {
-  final ScrollController scrollController;
-  final bool showAppBar;
-
-  CardGridGroup({required this.scrollController, required this.showAppBar});
+class VerticalScreen extends StatelessWidget {
+  const VerticalScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AnimatedCrossFade(
-          duration: Duration(milliseconds: 200),
-          firstChild: Container(),
-          secondChild: CardSetEdit2(),
-          crossFadeState: showAppBar
-              ? CrossFadeState.showSecond
-              : CrossFadeState.showFirst,
-        ),
+        ExpandableEditingCardSet(),
         Expanded(
-          child: CardGrid(extraScroll: 80, scrollController: scrollController),
+          child: CardGrid(extraScroll: 80),
         ),
       ],
     );
   }
 }
 
-//オーバーレイにしたかったが、高さを取得するのが面倒で却下
+class ExpandableEditingCardSet extends StatefulWidget {
+  @override
+  _ExpandableEditingCardSetState createState() =>
+      _ExpandableEditingCardSetState();
+}
+
+class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
+  bool _isExpanded = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+        children: [
+          TransparentButton(
+            onTap: () {
+              setState(() {
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('デッキ'),
+                  SizedBox(width: 10),
+                  RotatingArrowDropIcon(isExpanded: _isExpanded),
+                ],
+              ),
+            ),
+          ),
+          AnimatedCrossFade(
+            duration: Duration(milliseconds: 200),
+            firstChild: Container(),
+            secondChild: CardSetEdit2(),
+            crossFadeState: _isExpanded
+                ? CrossFadeState.showSecond
+                : CrossFadeState.showFirst,
+          ),
+        ],
+    );
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//スクロールを検出するのは状態管理でおかしくなる
+// class VerticalLayout extends StatefulWidget {
+//   @override
+//   _VerticalLayoutState createState() => _VerticalLayoutState();
+// }
+
+// class _VerticalLayoutState extends State<VerticalLayout> {
+//   late ScrollController _scrollController;
+//   bool _showAppBar = true;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _scrollController = ScrollController()
+//       ..addListener(() {
+//         if (_scrollController.position.userScrollDirection ==
+//             ScrollDirection.reverse) {
+//           if (_showAppBar == true) {
+//             setState(() {
+//               _showAppBar = false;
+//             });
+//           }
+//         }
+//         if (_scrollController.position.userScrollDirection ==
+//             ScrollDirection.forward) {
+//           if (_showAppBar == false) {
+//             setState(() {
+//               _showAppBar = true;
+//             });
+//           }
+//         }
+//       });
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Stack(
+//       children: [
+//         CardGridGroup(
+//           scrollController: _scrollController,
+//           showAppBar: _showAppBar,
+//         ),
+//         Positioned(
+//           bottom: 16.0,
+//           right: 16.0,
+//           child: FloatingActionButton(
+//             onPressed: () {
+//               showModalBottomSheet(
+//                 context: context,
+//                 builder: (context) {
+//                   return CardDisplaySettingOptions();
+//                 },
+//               );
+//             },
+//             child: Icon(Icons.search),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+
+// class CardGridGroup extends StatelessWidget {
+//   final ScrollController scrollController;
+//   final bool showAppBar;
+
+//   CardGridGroup({required this.scrollController, required this.showAppBar});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         AnimatedCrossFade(
+//           duration: Duration(milliseconds: 200),
+//           firstChild: Container(),
+//           secondChild: CardSetEdit2(),
+//           crossFadeState: showAppBar
+//               ? CrossFadeState.showSecond
+//               : CrossFadeState.showFirst,
+//         ),
+//         Expanded(
+//           child: CardGrid(extraScroll: 80, scrollController: scrollController),
+//         ),
+//       ],
+//     );
+//   }
+// }
+
+
+
+
+
+
+//スクロールでオーバーレイにしたかったが、高さを取得するのが面倒で却下
 // class CardGridGroup extends StatelessWidget {
 //   final ScrollController scrollController;
 //   final bool showAppBar;

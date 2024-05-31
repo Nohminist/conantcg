@@ -36,7 +36,7 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
       onChanged: (value) {
         current.setName(value);
       },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'デッキ名',
         border: OutlineInputBorder(),
         prefixIcon: Icon(Icons.edit),
