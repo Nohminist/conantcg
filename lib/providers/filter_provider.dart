@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 
 class FilterState extends ChangeNotifier {
   List<bool> isSelectedRarity = List.generate(5, (_) => false);
-  List<String> rarityValues = ['C',  'R',  'SR',  'D', 'PR'];
+  List<String> rarityValues = ['C', 'R', 'SR', 'D', 'PR'];
   List<bool> isSelectedType = List.generate(4, (_) => false);
   List<String> typeValues = ['パートナー', '事件', 'キャラ', 'イベント'];
   List<bool> isSelectedColor = List.generate(6, (_) => false);
   List<String> colorValues = ['青', '緑', '白', '黄', '赤', '黒'];
+  List<bool> isSelectedParallel = [true, false];
+  List<String> parallelValues = ['(無印)', 'P']; // 追加
   String inputText = ''; // 追加
   bool includeParallel = false; // パラレル(カード)を含むかどうか
 
@@ -31,7 +33,13 @@ class FilterState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateInputText(String text) { // 追加
+  void toggleParallel(int index) {
+    // 追加
+    isSelectedParallel[index] = !isSelectedParallel[index];
+    notifyListeners();
+  }
+
+  void updateInputText(String text) {
     inputText = text;
     notifyListeners();
   }
@@ -53,4 +61,3 @@ class FilterState extends ChangeNotifier {
     notifyListeners();
   }
 }
-

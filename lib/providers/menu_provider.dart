@@ -15,12 +15,12 @@ class MenuItem {
 class MenuProvider with ChangeNotifier {
   List<MenuItem> _items = [
     MenuItem(
-      title: 'デッキ構築ツール',
+      title: 'デッキ構築',
       icon: Icons.deck,
       content: CardSetBuildingTop(),
     ),
     // MenuItem(
-    //   title: '1人回しシミュ',
+    //   title: 'シミュレータ',
     //   icon: Icons.person,
     //   content: SinglePlayerSimulatorScreen(),
     // ),

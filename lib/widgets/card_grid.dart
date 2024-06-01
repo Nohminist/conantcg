@@ -10,8 +10,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class CardGrid extends StatelessWidget {
   final double topExtraScroll;
-  final double extraScroll; // 追加のスクロール領域
-  final ScrollController? scrollController; // 追加：スクロールコントローラ
+  final double extraScroll;
+  final ScrollController? scrollController;
 
   CardGrid({
     this.topExtraScroll = 0.0,
@@ -36,9 +36,7 @@ class CardGrid extends StatelessWidget {
           var filteredCardNos =
               getFilteredAndSortedData(cardNos, filterState, cardNoMap);
 
-          return Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GridView.builder(
+          return  GridView.builder(
               controller: scrollController,
               addAutomaticKeepAlives: false,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -104,7 +102,7 @@ class CardGrid extends StatelessWidget {
                   ],
                 );
               },
-            ),
+            
           );
         },
       ),

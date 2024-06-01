@@ -126,7 +126,6 @@ class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
             },
             child: Container(
               width: double.infinity,
-              padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

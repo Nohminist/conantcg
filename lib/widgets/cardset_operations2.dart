@@ -24,7 +24,7 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return IconButton(
-      icon: Icon(Icons.format_list_bulleted),
+      icon: Icon(Icons.menu),
       tooltip: 'デッキを選択する',
       onPressed: () {
         List<CardSetNo> tempCardSets =

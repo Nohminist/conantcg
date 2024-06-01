@@ -45,13 +45,17 @@ class HorizontalLayout extends StatelessWidget {
         ),
         Expanded(
           flex: 1,
-          child: Column(
-            children: [
-              HorizontalCardDisplaySetting(),
-              Expanded(
-                child: CardGrid(),
-              ),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: Column(
+              children: [
+                HorizontalCardDisplaySetting(),
+                SizedBox(height:5),
+                Expanded(
+                  child: CardGrid(),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -198,7 +202,7 @@ class _ExpandableEditingCardSetState extends State<ExpandableEditingCardSet> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('デッキ'),
+                Text('デッキ表示'),
                 SizedBox(width: 10),
                 RotatingArrowDropIcon(isExpanded: _isExpanded),
               ],

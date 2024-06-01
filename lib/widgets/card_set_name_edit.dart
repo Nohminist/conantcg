@@ -1,4 +1,5 @@
 // widgets/card_set_name_edit.dart
+import 'package:conantcg/widgets/common_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
@@ -27,26 +28,21 @@ class _CardSetNameEditState extends State<CardSetNameEdit> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final current = Provider.of<CardSetNo>(context);
-
-    return TextField(
-      controller: _controller,
-      onChanged: (value) {
-        current.setName(value);
-      },
-      decoration: const InputDecoration(
-        labelText: 'デッキ名',
-        border: OutlineInputBorder(),
-        prefixIcon: Icon(Icons.edit),
-      ),
-    );
-  }
-
-  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
   }
-}
 
+  @override
+  Widget build(BuildContext context) {
+    final current = Provider.of<CardSetNo>(context);
+
+    return CommonTextField(
+        prefixIcon: Icons.edit,
+        labelText: 'デッキ名',
+        controller: _controller,
+        onSubmitted: (value) {
+          current.setName(value);
+        });
+  }
+}

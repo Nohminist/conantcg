@@ -2,14 +2,13 @@
 import '../utils/csv_data.dart';
 import '../providers/filter_provider.dart';
 
-List<String> getFilteredAndSortedData(List<String> cardNos,
-    FilterState filterState, CardNoMap cardNoMap) {
+List<String> getFilteredAndSortedData(
+    List<String> cardNos, FilterState filterState, CardNoMap cardNoMap) {
   var filteredCardNos = cardNos.where((cardNo) {
     var cardData = cardNoMap.data[cardNo];
     if (cardData == null) {
       return false; // カードのデータが存在しない場合、フィルタリングの結果から除外します
     }
-    
 
     var rarity = cardData['rarity'];
     var type = cardData['type'];
@@ -17,17 +16,27 @@ List<String> getFilteredAndSortedData(List<String> cardNos,
 
     // print(rarity);
 
-    bool rarityMatches;
+    bool rarityMatches = false;
     if (rarity.endsWith('P')) {
-      rarityMatches = filterState.includeParallel &&
-          (!filterState.isSelectedRarity.any((element) => element) ||
-              filterState.isSelectedRarity[filterState.rarityValues
-                  .indexOf(rarity.substring(0, rarity.length - 1))]);
+      if (!filterState.isSelectedParallel.any((element) => element) ||
+          filterState.isSelectedParallel[1]) {
+        if (!filterState.isSelectedRarity.any((element) => element) ||
+            filterState.isSelectedRarity[filterState.rarityValues
+                .indexOf(rarity.substring(0, rarity.length - 1))]) {
+          rarityMatches = true;
+        }
+      }
     } else {
-      rarityMatches = !filterState.isSelectedRarity.any((element) => element) ||
-          filterState
-              .isSelectedRarity[filterState.rarityValues.indexOf(rarity)];
+      if (!filterState.isSelectedParallel.any((element) => element) ||
+          filterState.isSelectedParallel[0]) {
+        if (!filterState.isSelectedRarity.any((element) => element) ||
+            filterState
+                .isSelectedRarity[filterState.rarityValues.indexOf(rarity)]) {
+          rarityMatches = true;
+        }
+      }
     }
+
     bool typeMatches = !filterState.isSelectedType.any((element) => element) ||
         filterState.isSelectedType[filterState.typeValues.indexOf(type)];
     bool colorMatches = !filterState.isSelectedColor

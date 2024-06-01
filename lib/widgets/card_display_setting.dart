@@ -1,10 +1,13 @@
 // widget/card_display_setting.dart
+import 'package:conantcg/widgets/common_text_field.dart';
 import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
 import 'package:conantcg/widgets/transparent_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/filter_provider.dart';
 import '../utils/color.dart';
+import 'dart:math';
+import 'dart:math' as math;
 
 class HorizontalCardDisplaySetting extends StatefulWidget {
   @override
@@ -21,7 +24,7 @@ class _HorizontalCardDisplaySettingState
     return Container(
       decoration: BoxDecoration(
         color: getRelativeColor(context, 0.1),
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10)),
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         children: [
@@ -69,75 +72,98 @@ class CardDisplaySettingOptions extends StatelessWidget {
         children: [
           Row(
             children: [
+              Text('並べ替え：'),
               SortButtons(filterState: filterState),
               SizedBox(width: 5),
-              Expanded(
-                // Expandedウィジェットを追加
-                child: TextField(
-                  onChanged: (value) {
-                    filterState.updateInputText(value);
-                  },
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
             ],
           ),
-          SizedBox(height: 5),
-          Text('色'), // グループ名を追加
-          FilterToggleButtonGroup(
-            values: filterState.colorValues,
-            toggleFunction: filterState.toggleColor,
-            isSelected: filterState.isSelectedColor,
-          ),
-          SizedBox(height: 5),
-          Text('種類'), // グループ名を追加
-          FilterToggleButtonGroup(
-            values: filterState.typeValues,
-            toggleFunction: filterState.toggleType,
-            isSelected: filterState.isSelectedType,
-          ),
+FilterTextField(filterState: filterState),
           SizedBox(height: 5),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center, // 中央に寄せる
             children: [
-              Text('レアリティ'), // グループ名を追加
-              SizedBox(width: 10),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.0), // paddingXを追加
-                decoration: BoxDecoration(
-                  // color: getRelativeColor(context, 0.2), // 背景色を変更
-                  borderRadius: BorderRadius.circular(5.0), // 背景を丸くする
-                ),
-                child: InkWell(
-                  // InkWellを追加
-                  onTap: () {
-                    filterState.toggleIncludeParallel();
-                  },
-                  child: Row(
-                    children: [
-                      Checkbox(
-                        value: filterState.includeParallel,
-                        onChanged: (bool? newValue) {
-                          filterState.toggleIncludeParallel();
-                        },
-                      ),
-                      Text('パラレルを含める'),
-                    ],
-                  ),
-                ),
+              Text('色：'),
+              FilterToggleButtonGroup(
+                values: filterState.colorValues,
+                toggleFunction: filterState.toggleColor,
+                isSelected: filterState.isSelectedColor,
               ),
             ],
-          ),
-          FilterToggleButtonGroup(
-            values: filterState.rarityValues,
-            toggleFunction: filterState.toggleRarity,
-            isSelected: filterState.isSelectedRarity,
+          ), // グループ名を追加
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text('種類：'),
+              FilterToggleButtonGroup(
+                values: filterState.typeValues,
+                toggleFunction: filterState.toggleType,
+                isSelected: filterState.isSelectedType,
+              ),
+            ],
+          ), // グループ名を追加
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Text('レア：'),
+              FilterToggleButtonGroup(
+                values: filterState.rarityValues,
+                toggleFunction: filterState.toggleRarity,
+                isSelected: filterState.isSelectedRarity,
+              ),
+              SizedBox(width:5),
+              FilterToggleButtonGroup(
+                values: filterState.parallelValues,
+                toggleFunction: filterState.toggleParallel,
+                isSelected: filterState.isSelectedParallel,
+              ),
+            ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class FilterTextField extends StatefulWidget {
+  final FilterState filterState;
+
+  FilterTextField({required this.filterState});
+
+  @override
+  _FilterTextFieldState createState() => _FilterTextFieldState();
+}
+
+class _FilterTextFieldState extends State<FilterTextField> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: widget.filterState.inputText);
+
+    // FilterStateのinputTextが更新されたときにTextFieldの表示を更新する
+    widget.filterState.addListener(_updateText);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    widget.filterState.removeListener(_updateText);
+    super.dispose();
+  }
+
+  void _updateText() {
+    _controller.text = widget.filterState.inputText;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonTextField(
+      prefixIcon: Icons.search,
+      labelText: 'フリーワード',
+      controller: _controller,
+      onSubmitted: (value) {
+        widget.filterState.updateInputText(value);
+      },
     );
   }
 }
@@ -169,9 +195,13 @@ class SortButtons extends StatelessWidget {
           },
         ),
         IconButton(
-          icon: Icon(filterState.isAscending
-              ? Icons.arrow_upward
-              : Icons.arrow_downward),
+          icon: filterState.isAscending
+              ? Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationX(math.pi),
+                  child: Icon(Icons.sort),
+                )
+              : Icon(Icons.sort),
           onPressed: () {
             filterState.toggleSortOrder();
           },
@@ -215,7 +245,8 @@ class FilterToggleButtonGroup extends StatelessWidget {
                     child: Text(
                       value,
                       style: TextStyle(
-                          fontWeight: FontWeight.bold, color: textColor),
+                          // fontWeight: FontWeight.bold,
+                           color: textColor),
                     ),
                   ))
               .toList(),

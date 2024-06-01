@@ -9,13 +9,11 @@ class LevelIcons extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: Row(
+    return  Row(
         children: List.generate(8, (level) {
           return Expanded(child: LevelIcon(level: level));
         }),
-      ),
+      
     );
   }
 }

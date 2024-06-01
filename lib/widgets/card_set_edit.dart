@@ -18,31 +18,34 @@ class CardSetEdit extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     final cardSetManage = Provider.of<CardSetNo>(context);
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: CardSetNameEdit(),
-              ),
-              SizedBox(width: 5),
-              CardSetSaveButton(),
-              SizedBox(width: 5),
-              // SaveImageButton(cardSet: cardSetManage),機能しない
-              SelectCardSetButton2(),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Column(
+        children: [
+           Row(
+              children: [
+                SelectCardSetButton2(),
+                SizedBox(width: 5),
+                CardSetSaveButton(),
+                SizedBox(width: 5),
+                Expanded(
+                  child: CardSetNameEdit(),
+                ),
+                // SaveImageButton(cardSet: cardSetManage),機能しない
+              ],
+            
           ),
-        ),
-        CardSetOutline(
-          cardSetManage: cardSetManage,
-          widgetWidth: screenWidth / 2,
-        ),
-        SizedBox(height: 10),
-        LevelIcons(),
-        DeckEdit(deckNos: cardSetManage.deck),
-      ],
+          SizedBox(height:5),
+          CardSetOutline(
+            cardSetManage: cardSetManage,
+            widgetWidth: screenWidth / 2,
+          ),
+          SizedBox(height: 5),
+          LevelIcons(),
+          SizedBox(height:2),
+          DeckEdit(deckNos: cardSetManage.deck),
+        ],
+      ),
     );
   }
 }
@@ -55,21 +58,22 @@ class CardSetEdit2 extends StatelessWidget {
     final cardSetManage = Provider.of<CardSetNo>(context);
 
     return Container(
-      color: getRelativeColor(context, 0.05),
+      color: getRelativeColor(context, 0.15),
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(5.0),
             child: Row(
               children: [
+                SelectCardSetButton2(),
+                SizedBox(width: 5),
+                CardSetSaveButton(),
+                                SizedBox(width: 5),
+
                 Expanded(
                   child: CardSetNameEdit(),
                 ),
-                SizedBox(width: 5),
-                CardSetSaveButton(),
-                SizedBox(width: 5),
                 // SaveImageButton(cardSet: cardSetManage),機能しない
-                SelectCardSetButton2(),
               ],
             ),
           ),
@@ -77,8 +81,9 @@ class CardSetEdit2 extends StatelessWidget {
             cardSetManage: cardSetManage,
             widgetWidth: screenWidth,
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 5),
           LevelIcons(),
+          SizedBox(height: 2),
           DeckEdit3(deckNos: cardSetManage.deck,
           screenWidth: screenWidth,
           screenHeight: screenHeight,

@@ -71,9 +71,7 @@ class DeckEdit3 extends StatelessWidget {
     // GridView.countをExpandedでラップする必要がある
     return SizedBox(
       height: min((screenWidth - 20) / 8 * 1.4 * maxLength + 20, screenHeight / 2),
-      child: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: GridView.count(
+      child:  GridView.count(
           // shrinkWrap: true,// 要るのか分からない
           crossAxisCount: 8,
           childAspectRatio: 1 / 1.4, // 横1：縦1.4の比率を設定
@@ -105,7 +103,7 @@ class DeckEdit3 extends StatelessWidget {
               );
             }
           }),
-        ),
+        
       ),
     );
   }

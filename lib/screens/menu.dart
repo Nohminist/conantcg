@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/menu_provider.dart';
 import '../providers/theme_provider.dart';
 import '../utils/color.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MainTop extends StatelessWidget {
   @override
@@ -11,12 +12,11 @@ class MainTop extends StatelessWidget {
     var menuProvider = Provider.of<MenuProvider>(context);
 
     return Scaffold(
-      body: Column(
-        children: [
-          MenuBar(menuProvider: menuProvider),
-          Expanded(child: menuProvider.selectedItem.content),
-        ],
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40),
+        child: MenuBar(menuProvider: menuProvider),
       ),
+      body: menuProvider.selectedItem.content,
     );
   }
 }
@@ -31,35 +31,95 @@ class MenuBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 40,
-      color: getRelativeColor(context, 0.2),
-      child: Material(
-        color: Colors.transparent,
-        child: ListView(
-          scrollDirection: Axis.horizontal,
-          children: [
+    return AppBar(
+      title: Text('コナンTCGデッキ構築ツール',
+      style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        )),
+      backgroundColor: getRelativeColor(context, 0.2),
+      actions: [  // actionsプロパティを使用
+        PopupMenuButton<int>(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Text(menuProvider.selectedItem.title),
+          ),  // 選択されたアイテムのタイトルを表示
+          onSelected: (index) => menuProvider.selectItem(index),
+          itemBuilder: (context) => [
             for (var i = 0; i < menuProvider.items.length; i++)
-              Container(
-                width: 200,
-                child: InkWell(
-                  onTap: () => menuProvider.selectItem(i),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(menuProvider.items[i].title),
-                  ),
-                ),
+              PopupMenuItem(
+                value: i,
+                child: Text(menuProvider.items[i].title),
               ),
-            // ダークモードの切り替えスイッチ
-            // DarkModeSwitch(),
           ],
         ),
-      ),
+        SizedBox(width: 10),
+        ListMenuButton(),
+                SizedBox(width: 10),
+
+      ],
     );
   }
 }
 
+class ListMenuButton extends StatefulWidget {
+  const ListMenuButton({Key? key}) : super(key: key);
 
+  @override
+  _ListMenuButtonState createState() => _ListMenuButtonState();
+}
+
+class _ListMenuButtonState extends State<ListMenuButton> {
+  @override
+  Widget build(BuildContext context) {
+    var themeModeProvider = Provider.of<ThemeModeProvider>(context);
+    return PopupMenuButton<int>(
+      icon: Icon(Icons.list),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+        PopupMenuItem<int>(
+          value: 1,
+          child: ListTile(
+            leading: Icon(Icons.brightness_5),
+            title: Text('ライトモードにする'),
+            onTap: () {
+              if (themeModeProvider.isDarkMode) {
+                themeModeProvider.toggleMode();
+              }
+            },
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 2,
+          child: ListTile(
+            leading: Icon(Icons.brightness_2),
+            title: Text('ダークモードにする'),
+            onTap: () {
+              if (!themeModeProvider.isDarkMode) {
+                themeModeProvider.toggleMode();
+              }
+            },
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 3,
+          child: ListTile(
+            leading: Icon(Icons.privacy_tip), 
+            title: Text('プライバシーポリシー'),
+            onTap: () => launch('https://nohminist.github.io/privacy-policy/'),
+          ),
+        ),
+        PopupMenuItem<int>(
+          value: 4,
+          child: ListTile(
+            leading: Icon(Icons.contact_mail),
+            title: Text('お問い合わせ'),
+            onTap: () => launch('https://x.com/nohminism'),
+          ),
+        ),
+      ],
+    );
+  }
+}
 
 class DarkModeSwitch extends StatelessWidget {
   const DarkModeSwitch({Key? key}) : super(key: key);
@@ -84,3 +144,4 @@ class DarkModeSwitch extends StatelessWidget {
     );
   }
 }
+

@@ -99,8 +99,8 @@ class DeckAnalysis extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.blue[300],
                       borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(topHeight / 2),
-                        bottomLeft: Radius.circular(topHeight / 2),
+                        topLeft: Radius.circular(topHeight / 5),
+                        bottomLeft: Radius.circular(topHeight / 5),
                       ),
                     ),
                     child: Text(
@@ -121,8 +121,8 @@ class DeckAnalysis extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: Colors.red[300],
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(topHeight / 2),
-                        bottomRight: Radius.circular(topHeight / 2),
+                        topRight: Radius.circular(topHeight / 5),
+                        bottomRight: Radius.circular(topHeight / 5),
                       ),
                     ),
                     child: Text(
@@ -141,7 +141,10 @@ class DeckAnalysis extends StatelessWidget {
                     height: topHeight,
                       decoration: BoxDecoration(
                         color: getRelativeColor(context, 0.1), // 背景色を設定
-                        borderRadius: BorderRadius.circular(topHeight/4), // 角を丸くする
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(topHeight / 5),
+                        bottomLeft: Radius.circular(topHeight / 5),
+                      ),
                       ),
                     alignment: Alignment.center,
                     child: Row(
@@ -163,13 +166,15 @@ class DeckAnalysis extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: topHeight / 10),
                 Expanded(
                   child: Container(
                     height: topHeight,
                                           decoration: BoxDecoration(
                         color: getRelativeColor(context, 0.1), // 背景色を設定
-                        borderRadius: BorderRadius.circular(topHeight/4), // 角を丸くする
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(topHeight / 5),
+                        bottomRight: Radius.circular(topHeight / 5),
+                      ),
                       ),
 
                     alignment: Alignment.center,

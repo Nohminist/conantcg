@@ -19,19 +19,16 @@ class OperableCard extends StatefulWidget {
 }
 
 class _OperableCardState extends State<OperableCard> {
+  bool _isTapped = false; // タップ状態を追加
+
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
       onHover: (_) {
-        // var userAgent = html.window.navigator.userAgent;
-        // var isTouchDevice = userAgent.contains('Android') ||
-        //     userAgent.contains('iPhone') ||
-        //     userAgent.contains('iPad');
-
-        // if (isTouchDevice) {
-        //   // タッチデバイスではonHoverイベントを無視
-        //   return;
-        // }
+        if (_isTapped) {
+          // タップ状態のときはonHoverイベントを無視
+          return;
+        }
 
         var screenWidth = MediaQuery.of(context).size.width;
         var hoverPosition = _.position.dx;
@@ -43,13 +40,17 @@ class _OperableCardState extends State<OperableCard> {
         Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
       },
       child: GestureDetector(
-        onPanStart: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).startDragging();
+        onTapDown: (_) {
+          // タップ開始時にタップ状態を設定
+          setState(() {
+            _isTapped = true;
+          });
         },
-        onPanEnd: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).stopDragging();
-        },
-        onTap: () {
+        onTapUp: (_) {
+          // タップ終了時にタップ状態を解除
+          setState(() {
+            _isTapped = false;
+          });
           Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
           widget.onTap();
         },
@@ -61,6 +62,12 @@ class _OperableCardState extends State<OperableCard> {
                   cards: widget.cards, initialCardNo: widget.cardNo);
             },
           );
+        },
+        onPanStart: (_) {
+          Provider.of<HoverCardManage>(context, listen: false).startDragging();
+        },
+        onPanEnd: (_) {
+          Provider.of<HoverCardManage>(context, listen: false).stopDragging();
         },
         child: CardImage9(cardNo: widget.cardNo),
       ),
