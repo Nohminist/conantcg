@@ -23,54 +23,55 @@ class _OperableCardState extends State<OperableCard> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: (_) {
-        if (_isTapped) {
-          // タップ状態のときはonHoverイベントを無視
-          return;
-        }
-
-        var screenWidth = MediaQuery.of(context).size.width;
-        var hoverPosition = _.position.dx;
-        var isLeftSideSelected = hoverPosition < (screenWidth / 2);
-        Provider.of<HoverCardManage>(context, listen: false)
-            .selectCardNo(widget.cardNo, isLeftSideSelected);
+    return GestureDetector(
+      onTapDown: (_) {
+        // タップ開始時にタップ状態を設定
+        setState(() {
+          _isTapped = true;
+        });
       },
-      onExit: (_) {
+      onTapUp: (_) {
+        // タップ終了時にタップ状態を解除
+        setState(() {
+          _isTapped = false;
+        });
         Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
+        widget.onTap();
       },
-      child: GestureDetector(
-        onTapDown: (_) {
-          // タップ開始時にタップ状態を設定
-          setState(() {
-            _isTapped = true;
-          });
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CardDetailModal(
+                cards: widget.cards, initialCardNo: widget.cardNo);
+          },
+        );
+      },
+      onPanStart: (_) {
+        Provider.of<HoverCardManage>(context, listen: false).startDragging();
+      },
+      onPanEnd: (_) {
+        Provider.of<HoverCardManage>(context, listen: false).stopDragging();
+      },
+      child: MouseRegion(
+        onHover: (_) {
+          if (_isTapped) {
+            // タップ状態のときはonHoverイベントを無視
+            return;
+          }
+
+          var screenWidth = MediaQuery.of(context).size.width;
+          var hoverPosition = _.position.dx;
+          var isLeftSideSelected = hoverPosition < (screenWidth / 2);
+          Provider.of<HoverCardManage>(context, listen: false)
+              .selectCardNo(widget.cardNo, isLeftSideSelected);
         },
-        onTapUp: (_) {
-          // タップ終了時にタップ状態を解除
-          setState(() {
-            _isTapped = false;
-          });
+        onExit: (_) {
           Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
-          widget.onTap();
-        },
-        onLongPress: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CardDetailModal(
-                  cards: widget.cards, initialCardNo: widget.cardNo);
-            },
-          );
-        },
-        onPanStart: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).startDragging();
-        },
-        onPanEnd: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).stopDragging();
         },
         child: CardImage9(cardNo: widget.cardNo),
       ),
     );
   }
 }
+
