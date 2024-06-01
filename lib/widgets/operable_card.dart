@@ -19,8 +19,6 @@ class OperableCard extends StatefulWidget {
 }
 
 class _OperableCardState extends State<OperableCard> {
-  Offset _lastHoverPosition = Offset.zero;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -43,27 +41,25 @@ class _OperableCardState extends State<OperableCard> {
           },
         );
       },
-      child: MouseRegion(
-        onHover: (event) {
-          print("_lastHoverPosition: $_lastHoverPosition");
-          print("event.position: ${event.position}");
-
-          if (_lastHoverPosition == event.position) {
-            return;
-          }
-          _lastHoverPosition = event.position;
-
-          var screenWidth = MediaQuery.of(context).size.width;
-          var hoverPosition = event.position.dx;
-          var isLeftSideSelected = hoverPosition < (screenWidth / 2);
-          Provider.of<HoverCardManage>(context, listen: false)
-              .selectCardNo(widget.cardNo, isLeftSideSelected);
-        },
-        onExit: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
-        },
-        child: CardImage9(cardNo: widget.cardNo),
-      ),
+      child:  CardImage9(cardNo: widget.cardNo),
+      
     );
   }
 }
+
+
+
+      // child: MouseRegion(
+      //   onHover: (event) {
+      //     var screenWidth = MediaQuery.of(context).size.width;
+      //     var hoverPosition = event.position.dx;
+      //     var isLeftSideSelected = hoverPosition < (screenWidth / 2);
+      //     Provider.of<HoverCardManage>(context, listen: false)
+      //         .selectCardNo(widget.cardNo, isLeftSideSelected);
+      //   },
+      //   onExit: (_) {
+      //     Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
+      //   },
+      //   child: CardImage9(cardNo: widget.cardNo),
+      // ),
+

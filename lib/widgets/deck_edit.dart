@@ -20,11 +20,6 @@ class DeckEdit extends StatelessWidget {
     List<List<String>> levelSortedDeck = List.generate(8, (_) => []);
     List<Map<String, int>> levelCardCounts = List.generate(8, (_) => {});
 
-
-
-
-
-
     for (var cardNo in deckNos) {
       // 変更
       var cardData = cardNoMap.data[cardNo]; // 追加
@@ -68,44 +63,45 @@ class DeckEdit extends StatelessWidget {
 
     // GridView.countをExpandedでラップする必要がある
     return Expanded(
-      child:  GridView.count(
-          // shrinkWrap: true,// 要るのか分からない
-          crossAxisCount: 8,
-          childAspectRatio: 1 / 1.4, // 横1：縦1.4の比率を設定
-          children: List.generate(newArray.length, (index) {
-            if (newArray[index] == null) {
+      child: GridView.count(
+        // shrinkWrap: true,// 要るのか分からない
+        crossAxisCount: 8,
+        childAspectRatio: 1 / 1.4, // 横1：縦1.4の比率を設定
+        children: List.generate(newArray.length, (index) {
+          if (newArray[index] == null) {
+            return Container();
+          } else {
+            // print('newArray[$index]: ${newArray[index]!.keys.first}');
+            var cardNo = newArray[index]!.keys.first;
+            var count = newArray[index]!.values.first;
+            var cardData = cardNoMap.data[cardNo];
+
+            if (cardData == null || cardData['type'] == null) {
               return Container();
-            } else {
-              // print('newArray[$index]: ${newArray[index]!.keys.first}');
-              var cardNo = newArray[index]!.keys.first;
-              var count = newArray[index]!.values.first;
-              var cardData = cardNoMap.data[cardNo];
-        
-              if (cardData == null || cardData['type'] == null) {
-                return Container();
-              }
-
-
-
-
-        
-              return Stack(
-                children: [
-                  OperableCard(
-                    cardNo: cardNo,
-                    cards:uniqueDeckNos,
-                    onTap: () {
-                      Provider.of<CardSetNo>(context, listen: false)
-                          .removeCardNoFromDeck(cardNo);
-                    },
-                  ),
-                  QuantityBadge(count: count, type: cardData['type']),
-                ],
-              );
             }
-          }),
-        ),
-      
+
+            return Stack(
+              children: [
+                OperableCard(
+                  cardNo: cardNo,
+                  cards: uniqueDeckNos,
+                  onTap: () {
+                    Provider.of<CardSetNo>(context, listen: false)
+                        .removeCardFromDeck(cardNo);
+                  },
+                ),
+                Positioned(
+                    top: 0,
+                    right: 0,
+                    child: QuantityBadge(
+                      count: count,
+                      type: cardData['type'],
+                    )),
+              ],
+            );
+          }
+        }),
+      ),
     );
   }
 }

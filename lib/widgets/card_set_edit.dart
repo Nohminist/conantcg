@@ -2,7 +2,6 @@
 import 'package:conantcg/utils/color.dart';
 import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';
-import 'package:conantcg/widgets/deck_edit2.dart';
 import 'package:conantcg/widgets/deck_edit3.dart';
 import 'package:conantcg/widgets/level_icons.dart';
 import '../widgets/cardset_outline.dart';

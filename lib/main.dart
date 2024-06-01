@@ -27,12 +27,14 @@ void main() async {
 
   // ローカルストレージからデータを読み込む
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  List<String> cardSetsData = prefs.getStringList(getStorageKey('cardSets')) ?? [];
+  // List<String> cardSetsData = prefs.getStringList(getStorageKey('cardSets')) ?? [];
+  List<String> cardSetsData = prefs.getStringList('conantcg-cardSets') ?? [];
   List<CardSetNo> cardSets = cardSetsData.isNotEmpty
       ? cardSetsData
           .map((data) => CardSetNo.fromJson(jsonDecode(data)))
           .toList()
       : [CardSetNo()];
+
 
   // EditingCardSetKeyの初期値を設定
   String editingDateStr = prefs.getString(getStorageKey('editingDateOfCardSet')) ?? '';

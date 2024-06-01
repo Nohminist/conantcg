@@ -95,10 +95,16 @@ class DeckEdit3 extends StatelessWidget {
                     cards: uniqueDeckNos,
                     onTap: () {
                       Provider.of<CardSetNo>(context, listen: false)
-                          .removeCardNoFromDeck(cardNo);
+                          .removeCardFromDeck(cardNo);
                     },
                   ),
-                  QuantityBadge(count: count, type: cardData['type']),
+                                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: QuantityBadge(
+                      count: count,
+                      type: cardData['type'],
+                    )),
                 ],
               );
             }

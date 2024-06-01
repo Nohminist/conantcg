@@ -7,6 +7,7 @@ import '../providers/card_provider.dart';
 import '../widgets/quantity_badge.dart';
 import '../utils/csv_data.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../utils/handle_card.dart';
 
 class CardGrid extends StatelessWidget {
   final double topExtraScroll;
@@ -36,80 +37,69 @@ class CardGrid extends StatelessWidget {
           var filteredCardNos =
               getFilteredAndSortedData(cardNos, filterState, cardNoMap);
 
-          return  GridView.builder(
-              controller: scrollController,
-              addAutomaticKeepAlives: false,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: 1 / 1.4,
-              ),
-              itemCount: filteredCardNos.length,
-              itemBuilder: (BuildContext context, int index) {
-                var cardNo = filteredCardNos[index];
-                var cardData = cardNoMap.data[cardNo];
+          return GridView.builder(
+            controller: scrollController,
+            addAutomaticKeepAlives: false,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              childAspectRatio: 1 / 1.4,
+            ),
+            itemCount: filteredCardNos.length,
+            itemBuilder: (BuildContext context, int index) {
+              var cardNo = filteredCardNos[index];
+              var cardData = cardNoMap.data[cardNo];
 
-                if (cardData == null) {
-                  return Container();
-                }
+              if (cardData == null) {
+                return Container();
+              }
 
-                int count = 0;
-                if (cardData['type'] == 'パートナー' &&
-                    cardSet.partner == cardNo) {
-                  count = 1;
-                } else if (cardData['type'] == '事件' &&
-                    cardSet.caseCard == cardNo) {
-                  count = 1;
-                } else {
-                  count = cardSet.deck.where((no) => no == cardNo).length;
-                }
-                String type = cardData['type'];
+              int count = 0;
+              String type = cardData['type'];
+              if (type == 'パートナー' && cardSet.partner == cardNo) {
+                count = 1;
+              } else if (type == '事件' &&
+                  cardSet.caseCard == cardNo) {
+                count = 1;
+              } else {
+                count = cardSet.deck.where((no) => no == cardNo).length;
+              }
 
-                return Stack(
-                  children: [
-                    OperableCard(
-                      cardNo: cardNo,
-                      cards: filteredCardNos,
-                      onTap: () {
-                        String? errorMessage;
-                        switch (cardData['type']) {
-                          case 'パートナー':
-                            cardSet.setPartner(cardNo);
-                            break;
-                          case '事件':
-                            cardSet.setCase(cardNo);
-                            break;
-                          default:
-                            errorMessage = cardSet.addCardNoToDeck(
-                                cardNo, cardNoMap.data);
-                            break;
-                        }
-                        if (errorMessage != null) {
-                          ScaffoldMessenger.of(context)
-                              .hideCurrentSnackBar();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(errorMessage),
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    QuantityBadge(
-                      count: count,
-                      type: type,
-                    ),
-                  ],
-                );
-              },
-            
+              return Stack(
+                children: [
+                  OperableCard(
+                    cardNo: cardNo,
+                    cards: filteredCardNos,
+                    onTap: () {
+                      String? errorMessage = handleCardAdd(
+                          context, cardSet, cardNo, cardNoMap.data);
+                      if (errorMessage != null) {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(errorMessage),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  Positioned(
+                    top:0,
+                    right:0,
+                    child: QuantityBadge(
+                    count: count,
+                    type: type,
+                  )),
+                  
+                ],
+              );
+            },
           );
         },
       ),
     );
   }
 }
-
 
 class MyWidget extends StatefulWidget {
   @override

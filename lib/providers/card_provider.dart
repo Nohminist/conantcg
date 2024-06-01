@@ -111,7 +111,7 @@ List<String> get deck => _deck;
         if (sameIdDifferentNumbers.isEmpty) {
           return '同じカードは3枚まで'; // 同じIDの同じNo.のカードがすでに3枚ある場合
         } else {
-          removeCardNoFromDeck(sameIdDifferentNumbers[0]); // 最初の異なるNo.のカードを削除
+          removeCardFromDeck(sameIdDifferentNumbers[0]); // 最初の異なるNo.のカードを削除
           _deck.add(cardNo); // 新しいカードを追加
           return '異なるNo.のカードと入れ替え'; // 異なるNo.のカードと入れ替えた場合
         }
@@ -137,7 +137,7 @@ List<String> get deck => _deck;
     notifyListeners();
   }
 
-  void removeCardNoFromDeck(String cardNo) {
+  void removeCardFromDeck(String cardNo) {
     // 変更
     _deck.remove(cardNo); // 変更
     notifyListeners();
