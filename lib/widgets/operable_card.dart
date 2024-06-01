@@ -19,7 +19,7 @@ class OperableCard extends StatefulWidget {
 }
 
 class _OperableCardState extends State<OperableCard> {
-  late Offset _lastHoverPosition;
+  Offset _lastHoverPosition = Offset.zero;
 
   @override
   Widget build(BuildContext context) {
