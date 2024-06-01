@@ -23,41 +23,44 @@ class _OperableCardState extends State<OperableCard> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onHover: (event) {
-        if (_lastHoverPosition == event.position) {
-          return;
-        }
-        _lastHoverPosition = event.position;
-
-        var screenWidth = MediaQuery.of(context).size.width;
-        var hoverPosition = event.position.dx;
-        var isLeftSideSelected = hoverPosition < (screenWidth / 2);
-        Provider.of<HoverCardManage>(context, listen: false)
-            .selectCardNo(widget.cardNo, isLeftSideSelected);
+    return GestureDetector(
+      onPanStart: (_) {
+        Provider.of<HoverCardManage>(context, listen: false).startDragging();
       },
-      onExit: (_) {
+      onPanEnd: (_) {
+        Provider.of<HoverCardManage>(context, listen: false).stopDragging();
+      },
+      onTap: () {
         Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
+        widget.onTap();
       },
-      child: GestureDetector(
-        onPanStart: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).startDragging();
+      onLongPress: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return CardDetailModal(
+                cards: widget.cards, initialCardNo: widget.cardNo);
+          },
+        );
+      },
+      child: MouseRegion(
+        onHover: (event) {
+          print("_lastHoverPosition: $_lastHoverPosition");
+          print("event.position: ${event.position}");
+
+          if (_lastHoverPosition == event.position) {
+            return;
+          }
+          _lastHoverPosition = event.position;
+
+          var screenWidth = MediaQuery.of(context).size.width;
+          var hoverPosition = event.position.dx;
+          var isLeftSideSelected = hoverPosition < (screenWidth / 2);
+          Provider.of<HoverCardManage>(context, listen: false)
+              .selectCardNo(widget.cardNo, isLeftSideSelected);
         },
-        onPanEnd: (_) {
-          Provider.of<HoverCardManage>(context, listen: false).stopDragging();
-        },
-        onTap: () {
+        onExit: (_) {
           Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
-          widget.onTap();
-        },
-        onLongPress: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return CardDetailModal(
-                  cards: widget.cards, initialCardNo: widget.cardNo);
-            },
-          );
         },
         child: CardImage9(cardNo: widget.cardNo),
       ),
