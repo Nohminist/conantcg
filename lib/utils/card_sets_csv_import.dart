@@ -75,37 +75,8 @@ void selectFiles(BuildContext context) {
         }
       });
 
-      reader.onLoadEnd.listen((e) {
-        if (reader.result != null && reader.result is String) {
-          completer.complete(reader.result as String);
-        } else {
-          print('Unexpected result: ${reader.result}');
-        }
-      });
 
-      reader.onLoadStart.listen((e) {
-        print('Load start');
-      });
 
-      reader.onProgress.listen((e) {
-        print('Progress: ${e.loaded} bytes loaded');
-      });
-
-      reader.onAbort.listen((e) {
-        print('Aborted');
-      });
-
-      reader.onError.listen((e) {
-        print('Error occurred: ${reader.error!.message}');
-      });
-
-      reader.onLoadEnd.listen((e) {
-        if (reader.result != null && reader.result is String) {
-          completer.complete(reader.result as String);
-        } else {
-          print('Unexpected result: ${reader.result}');
-        }
-      });
 
       reader.readAsText(file);
 
