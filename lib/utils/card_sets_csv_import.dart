@@ -66,6 +66,15 @@ void selectFiles(BuildContext context) {
       reader.onError.listen((e) {
         print('Error occurred: ${reader.error!.message}');
       });
+
+      reader.onLoadEnd.listen((e) {
+        if (reader.result != null && reader.result is String) {
+          completer.complete(reader.result as String);
+        } else {
+          print('Unexpected result: ${reader.result}');
+        }
+      });
+
       reader.onLoadEnd.listen((e) {
         completer.complete(reader.result as String);
       });
@@ -84,6 +93,14 @@ void selectFiles(BuildContext context) {
 
       reader.onError.listen((e) {
         print('Error occurred: ${reader.error!.message}');
+      });
+
+      reader.onLoadEnd.listen((e) {
+        if (reader.result != null && reader.result is String) {
+          completer.complete(reader.result as String);
+        } else {
+          print('Unexpected result: ${reader.result}');
+        }
       });
 
       reader.readAsText(file);
