@@ -77,45 +77,27 @@ class CardDisplaySettingOptions extends StatelessWidget {
               SizedBox(width: 5),
             ],
           ),
-FilterTextField(filterState: filterState),
+          FilterTextField(filterState: filterState),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Text('色：'),
-              FilterToggleButtonGroup(
-                values: filterState.colorValues,
-                toggleFunction: filterState.toggleColor,
-                isSelected: filterState.isSelectedColor,
-              ),
-            ],
-          ), // グループ名を追加
+          Text('色：'),
+          FilterToggleButtonGroup(
+            values: filterState.colorValues,
+            toggleFunction: filterState.toggleColor,
+            isSelected: filterState.isSelectedColor,
+          ),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Text('種類：'),
-              FilterToggleButtonGroup(
-                values: filterState.typeValues,
-                toggleFunction: filterState.toggleType,
-                isSelected: filterState.isSelectedType,
-              ),
-            ],
-          ), // グループ名を追加
+          Text('種類：'),
+          FilterToggleButtonGroup(
+            values: filterState.typeValues,
+            toggleFunction: filterState.toggleType,
+            isSelected: filterState.isSelectedType,
+          ),
           SizedBox(height: 5),
-          Row(
-            children: [
-              Text('レア：'),
-              FilterToggleButtonGroup(
-                values: filterState.rarityValues,
-                toggleFunction: filterState.toggleRarity,
-                isSelected: filterState.isSelectedRarity,
-              ),
-              SizedBox(width:5),
-              FilterToggleButtonGroup(
-                values: filterState.parallelValues,
-                toggleFunction: filterState.toggleParallel,
-                isSelected: filterState.isSelectedParallel,
-              ),
-            ],
+          Text('レア：'),
+          FilterToggleButtonGroup(
+            values: filterState.rarityValues,
+            toggleFunction: filterState.toggleRarity,
+            isSelected: filterState.isSelectedRarity,
           ),
         ],
       ),
@@ -227,37 +209,79 @@ class FilterToggleButtonGroup extends StatelessWidget {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     Color textColor = isDarkMode ? Colors.white : Colors.black;
     Color borderColor = isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
-    Color fillColor = getRelativeColor(context, 0.3);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        border: Border.all(
-          color: borderColor,
-          width: 1,
-        ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(7),
-        child: ToggleButtons(
-          children: values
-              .map((value) => Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      value,
-                      style: TextStyle(
-                          // fontWeight: FontWeight.bold,
-                           color: textColor),
-                    ),
-                  ))
-              .toList(),
-          onPressed: toggleFunction,
-          isSelected: isSelected,
-          borderColor: borderColor,
-          selectedBorderColor: borderColor,
-          color: textColor,
-          fillColor: fillColor,
-        ),
-      ),
+    Color fillColor = getRelativeColor(context, 0.1);
+
+    return Wrap(
+      children: List.generate(values.length, (index) {
+        return Padding(
+          padding: EdgeInsets.all(2),
+          child: OutlinedButton(
+            onPressed: () => toggleFunction(index),
+            style: OutlinedButton.styleFrom(
+              side: BorderSide(color: borderColor, width: 1),
+              backgroundColor: isSelected[index] ? textColor : fillColor,
+              foregroundColor: isSelected[index] ? fillColor : textColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4), // 角丸の半径を調整します
+              ),
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+            ),
+            child: Text(values[index]),
+          ),
+        );
+      }),
     );
   }
 }
+
+
+// class FilterToggleButtonGroup extends StatelessWidget {
+//   final List<String> values;
+//   final Function(int) toggleFunction;
+//   final List<bool> isSelected;
+
+//   FilterToggleButtonGroup({
+//     required this.values,
+//     required this.toggleFunction,
+//     required this.isSelected,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+//     Color textColor = isDarkMode ? Colors.white : Colors.black;
+//     Color borderColor = isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
+//     Color fillColor = getRelativeColor(context, 0.3);
+//     return DecoratedBox(
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(5),
+//         border: Border.all(
+//           color: borderColor,
+//           width: 1,
+//         ),
+//       ),
+//       child: ClipRRect(
+//         borderRadius: BorderRadius.circular(7),
+//         child: ToggleButtons(
+//           children: values
+//               .map((value) => Padding(
+//                     padding: EdgeInsets.all(8.0),
+//                     child: Text(
+//                       value,
+//                       style: TextStyle(
+//                           // fontWeight: FontWeight.bold,
+//                           color: textColor),
+//                     ),
+//                   ))
+//               .toList(),
+//           onPressed: toggleFunction,
+//           isSelected: isSelected,
+//           borderColor: borderColor,
+//           selectedBorderColor: borderColor,
+//           color: textColor,
+//           fillColor: fillColor,
+//         ),
+//       ),
+//     );
+//   }
+// }

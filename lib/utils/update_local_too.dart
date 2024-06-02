@@ -15,5 +15,5 @@ Future<void> updateEditingKeyAndStorage(DateTime date, BuildContext context) asy
 
   // ローカルストレージの更新
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString(getStorageKey('editingDateOfCardSet'), date.toIso8601String());
+  await prefs.setString(getStorageKey('cardSetDate'), date.toIso8601String());
 }

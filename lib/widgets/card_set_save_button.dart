@@ -15,20 +15,33 @@ class CardSetSaveButton extends StatelessWidget {
     final cardSets = Provider.of<CardSets>(context);
     final current = Provider.of<CardSetNo>(context);
 
-    return IconButton(
-      onPressed: () async {
-        //先に編集中のindexを取得する
-        int editingIndex = cardSets.getEditingIndex(context);
+    return Stack(
+      alignment: Alignment.center,
+      children: <Widget>[
+        IconButton(
+          onPressed: () async {
+            //先に編集中のindexを取得する
+            int editingIndex = cardSets.getEditingIndex(context);
 
-        DateTime now = DateTime.now();
-        current.date = now;
+            DateTime now = DateTime.now();
+            current.date = now;
 
-        await updateEditingKeyAndStorage(now, context);
+            await updateEditingKeyAndStorage(now, context);
 
-        cardSets.saveCurrentCardSet(editingIndex, current);
-      },
-      icon: Icon(Icons.save),
-      tooltip: '保存',
+            cardSets.saveCurrentCardSet(editingIndex, current);
+          },
+          icon: Icon(Icons.save),
+        ),
+        Positioned(
+      bottom: 0,
+      child: Text(
+        '保存',
+        style: TextStyle(fontSize: 8.0), // フォントサイズを小さく設定
+      ),
+    ),
+      ],
     );
+
+    ;
   }
 }

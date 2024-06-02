@@ -27,8 +27,8 @@ void main() async {
 
   // ローカルストレージからデータを読み込む
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // List<String> cardSetsData = prefs.getStringList(getStorageKey('cardSets')) ?? [];
-  List<String> cardSetsData = prefs.getStringList('conantcg-cardSets') ?? [];
+  List<String> cardSetsData = prefs.getStringList(getStorageKey('cardSets')) ?? [];
+  // List<String> cardSetsData = prefs.getStringList('conantcg-cardSets') ?? [];
   List<CardSetNo> cardSets = cardSetsData.isNotEmpty
       ? cardSetsData
           .map((data) => CardSetNo.fromJson(jsonDecode(data)))
@@ -37,7 +37,7 @@ void main() async {
 
 
   // EditingCardSetKeyの初期値を設定
-  String editingDateStr = prefs.getString(getStorageKey('editingDateOfCardSet')) ?? '';
+  String editingDateStr = prefs.getString(getStorageKey('cardSetDate')) ?? '';
   DateTime editingDate = editingDateStr.isNotEmpty
       ? DateTime.parse(editingDateStr)
       : cardSets[0].date; // cardSets[0].dateを使用
@@ -100,7 +100,7 @@ class MyApp extends StatelessWidget {
         Provider.of<HoverCardManage>(context, listen: false).deselectCardNo();
       },
       child: MaterialApp(
-        title: 'コナンTCGデッキ構築ツール(仮)',
+        title: 'コナンTCGツール',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,

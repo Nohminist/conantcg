@@ -5,6 +5,7 @@ import '../providers/menu_provider.dart';
 import '../providers/theme_provider.dart';
 import '../utils/color.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../utils/card_sets_csv_import.dart';
 
 class MainTop extends StatelessWidget {
   @override
@@ -32,18 +33,19 @@ class MenuBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: Text('コナンTCGデッキ構築ツール',
-      style: TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.bold,
-        )),
+      title: Text('コナンTCGツール',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+          )),
       backgroundColor: getRelativeColor(context, 0.2),
-      actions: [  // actionsプロパティを使用
+      actions: [
+        // actionsプロパティを使用
         PopupMenuButton<int>(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Text(menuProvider.selectedItem.title),
-          ),  // 選択されたアイテムのタイトルを表示
+          ), // 選択されたアイテムのタイトルを表示
           onSelected: (index) => menuProvider.selectItem(index),
           itemBuilder: (context) => [
             for (var i = 0; i < menuProvider.items.length; i++)
@@ -53,10 +55,16 @@ class MenuBar extends StatelessWidget {
               ),
           ],
         ),
+ElevatedButton(
+  onPressed: () {
+    selectFiles(context);
+  },
+  child: Text('Load CSV Data'),
+),
+
         SizedBox(width: 10),
         ListMenuButton(),
-                SizedBox(width: 10),
-
+        SizedBox(width: 10),
       ],
     );
   }
@@ -103,7 +111,7 @@ class _ListMenuButtonState extends State<ListMenuButton> {
         PopupMenuItem<int>(
           value: 3,
           child: ListTile(
-            leading: Icon(Icons.privacy_tip), 
+            leading: Icon(Icons.privacy_tip),
             title: Text('プライバシーポリシー'),
             onTap: () => launch('https://nohminist.github.io/privacy-policy/'),
           ),
@@ -144,4 +152,3 @@ class DarkModeSwitch extends StatelessWidget {
     );
   }
 }
-
