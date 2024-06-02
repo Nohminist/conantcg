@@ -76,7 +76,11 @@ void selectFiles(BuildContext context) {
       });
 
       reader.onLoadEnd.listen((e) {
-        completer.complete(reader.result as String);
+        if (reader.result != null && reader.result is String) {
+          completer.complete(reader.result as String);
+        } else {
+          print('Unexpected result: ${reader.result}');
+        }
       });
 
       reader.onLoadStart.listen((e) {
