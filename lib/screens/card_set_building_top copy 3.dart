@@ -5,7 +5,6 @@ import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';
 import 'package:conantcg/widgets/cardset_operations2.dart';
 import 'package:conantcg/widgets/cardset_outline.dart';
-import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:conantcg/widgets/deck_edit3.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/level_icons.dart';
@@ -101,142 +100,35 @@ class HorizontalLayout extends StatelessWidget {
   }
 }
 
+
+
+
+
+
+
+
 class VerticalLayout extends StatefulWidget {
   @override
   _VerticalLayoutState createState() => _VerticalLayoutState();
 }
 
 class _VerticalLayoutState extends State<VerticalLayout> {
-  bool _isExpanded = true;
-  bool _isThirdChild = false;
-
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    final cardSetManage = Provider.of<CardSetNo>(context);
-
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                Column(
-                  children: [
-                    _isThirdChild
-                        ? Container()
-                        : AnimatedCrossFade(
-                            duration: Duration(milliseconds: 200),
-                            firstChild: CardSetOutline(
-                              cardSetManage: cardSetManage,
-                              widgetWidth: screenWidth,
-                            ),
-                            secondChild: Column(
-                              children: [
-                                LevelIcons(),
-                                SizedBox(height: 2),
-                                DeckEdit3(
-                                  deckNos: cardSetManage.deck,
-                                  screenWidth: screenWidth,
-                                  screenHeight: screenHeight,
-                                ),
-                              ],
-                            ),
-                            crossFadeState: _isExpanded
-                                ? CrossFadeState.showSecond
-                                : CrossFadeState.showFirst,
-                          ),
-                    SizedBox(height: 5),
-                    Expanded(child: CardGrid(extraScroll: 80)),
-                  ],
-                ),
-                Positioned(
-                  bottom: 16.0,
-                  right: 16.0,
-                  child: CardsDisplaySettingOpenButton(),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 5),
-          Row(
-            children: [
-              SelectCardSetButton2(),
-              CardSetSaveButton(),
-              FullViewButton(),
-              CommonIconButton(
-                icon: Icon(Icons.add_box),
-                text: 'デッキ外',
-                onPressed: () {
-                  setState(() {
-                    _isExpanded = false;
-                    _isThirdChild = false;
-                  });
-                },
-              ),
-              CommonIconButton(
-                icon: Icon(Icons.add_to_photos),
-                text: 'デッキ内',
-                onPressed: () {
-                  setState(() {
-                    _isExpanded = true;
-                    _isThirdChild = false;
-                  });
-                },
-              ),
-              CommonIconButton(
-                icon: Icon(Icons.hide_source),
-                text: '非表示',
-                onPressed: () {
-                  setState(() {
-                    _isThirdChild = true;
-                  });
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: 5),
-        ],
-      ),
+    return Stack(
+      children: [
+        VerticalScreen(),
+        Positioned(
+          bottom: 16.0,
+          right: 16.0,
+          child: CardsDisplaySettingOpenButton(),
+        ),
+      ],
     );
   }
 }
 
-class FullViewButton extends StatelessWidget {
-  const FullViewButton({
-    super.key,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return CommonIconButton(
-      icon: const Icon(Icons.fullscreen),
-      text: '全容',
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => FractionallySizedBox(
-            heightFactor: 0.9,
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  child: CardSetEdit2(),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('閉じる'),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
 
 class CardsDisplaySettingOpenButton extends StatelessWidget {
   const CardsDisplaySettingOpenButton({
@@ -286,6 +178,125 @@ class CardsDisplaySettingOpenButton extends StatelessWidget {
         );
       },
       child: Icon(Icons.filter_list),
+    );
+  }
+}
+
+class VerticalScreen extends StatelessWidget {
+  const VerticalScreen({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        VerticalEditingCardSet(),
+        SizedBox(height: 5),
+        Expanded(
+          child: CardGrid(extraScroll: 80),
+        ),
+      ],
+    );
+  }
+}
+
+class VerticalEditingCardSet extends StatefulWidget {
+  @override
+  _VerticalEditingCardSetState createState() => _VerticalEditingCardSetState();
+}
+
+class _VerticalEditingCardSetState extends State<VerticalEditingCardSet> {
+  bool _isExpanded = true;
+  bool _isThirdChild = false;
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    final cardSetManage = Provider.of<CardSetNo>(context);
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            SelectCardSetButton2(),
+            CardSetSaveButton(),
+            IconButton(
+              icon: Icon(Icons.expand_more),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => FractionallySizedBox(
+                    heightFactor: 0.9,
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          child: CardSetEdit2(),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: Text('閉じる'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add_box),
+              onPressed: () {
+                setState(() {
+                  _isExpanded = false;
+                  _isThirdChild = false;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.add_to_photos),
+              onPressed: () {
+                setState(() {
+                  _isExpanded = true;
+                  _isThirdChild = false;
+                });
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.hide_source),
+              onPressed: () {
+                setState(() {
+                  _isThirdChild = true;
+                });
+              },
+            ),
+          ],
+        ),
+        _isThirdChild
+            ? Container() // ここにthirdChildの内容を追加してください
+            : AnimatedCrossFade(
+                duration: Duration(milliseconds: 200),
+                firstChild: CardSetOutline(
+                  cardSetManage: cardSetManage,
+                  widgetWidth: screenWidth,
+                ),
+                secondChild: Column(
+                  children: [
+                    LevelIcons(),
+                    SizedBox(height: 2),
+                    DeckEdit3(
+                      deckNos: cardSetManage.deck,
+                      screenWidth: screenWidth,
+                      screenHeight: screenHeight,
+                    ),
+                  ],
+                ),
+                crossFadeState: _isExpanded
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+              ),
+      ],
     );
   }
 }

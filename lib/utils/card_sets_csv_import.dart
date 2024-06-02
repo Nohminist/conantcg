@@ -43,8 +43,6 @@ Future<List<CardSetNo>> parseCardSetsCsv(String csvData) async {
 void selectFiles(BuildContext context) {
   final input = html.FileUploadInputElement()..accept = 'text/csv';
 
-  print('input:$input');
-
   input.onChange.listen((e) async {
     if (input.files!.isNotEmpty) {
       final file = input.files!.first;
@@ -55,7 +53,7 @@ void selectFiles(BuildContext context) {
 
       reader.onLoadEnd.listen((e) {
         if (reader.result != null && reader.result is String) {
-          print('reader.result:${reader.result}');
+          // print('reader.result:${reader.result}');
 
           completer.complete(reader.result as String);
         } else {

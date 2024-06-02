@@ -1,4 +1,5 @@
 // screens/menu.dart
+import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/menu_provider.dart';
@@ -55,23 +56,12 @@ class MenuBar extends StatelessWidget {
               ),
           ],
         ),
-        Stack(
-          alignment: Alignment.center,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.upload),
-              onPressed: () {
-                selectFiles(context);
-              },
-            ),
-            Positioned(
-              bottom: 0,
-              child: Text(
-                'CSV',
-                style: TextStyle(fontSize: 8),
-              ),
-            ),
-          ],
+        CommonIconButton(
+          icon: Icon(Icons.upload),
+          text: 'CSV',
+          onPressed: () {
+            selectFiles(context);
+          },
         ),
         ListMenuButton(),
         SizedBox(width: 5),

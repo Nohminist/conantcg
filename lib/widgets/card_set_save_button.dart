@@ -2,46 +2,34 @@
 
 import 'package:conantcg/providers/card_provider.dart';
 import 'package:conantcg/utils/update_local_too.dart';
+import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CardSetSaveButton extends StatelessWidget {
   const CardSetSaveButton({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final cardSets = Provider.of<CardSets>(context);
     final current = Provider.of<CardSetNo>(context);
 
-    return Stack(
-      alignment: Alignment.center,
-      children: <Widget>[
-        IconButton(
-          onPressed: () async {
-            //先に編集中のindexを取得する
-            int editingIndex = cardSets.getEditingIndex(context);
+    return CommonIconButton(
+      onPressed: () async {
+        //先に編集中のindexを取得する
+        int editingIndex = cardSets.getEditingIndex(context);
 
-            DateTime now = DateTime.now();
-            current.date = now;
+        DateTime now = DateTime.now();
+        current.date = now;
 
-            await updateEditingKeyAndStorage(now, context);
+        await updateEditingKeyAndStorage(now, context);
 
-            cardSets.saveCurrentCardSet(editingIndex, current);
-          },
-          icon: Icon(Icons.save),
-        ),
-        Positioned(
-      bottom: 0,
-      child: Text(
-        '保存',
-        style: TextStyle(fontSize: 8.0), // フォントサイズを小さく設定
-      ),
-    ),
-      ],
+        cardSets.saveCurrentCardSet(editingIndex, current);
+      },
+      icon: Icon(Icons.save),
+      text: '保存',
     );
-
-    ;
   }
 }
