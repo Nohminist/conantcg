@@ -55,16 +55,26 @@ class MenuBar extends StatelessWidget {
               ),
           ],
         ),
-ElevatedButton(
-  onPressed: () {
-    selectFiles(context);
-  },
-  child: Text('Load CSV Data'),
-),
-
-        SizedBox(width: 10),
+        Stack(
+          alignment: Alignment.center,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.upload),
+              onPressed: () {
+                selectFiles(context);
+              },
+            ),
+            Positioned(
+              bottom: 0,
+              child: Text(
+                'CSV',
+                style: TextStyle(fontSize: 8),
+              ),
+            ),
+          ],
+        ),
         ListMenuButton(),
-        SizedBox(width: 10),
+        SizedBox(width: 5),
       ],
     );
   }

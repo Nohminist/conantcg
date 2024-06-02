@@ -70,7 +70,7 @@ class DeckEdit3 extends StatelessWidget {
 
     // GridView.countをExpandedでラップする必要がある
     return SizedBox(
-      height: min((screenWidth - 20) / 8 * 1.4 * maxLength + 20, screenHeight / 2),
+      height: min((screenWidth - 20) / 8 * 1.4 * maxLength + 10, screenHeight / 2.5),
       child:  GridView.count(
           // shrinkWrap: true,// 要るのか分からない
           crossAxisCount: 8,

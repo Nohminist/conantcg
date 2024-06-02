@@ -29,7 +29,7 @@ Future<List<CardSetNo>> parseCardSetsCsv(String csvData) async {
     }
 
     return CardSetNo(
-      date: DateTime.parse(row[0]),
+      date: DateTime.fromMillisecondsSinceEpoch(int.parse(row[0])),
       name: row[1],
       partner: row[2],
       caseCard: row[3],
@@ -43,6 +43,8 @@ Future<List<CardSetNo>> parseCardSetsCsv(String csvData) async {
 void selectFiles(BuildContext context) {
   final input = html.FileUploadInputElement()..accept = 'text/csv';
 
+  print('input:$input');
+
   input.onChange.listen((e) async {
     if (input.files!.isNotEmpty) {
       final file = input.files!.first;
@@ -51,32 +53,15 @@ void selectFiles(BuildContext context) {
       // Completerを作成
       final completer = Completer<String>();
 
-      reader.onLoadStart.listen((e) {
-        print('Load start');
-      });
-
-      reader.onProgress.listen((e) {
-        print('Progress: ${e.loaded} bytes loaded');
-      });
-
-      reader.onAbort.listen((e) {
-        print('Aborted');
-      });
-
-      reader.onError.listen((e) {
-        print('Error occurred: ${reader.error!.message}');
-      });
-
       reader.onLoadEnd.listen((e) {
         if (reader.result != null && reader.result is String) {
+          print('reader.result:${reader.result}');
+
           completer.complete(reader.result as String);
         } else {
           print('Unexpected result: ${reader.result}');
         }
       });
-
-
-
 
       reader.readAsText(file);
 

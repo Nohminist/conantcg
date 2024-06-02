@@ -1,4 +1,6 @@
 // screens/card_set_building_top.dart
+import 'dart:math';
+
 import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
@@ -29,11 +31,10 @@ class CardSetBuildingTop extends StatelessWidget {
   }
 }
 
-
 class HorizontalLayout extends StatelessWidget {
   const HorizontalLayout({
-    super.key,
-  });
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +50,37 @@ class HorizontalLayout extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: Column(
               children: [
-                HorizontalCardDisplaySetting(),
-                SizedBox(height:5),
+                ElevatedButton(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Dialog(
+                          backgroundColor:
+                              Theme.of(context).canvasColor.withOpacity(0.8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Container(
+                            width: max(
+                                MediaQuery.of(context).size.width * 0.5, 600),
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            child: CardDisplaySettingOptions(),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.filter_list),
+                      SizedBox(width: 5),
+                      Text('カードリスト絞込み'),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
                 Expanded(
                   child: CardGrid(),
                 ),
@@ -81,12 +111,43 @@ class _VerticalLayoutState extends State<VerticalLayout> {
             onPressed: () {
               showModalBottomSheet(
                 context: context,
+                isScrollControlled: true,
+                backgroundColor: Theme.of(context).canvasColor.withOpacity(0.8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(0),
+                    topRight: Radius.circular(0),
+                  ),
+                ),
                 builder: (context) {
-                  return CardDisplaySettingOptions();
+                  return FractionallySizedBox(
+                    heightFactor: 0.9,
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: CardDisplaySettingOptions(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              left: 10.0, right: 10.0, bottom: 10.0, top: 0),
+                          child: ElevatedButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.close),
+                                Text('閉じる'),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  );
                 },
               );
             },
-            child: Icon(Icons.search),
+            child: Icon(Icons.filter_list),
           ),
         ),
       ],
@@ -104,7 +165,7 @@ class VerticalScreen extends StatelessWidget {
     return Column(
       children: [
         ExpandableEditingCardSet(),
-                SizedBox(height:5),
+        SizedBox(height: 5),
         Expanded(
           child: CardGrid(extraScroll: 80),
         ),

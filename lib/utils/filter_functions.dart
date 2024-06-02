@@ -6,39 +6,56 @@ List<String> getFilteredAndSortedData(
     List<String> cardNos, FilterState filterState, CardNoMap cardNoMap) {
   var filteredCardNos = cardNos.where((cardNo) {
     var cardData = cardNoMap.data[cardNo];
+
     if (cardData == null) {
       return false; // カードのデータが存在しない場合、フィルタリングの結果から除外します
     }
 
-    var rarity = cardData['rarity'];
     var type = cardData['type'];
+
+    // if (filterState.sortKey == 'Lv.') {
+    //   if (type == '事件') return false;
+    // }
+    // if (filterState.sortKey == 'AP') {
+    //   if (type != 'キャラ') return false;
+    // }
+    // if (filterState.sortKey == 'LP') {
+    //   if (type == 'イベント' || type == '事件') return false;
+    // }
+
+    var rarity = cardData['rarity'];
     var colors = cardData['colors'];
+    var labels = cardData['labels'];
 
     // print(rarity);
 
-    bool rarityMatches = false;
-    if (rarity.endsWith('P')) {
-      if (!filterState.isSelectedParallel.any((element) => element) ||
-          filterState.isSelectedParallel[1]) {
-        if (!filterState.isSelectedRarity.any((element) => element) ||
-            filterState.isSelectedRarity[filterState.rarityValues
-                .indexOf(rarity.substring(0, rarity.length - 1))]) {
-          rarityMatches = true;
-        }
-      }
-    } else {
-      if (!filterState.isSelectedParallel.any((element) => element) ||
-          filterState.isSelectedParallel[0]) {
-        if (!filterState.isSelectedRarity.any((element) => element) ||
-            filterState
-                .isSelectedRarity[filterState.rarityValues.indexOf(rarity)]) {
-          rarityMatches = true;
-        }
-      }
-    }
+    // bool rarityMatches = false;
+    // if (rarity.endsWith('P')) {
+    //   if (!filterState.isSelectedParallel.any((element) => element) ||
+    //       filterState.isSelectedParallel[1]) {
+    //     if (!filterState.isSelectedRarity.any((element) => element) ||
+    //         filterState.isSelectedRarity[filterState.rarityValues
+    //             .indexOf(rarity.substring(0, rarity.length - 1))]) {
+    //       rarityMatches = true;
+    //     }
+    //   }
+    // } else {
+    //   if (!filterState.isSelectedParallel.any((element) => element) ||
+    //       filterState.isSelectedParallel[0]) {
+    //     if (!filterState.isSelectedRarity.any((element) => element) ||
+    //         filterState
+    //             .isSelectedRarity[filterState.rarityValues.indexOf(rarity)]) {
+    //       rarityMatches = true;
+    //     }
+    //   }
+    // }
+    bool rarityMatches = !filterState.isSelectedRarity
+            .any((element) => element) ||
+        filterState.isSelectedRarity[filterState.rarityValues.indexOf(rarity)];
 
     bool typeMatches = !filterState.isSelectedType.any((element) => element) ||
         filterState.isSelectedType[filterState.typeValues.indexOf(type)];
+
     bool colorMatches = !filterState.isSelectedColor
             .any((element) => element) ||
         (colors != null &&
@@ -46,6 +63,31 @@ List<String> getFilteredAndSortedData(
                 filterState.colorValues.contains(color) &&
                 filterState
                     .isSelectedColor[filterState.colorValues.indexOf(color)]));
+
+    bool levelMatches =
+        !filterState.isSelectedLevel.any((element) => element) ||
+            (cardData['Lv.'] != null &&
+                filterState.isSelectedLevel[
+                    filterState.levelValues.indexOf(cardData['Lv.'])]);
+
+    bool apMatches = !filterState.isSelectedAp.any((element) => element) ||
+        (cardData['AP'] != null &&
+            filterState
+                .isSelectedAp[filterState.apValues.indexOf(cardData['AP'])]);
+
+    bool lpMatches = !filterState.isSelectedLp.any((element) => element) ||
+        (cardData['LP'] != null &&
+            filterState
+                .isSelectedLp[filterState.lpValues.indexOf(cardData['LP'])]);
+
+    bool labelMatches = !filterState.isSelectedLabel
+            .any((element) => element) ||
+        (labels != null &&
+            labels.any((label) =>
+                filterState.labelValues.contains(label) &&
+                filterState
+                    .isSelectedLabel[filterState.labelValues.indexOf(label)]));
+
     bool textMatches = filterState.inputText.isEmpty ||
         cardData['No.'] == filterState.inputText ||
         cardData['ID'] == filterState.inputText ||
@@ -68,7 +110,14 @@ List<String> getFilteredAndSortedData(
         (cardData['LP'] is num &&
             cardData['LP'].toString() == filterState.inputText);
 
-    return rarityMatches && typeMatches && colorMatches && textMatches;
+    return rarityMatches &&
+        typeMatches &&
+        colorMatches &&
+        labelMatches &&
+        textMatches &&
+        levelMatches &&
+        apMatches &&
+        lpMatches;
   }).toList();
 
   // ソートの状態を反映

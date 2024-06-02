@@ -43,7 +43,7 @@ class _CardDetailModalState extends State<CardDetailModal> {
 
     double displayableWidth = screenWidth;
     double displayableHeight = screenHeight * 0.8 + 50;
-    if (displayableWidth * 1.4 > (displayableHeight -50 )) {
+    if (displayableWidth * 1.4 > (displayableHeight - 50)) {
       displayableWidth = (displayableHeight - 50) / 1.4;
     } else {
       displayableHeight = displayableWidth * 1.4 + 50;
@@ -106,7 +106,10 @@ class _CardDetailModalState extends State<CardDetailModal> {
                               // color: Colors.blue,
                               width: cardWidth,
                               height: cardHeight,
-                              child: Image.asset('assets/images/${cardNo}.jpg'),
+                              child: Image.asset(
+                                'assets/images/${cardNo}.jpg',
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

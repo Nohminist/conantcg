@@ -24,7 +24,7 @@ class _HorizontalCardDisplaySettingState
     return Container(
       decoration: BoxDecoration(
         color: getRelativeColor(context, 0.1),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
         children: [
@@ -68,38 +68,88 @@ class CardDisplaySettingOptions extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text('並べ替え：'),
-              SortButtons(filterState: filterState),
-              SizedBox(width: 5),
-            ],
-          ),
-          FilterTextField(filterState: filterState),
-          SizedBox(height: 5),
-          Text('色：'),
-          FilterToggleButtonGroup(
-            values: filterState.colorValues,
-            toggleFunction: filterState.toggleColor,
-            isSelected: filterState.isSelectedColor,
-          ),
-          SizedBox(height: 5),
-          Text('種類：'),
-          FilterToggleButtonGroup(
-            values: filterState.typeValues,
-            toggleFunction: filterState.toggleType,
-            isSelected: filterState.isSelectedType,
-          ),
-          SizedBox(height: 5),
-          Text('レア：'),
-          FilterToggleButtonGroup(
-            values: filterState.rarityValues,
-            toggleFunction: filterState.toggleRarity,
-            isSelected: filterState.isSelectedRarity,
-          ),
-        ],
+      child: SingleChildScrollView(
+        // この行を追加
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SortButtons(filterState: filterState),
+            FilterTextField(filterState: filterState),
+            const SizedBox(height: 5),
+            const Text('色'),
+            FilterToggleButtonGroup(
+              values: filterState.colorValues,
+              toggleFunction: filterState.toggleColor,
+              isSelected: filterState.isSelectedColor,
+            ),
+            const SizedBox(height: 5),
+            const Text('種類'),
+            FilterToggleButtonGroup(
+              values: filterState.typeValues,
+              toggleFunction: filterState.toggleType,
+              isSelected: filterState.isSelectedType,
+            ),
+            const SizedBox(height: 5),
+            const Text('レアリティ'),
+            FilterToggleButtonGroup(
+              values: filterState.rarityValues,
+              toggleFunction: filterState.toggleRarity,
+              isSelected: filterState.isSelectedRarity,
+            ),
+            const SizedBox(height: 5),
+            const Text('レベル'), // 追加
+            FilterToggleButtonGroup(
+              values: filterState.levelValues
+                  .map((e) => e.toString())
+                  .toList(), // intをStringに変換
+              toggleFunction: filterState.toggleLevel,
+              isSelected: filterState.isSelectedLevel,
+            ),
+            const SizedBox(height: 5),
+            const Text('AP'), // 追加
+            FilterToggleButtonGroup(
+              values: filterState.apValues
+                  .map((e) => e.toString())
+                  .toList(), // intをStringに変換
+              toggleFunction: filterState.toggleAp,
+              isSelected: filterState.isSelectedAp,
+            ),
+            const SizedBox(height: 5),
+            const Text('LP'), // 追加
+            FilterToggleButtonGroup(
+              values: filterState.lpValues
+                  .map((e) => e.toString())
+                  .toList(), // intをStringに変換
+              toggleFunction: filterState.toggleLp,
+              isSelected: filterState.isSelectedLp,
+            ),
+                        const SizedBox(height: 5),
+            const Text('カテゴリ（特徴）'),
+            FilterToggleButtonGroup(
+              values: filterState.labelValues,
+              toggleFunction: filterState.toggleLabel,
+              isSelected: filterState.isSelectedLabel,
+            ),
+            Row(
+              children: [
+                const Spacer(), // この行を追加
+                ElevatedButton(
+                  onPressed: () {
+                    filterState.initializeFilters();
+                  },
+                  child: const Text('初期化'),
+                ),
+                const SizedBox(width: 5),
+                ElevatedButton(
+                  onPressed: () {
+                    filterState.clearFilters();
+                  },
+                  child: const Text('クリア'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,12 +212,51 @@ class SortButtons extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        SizedBox(
+          height: 34.0,
+          child: ToggleButtons(
+            onPressed: (int index) {
+              if ((index == 0 && filterState.isAscending) ||
+                  (index == 1 && !filterState.isAscending)) {
+                return;
+              }
+              filterState.toggleSortOrder();
+            },
+            isSelected: [filterState.isAscending, !filterState.isAscending],
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Row(
+                  children: [
+                    Transform(
+                      alignment: Alignment.center,
+                      transform: Matrix4.rotationX(math.pi),
+                      child: const Icon(Icons.sort),
+                    ),
+                    const Text('昇順'),
+                  ],
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.sort),
+                    Text('降順'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(width: 5),
         DropdownButton<String>(
           value: filterState.sortKey,
           items: filterState.sortKeys.map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(value),
+              child: Text(value == 'Lv.' ? 'レベル' : value),
             );
           }).toList(),
           onChanged: (String? newValue) {
@@ -176,18 +265,19 @@ class SortButtons extends StatelessWidget {
             }
           },
         ),
-        IconButton(
-          icon: filterState.isAscending
-              ? Transform(
-                  alignment: Alignment.center,
-                  transform: Matrix4.rotationX(math.pi),
-                  child: Icon(Icons.sort),
-                )
-              : Icon(Icons.sort),
-          onPressed: () {
-            filterState.toggleSortOrder();
-          },
-        ),
+
+        // IconButton(
+        //   icon: filterState.isAscending
+        //       ? Transform(
+        //           alignment: Alignment.center,
+        //           transform: Matrix4.rotationX(math.pi),
+        //           child: Icon(Icons.sort),
+        //         )
+        //       : Icon(Icons.sort),
+        //   onPressed: () {
+        //     filterState.toggleSortOrder();
+        //   },
+        // ),
       ],
     );
   }
@@ -207,7 +297,7 @@ class FilterToggleButtonGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    Color textColor = isDarkMode ? Colors.white : Colors.black;
+    Color textColor = isDarkMode ? Colors.grey[200]! : Colors.grey[800]!;
     Color borderColor = isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
     Color fillColor = getRelativeColor(context, 0.1);
 
@@ -233,7 +323,6 @@ class FilterToggleButtonGroup extends StatelessWidget {
     );
   }
 }
-
 
 // class FilterToggleButtonGroup extends StatelessWidget {
 //   final List<String> values;

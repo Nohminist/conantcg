@@ -21,27 +21,26 @@ class CardSetEdit extends StatelessWidget {
       padding: const EdgeInsets.all(5.0),
       child: Column(
         children: [
-           Row(
-              children: [
-                SelectCardSetButton2(),
-                SizedBox(width: 5),
-                CardSetSaveButton(),
-                SizedBox(width: 5),
-                Expanded(
-                  child: CardSetNameEdit(),
-                ),
-                // SaveImageButton(cardSet: cardSetManage),機能しない
-              ],
-            
+          Row(
+            children: [
+              SelectCardSetButton2(),
+              SizedBox(width: 5),
+              CardSetSaveButton(),
+              SizedBox(width: 5),
+              Expanded(
+                child: CardSetNameEdit(),
+              ),
+              // SaveImageButton(cardSet: cardSetManage),機能しない
+            ],
           ),
-          SizedBox(height:5),
+          SizedBox(height: 5),
           CardSetOutline(
             cardSetManage: cardSetManage,
             widgetWidth: screenWidth / 2,
           ),
           SizedBox(height: 5),
           LevelIcons(),
-          SizedBox(height:2),
+          SizedBox(height: 2),
           DeckEdit(deckNos: cardSetManage.deck),
         ],
       ),
@@ -67,7 +66,7 @@ class CardSetEdit2 extends StatelessWidget {
                 SelectCardSetButton2(),
                 SizedBox(width: 5),
                 CardSetSaveButton(),
-                                SizedBox(width: 5),
+                SizedBox(width: 5),
 
                 Expanded(
                   child: CardSetNameEdit(),
@@ -83,9 +82,10 @@ class CardSetEdit2 extends StatelessWidget {
           SizedBox(height: 5),
           LevelIcons(),
           SizedBox(height: 2),
-          DeckEdit3(deckNos: cardSetManage.deck,
-          screenWidth: screenWidth,
-          screenHeight: screenHeight,
+          DeckEdit3(
+            deckNos: cardSetManage.deck,
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
           )
         ],
       ),

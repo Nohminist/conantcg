@@ -10,7 +10,7 @@ class CardNoMap with ChangeNotifier {
 
   Future<void> load() async {
     final csvData = await rootBundle
-        .loadString('assets/csv/conan-cardgame - cardsByNumber2.csv');
+        .loadString('assets/csv/conan-cardgame - cardsByNumber.csv');
     final lines = csvData.split('\n');
 
     if (lines.length > 1) {
@@ -23,6 +23,9 @@ class CardNoMap with ChangeNotifier {
         // 'colors'と'abilities'の値を配列に変換
         if (map.containsKey('colors')) {
           map['colors'] = map['colors'].split('|');
+        }
+        if (map.containsKey('labels')) {
+          map['labels'] = map['labels'].split('|');
         }
         if (map.containsKey('abilities')) {
           map['abilities'] = map['abilities'].split('|');
@@ -64,7 +67,7 @@ class CsvData with ChangeNotifier {
 
   Future<void> load() async {
     final csvData = await rootBundle
-        .loadString('assets/csv/conan-cardgame - cardsByNumber2.csv');
+        .loadString('assets/csv/conan-cardgame - cardsByNumber.csv');
     final lines = csvData.split('\n');
 
     if (lines.length > 1) {
@@ -77,6 +80,9 @@ class CsvData with ChangeNotifier {
         // 'colors'と'abilities'の値を配列に変換
         if (map.containsKey('colors')) {
           map['colors'] = map['colors'].split('|');
+        }
+        if (map.containsKey('labels')) {
+          map['labels'] = map['labels'].split('|');
         }
         if (map.containsKey('abilities')) {
           map['abilities'] = map['abilities'].split('|');

@@ -105,7 +105,7 @@ class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
       Positioned(
         bottom: 0,
         child: Text(
-          '切替',
+          '選択',
           style: TextStyle(fontSize: 8.0), // フォントサイズを小さく設定
         ),
       ),
