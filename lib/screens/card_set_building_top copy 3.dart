@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';
-import 'package:conantcg/widgets/cardset_operations2.dart';
+import 'package:conantcg/widgets/card_set_select_open_button.dart';
 import 'package:conantcg/widgets/cardset_outline.dart';
 import 'package:conantcg/widgets/deck_edit3.dart';
 import 'package:conantcg/widgets/hover_card.dart';
@@ -220,7 +220,7 @@ class _VerticalEditingCardSetState extends State<VerticalEditingCardSet> {
       children: [
         Row(
           children: [
-            SelectCardSetButton2(),
+            CardSetSelectOpenButton(),
             CardSetSaveButton(),
             IconButton(
               icon: Icon(Icons.expand_more),

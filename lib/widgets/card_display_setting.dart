@@ -66,90 +66,88 @@ class CardDisplaySettingOptions extends StatelessWidget {
   Widget build(BuildContext context) {
     var filterState = Provider.of<FilterState>(context);
 
-    return Container(
-      padding: EdgeInsets.all(10),
-      child: SingleChildScrollView(
-        // この行を追加
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SortButtons(filterState: filterState),
-            FilterTextField(filterState: filterState),
-            const SizedBox(height: 5),
-            const Text('色'),
-            FilterToggleButtonGroup(
-              values: filterState.colorValues,
-              toggleFunction: filterState.toggleColor,
-              isSelected: filterState.isSelectedColor,
-            ),
-            const SizedBox(height: 5),
-            const Text('種類'),
-            FilterToggleButtonGroup(
-              values: filterState.typeValues,
-              toggleFunction: filterState.toggleType,
-              isSelected: filterState.isSelectedType,
-            ),
-            const SizedBox(height: 5),
-            const Text('レアリティ'),
-            FilterToggleButtonGroup(
-              values: filterState.rarityValues,
-              toggleFunction: filterState.toggleRarity,
-              isSelected: filterState.isSelectedRarity,
-            ),
-            const SizedBox(height: 5),
-            const Text('レベル'), // 追加
-            FilterToggleButtonGroup(
-              values: filterState.levelValues
-                  .map((e) => e.toString())
-                  .toList(), // intをStringに変換
-              toggleFunction: filterState.toggleLevel,
-              isSelected: filterState.isSelectedLevel,
-            ),
-            const SizedBox(height: 5),
-            const Text('AP'), // 追加
-            FilterToggleButtonGroup(
-              values: filterState.apValues
-                  .map((e) => e.toString())
-                  .toList(), // intをStringに変換
-              toggleFunction: filterState.toggleAp,
-              isSelected: filterState.isSelectedAp,
-            ),
-            const SizedBox(height: 5),
-            const Text('LP'), // 追加
-            FilterToggleButtonGroup(
-              values: filterState.lpValues
-                  .map((e) => e.toString())
-                  .toList(), // intをStringに変換
-              toggleFunction: filterState.toggleLp,
-              isSelected: filterState.isSelectedLp,
-            ),
-                        const SizedBox(height: 5),
-            const Text('カテゴリ（特徴）'),
-            FilterToggleButtonGroup(
-              values: filterState.labelValues,
-              toggleFunction: filterState.toggleLabel,
-              isSelected: filterState.isSelectedLabel,
-            ),
-            Row(
-              children: [
-                const Spacer(), // この行を追加
-                ElevatedButton(
-                  onPressed: () {
-                    filterState.initializeFilters();
-                  },
-                  child: const Text('初期化'),
-                ),
-                const SizedBox(width: 5),
-                ElevatedButton(
-                  onPressed: () {
-                    filterState.clearFilters();
-                  },
-                  child: const Text('クリア'),
-                ),
-              ],
-            ),
-          ],
-        ),
+    return SingleChildScrollView(
+      // この行を追加
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Spacer(), // この行を追加
+              ElevatedButton(
+                onPressed: () {
+                  filterState.initializeFilters();
+                },
+                child: const Text('初期化'),
+              ),
+              const SizedBox(width: 5),
+              ElevatedButton(
+                onPressed: () {
+                  filterState.clearFilters();
+                },
+                child: const Text('クリア'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 5),
+          SortButtons(filterState: filterState),
+          FilterTextField(filterState: filterState),
+          const SizedBox(height: 5),
+          const Text('色'),
+          FilterToggleButtonGroup(
+            values: filterState.colorValues,
+            toggleFunction: filterState.toggleColor,
+            isSelected: filterState.isSelectedColor,
+          ),
+          const SizedBox(height: 5),
+          const Text('種類'),
+          FilterToggleButtonGroup(
+            values: filterState.typeValues,
+            toggleFunction: filterState.toggleType,
+            isSelected: filterState.isSelectedType,
+          ),
+          const SizedBox(height: 5),
+          const Text('レアリティ'),
+          FilterToggleButtonGroup(
+            values: filterState.rarityValues,
+            toggleFunction: filterState.toggleRarity,
+            isSelected: filterState.isSelectedRarity,
+          ),
+          const SizedBox(height: 5),
+          const Text('レベル'), // 追加
+          FilterToggleButtonGroup(
+            values: filterState.levelValues
+                .map((e) => e.toString())
+                .toList(), // intをStringに変換
+            toggleFunction: filterState.toggleLevel,
+            isSelected: filterState.isSelectedLevel,
+          ),
+          const SizedBox(height: 5),
+          const Text('AP'), // 追加
+          FilterToggleButtonGroup(
+            values: filterState.apValues
+                .map((e) => e.toString())
+                .toList(), // intをStringに変換
+            toggleFunction: filterState.toggleAp,
+            isSelected: filterState.isSelectedAp,
+          ),
+          const SizedBox(height: 5),
+          const Text('LP'), // 追加
+          FilterToggleButtonGroup(
+            values: filterState.lpValues
+                .map((e) => e.toString())
+                .toList(), // intをStringに変換
+            toggleFunction: filterState.toggleLp,
+            isSelected: filterState.isSelectedLp,
+          ),
+          const SizedBox(height: 5),
+          const Text('カテゴリ（特徴）'),
+          FilterToggleButtonGroup(
+            values: filterState.labelValues,
+            toggleFunction: filterState.toggleLabel,
+            isSelected: filterState.isSelectedLabel,
+          ),
+        ],
       ),
     );
   }

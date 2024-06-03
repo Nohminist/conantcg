@@ -8,7 +8,7 @@ import '../widgets/cardset_outline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
-import '../widgets/cardset_operations2.dart';
+import 'card_set_select_open_button.dart';
 import 'deck_edit.dart';
 
 class CardSetEdit extends StatelessWidget {
@@ -23,7 +23,7 @@ class CardSetEdit extends StatelessWidget {
         children: [
           Row(
             children: [
-              SelectCardSetButton2(),
+              CardSetSelectOpenButton(),
               SizedBox(width: 5),
               CardSetSaveButton(),
               SizedBox(width: 5),
@@ -63,7 +63,7 @@ class CardSetEdit2 extends StatelessWidget {
             padding: const EdgeInsets.all(5.0),
             child: Row(
               children: [
-                SelectCardSetButton2(),
+                CardSetSelectOpenButton(),
                 SizedBox(width: 5),
                 CardSetSaveButton(),
                 SizedBox(width: 5),

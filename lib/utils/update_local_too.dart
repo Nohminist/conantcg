@@ -17,3 +17,4 @@ Future<void> updateEditingKeyAndStorage(DateTime date, BuildContext context) asy
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setString(getStorageKey('cardSetDate'), date.toIso8601String());
 }
+

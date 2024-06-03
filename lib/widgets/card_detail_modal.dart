@@ -49,15 +49,6 @@ class _CardDetailModalState extends State<CardDetailModal> {
       displayableHeight = displayableWidth * 1.4 + 50;
     }
 
-    // double widgetWidth = screenWidth;
-    // double widgetHeight = screenHeight * 0.8 + 50;
-
-    // if (widgetWidth * 1.4 > widgetHeight) {
-    //   widgetWidth = widgetHeight / 1.4;
-    // } else {
-    //   widgetHeight = widgetWidth * 1.4 +50;
-    // }
-
     return Stack(
       children: [
         GestureDetector(
@@ -107,7 +98,7 @@ class _CardDetailModalState extends State<CardDetailModal> {
                               width: cardWidth,
                               height: cardHeight,
                               child: Image.asset(
-                                'assets/images/${cardNo}.jpg',
+                                'assets/images/$cardNo.jpg',
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -121,12 +112,17 @@ class _CardDetailModalState extends State<CardDetailModal> {
                           child: Padding(
                             padding: const EdgeInsets.all(5.0),
                             child: Container(
-                              color: Colors.black.withOpacity(0.5),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                                borderRadius:
+                                    BorderRadius.circular(5), // ここで角を丸くします
+                              ),
                               child: Row(
                                 children: [
                                   Expanded(
                                       child: IconButton(
-                                    icon: Icon(Icons.remove),
+                                    icon: const Icon(Icons.remove,
+                                        color: Colors.white),
                                     onPressed: () {
                                       card = cardNoMap.data[cardNo];
                                       if (card?['type'] == 'パートナー') {
@@ -144,17 +140,18 @@ class _CardDetailModalState extends State<CardDetailModal> {
                                       }
                                     },
                                   )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   SizedBox(
                                     width: 40,
                                     height: 40,
                                     child:
                                         QuantityBadge(count: count, type: type),
                                   ),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Expanded(
                                       child: IconButton(
-                                    icon: Icon(Icons.add),
+                                    icon: const Icon(Icons.add,
+                                        color: Colors.white),
                                     onPressed: () {
                                       String? errorMessage = handleCardAdd(
                                           context,

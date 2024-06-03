@@ -3,13 +3,14 @@ import 'dart:math';
 
 import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';
-import 'package:conantcg/widgets/cardset_operations2.dart';
+import 'package:conantcg/widgets/card_set_select_open_button.dart';
 import 'package:conantcg/widgets/cardset_outline.dart';
 import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:conantcg/widgets/deck_edit3.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/level_icons.dart';
 import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
+import 'package:conantcg/widgets/common_show_modal_bottom_sheet.dart';
 import 'package:conantcg/widgets/transparent_button.dart';
 import 'package:flutter/material.dart';
 import '../widgets/card_display_setting.dart';
@@ -60,24 +61,15 @@ class HorizontalLayout extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          backgroundColor:
-                              Theme.of(context).canvasColor.withOpacity(0.8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Container(
-                            width: max(
-                                MediaQuery.of(context).size.width * 0.5, 600),
-                            height: MediaQuery.of(context).size.height * 0.8,
-                            child: CardDisplaySettingOptions(),
-                          ),
-                        );
-                      },
-                    );
+                    commonShowModalBottomSheet(context, Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: SizedBox(
+                              width: max(
+                                  MediaQuery.of(context).size.width * 0.5, 600),
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: CardDisplaySettingOptions(),
+                            ),
+                          ));
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -152,7 +144,7 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                     Expanded(child: CardGrid(extraScroll: 80)),
                   ],
                 ),
-                Positioned(
+                const Positioned(
                   bottom: 16.0,
                   right: 16.0,
                   child: CardsDisplaySettingOpenButton(),
@@ -160,14 +152,15 @@ class _VerticalLayoutState extends State<VerticalLayout> {
               ],
             ),
           ),
-          const SizedBox(height: 5),
+          // const SizedBox(height: 5),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              SelectCardSetButton2(),
+              CardSetSelectOpenButton(),
               CardSetSaveButton(),
               FullViewButton(),
               CommonIconButton(
-                icon: Icon(Icons.add_box),
+                icon: const Icon(Icons.add_box),
                 text: 'デッキ外',
                 onPressed: () {
                   setState(() {
@@ -177,7 +170,7 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                 },
               ),
               CommonIconButton(
-                icon: Icon(Icons.add_to_photos),
+                icon: const Icon(Icons.add_to_photos),
                 text: 'デッキ内',
                 onPressed: () {
                   setState(() {
@@ -187,7 +180,7 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                 },
               ),
               CommonIconButton(
-                icon: Icon(Icons.hide_source),
+                icon: const Icon(Icons.hide_source),
                 text: '非表示',
                 onPressed: () {
                   setState(() {
@@ -195,9 +188,9 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                   });
                 },
               ),
+              CardSetNameEditButton(),
             ],
           ),
-          const SizedBox(height: 5),
         ],
       ),
     );
@@ -215,24 +208,7 @@ class FullViewButton extends StatelessWidget {
       icon: const Icon(Icons.fullscreen),
       text: '全容',
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => FractionallySizedBox(
-            heightFactor: 0.9,
-            child: Column(
-              children: [
-                SingleChildScrollView(
-                  child: CardSetEdit2(),
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: const Text('閉じる'),
-                ),
-              ],
-            ),
-          ),
-        );
+        commonShowModalBottomSheet(context, CardSetEdit2());
       },
     );
   }
@@ -247,45 +223,9 @@ class CardsDisplaySettingOpenButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true,
-          backgroundColor: Theme.of(context).canvasColor.withOpacity(0.8),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(0),
-              topRight: Radius.circular(0),
-            ),
-          ),
-          builder: (context) {
-            return FractionallySizedBox(
-              heightFactor: 0.9,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CardDisplaySettingOptions(),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 10.0, right: 10.0, bottom: 10.0, top: 0),
-                    child: ElevatedButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.close),
-                          Text('閉じる'),
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            );
-          },
-        );
+        commonShowModalBottomSheet(context, CardDisplaySettingOptions());
       },
-      child: Icon(Icons.filter_list),
+      child: const Icon(Icons.filter_list),
     );
   }
 }

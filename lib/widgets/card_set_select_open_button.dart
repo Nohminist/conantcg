@@ -1,5 +1,6 @@
-// widget/cardset_operations2.dart
+// widget/card_set_select_open_button.dart
 import 'package:conantcg/widgets/common_icon_button.dart';
+import 'package:conantcg/widgets/common_show_modal_bottom_sheet.dart';
 import 'package:conantcg/widgets/updated_date.dart';
 import '../widgets/cardset_outline.dart';
 import 'package:flutter/material.dart';
@@ -9,74 +10,64 @@ import '../utils/csv_data.dart'; // PreCardSetをインポート
 import '../utils/update_local_too.dart';
 import 'package:intl/intl.dart'; // DateFormatをインポート
 
-class SelectCardSetButton2 extends StatefulWidget {
+class CardSetSelectOpenButton extends StatefulWidget {
   @override
-  _SelectCardSetButton2State createState() => _SelectCardSetButton2State();
+  _CardSetSelectOpenButtonState createState() => _CardSetSelectOpenButtonState();
 }
 
-class _SelectCardSetButton2State extends State<SelectCardSetButton2> {
+class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
   @override
   Widget build(BuildContext context) {
     final cardSetsManager = Provider.of<CardSets>(context);
     final editingKey = Provider.of<EditingCardSetKey>(context);
 
-    double screenWidth = MediaQuery.of(context).size.width; // 画面の幅を取得
+    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return CommonIconButton(
-      icon: Icon(Icons.menu),
+      icon: const Icon(Icons.menu),
       text: '選択',
       onPressed: () {
         List<CardSetNo> tempCardSets =
             List.from(cardSetsManager.cardSets); // 一時的なリストを作成
 
-        showModalBottomSheet(
-          context: context,
-          isScrollControlled: true, // 追加
-          builder: (context) {
-            return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return FractionallySizedBox(
-                  heightFactor: 0.9, // 画面の高さの90%を覆う
-                  child: Container(
-                    width: screenWidth > screenHeight
-                        ? screenWidth / 2
-                        : screenWidth, // 幅を画面幅の半分に設定
-                    child: ListView.builder(
-                      itemCount: tempCardSets.length + 1, // 選択肢の数を追加
-                      itemBuilder: (context, index) {
-                        if (index < tempCardSets.length) {
-                          var cardSet = tempCardSets[index];
-                          return Dismissible(
-                            key: Key(cardSet.date.toString()),
-                            onDismissed: (direction) {
-                              setState(() {
-                                tempCardSets.removeAt(index); // 一時的なリストから削除
-                              });
-                            },
-                            child: CardSetOption(
-                                cardSet: cardSet,
-                                screenWidth: screenWidth,
-                                screenHeight: screenHeight,
-                                cardSetsManager: cardSetsManager),
-                          );
-                        } else {
-                          return addedableCardSetOptions(
-                            // addedableCardSetOptionsを追加
-                            cardSetsManager: cardSetsManager,
-                            editingKey: editingKey,
-                            tempCardSets: tempCardSets,
-                            screenWidth: screenWidth,
-                            screenHeight: screenHeight,
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                );
+        commonShowModalBottomSheet(
+          context,
+          SizedBox(
+            width: screenWidth > screenHeight
+                ? screenWidth / 2
+                : screenWidth,
+            child: ListView.builder(
+              itemCount: tempCardSets.length + 1, // 選択肢の数を追加
+              itemBuilder: (context, index) {
+                if (index < tempCardSets.length) {
+                  var cardSet = tempCardSets[index];
+                  return Dismissible(
+                    key: Key(cardSet.date.toString()),
+                    onDismissed: (direction) {
+                      setState(() {
+                        tempCardSets.removeAt(index); // 一時的なリストから削除
+                      });
+                    },
+                    child: CardSetOption(
+                        cardSet: cardSet,
+                        screenWidth: screenWidth,
+                        screenHeight: screenHeight,
+                        cardSetsManager: cardSetsManager),
+                  );
+                } else {
+                  return addedableCardSetOptions(
+                    // addedableCardSetOptionsを追加
+                    cardSetsManager: cardSetsManager,
+                    editingKey: editingKey,
+                    tempCardSets: tempCardSets,
+                    screenWidth: screenWidth,
+                    screenHeight: screenHeight,
+                  );
+                }
               },
-            );
-          },
+            ),
+          ),
         ).then((_) {
           // モーダルが閉じるときに状態を更新(削除したり追加したのをここで反映させる)
           cardSetsManager.cardSets = tempCardSets;
