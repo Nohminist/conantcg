@@ -1,53 +1,8 @@
-// providers/card_provider.dart
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../utils/common_utils.dart';
-
-
-
-
-// HoverCardManageクラス：選択されたカードとドラッグ状態を管理します。
-// _selectedCard：選択されたカード(詳細が表示されているカード)を保持します。
-// _isDragging：カードがドラッグ中かどうかを示します。
-// class HoverCardManage with ChangeNotifier {
-//   String? _selectedCardNo;
-//   bool _isDragging = false;
-//   bool _isLeftSideSelected = true; // 新しい状態を追加
-
-
-//   String? get selectedCardNo => _selectedCardNo;
-//   bool get isDragging => _isDragging;
-//   bool get isLeftSideSelected => _isLeftSideSelected; // 新しいゲッターを追加
-
-
-//   void selectCardNo(String cardNo, bool isLeftSideSelected) { // メソッドのシグネチャを更新
-
-//     if (!_isDragging) {
-//                 // print(cardNo);
-//                 // print(isLeftSideSelected);
-
-//       _selectedCardNo = cardNo;
-//       _isLeftSideSelected = isLeftSideSelected; // 状態を更新
-//       notifyListeners();
-//     }
-//   }
-
-//   void startDragging() {
-//     _isDragging = true;
-//   }
-
-//   void stopDragging() {
-//     _isDragging = false;
-//   }
-
-//   void deselectCardNo() {
-//     _selectedCardNo = null;
-//     notifyListeners();
-//   }
-// }
 
 class CardSetNo with ChangeNotifier {
   List<String> _deck;
@@ -85,16 +40,18 @@ class CardSetNo with ChangeNotifier {
     );
   }
 
-List<String> get deck => _deck;
+  List<String> get deck => _deck;
   String? get partner => _partner;
   String? get caseCard => _case;
   String get name => _name;
   DateTime get date => _date; // 追加
 
-  String? addCardNoToDeck(String cardNo, Map<String, Map<String, dynamic>> cardNoMap) {
+  //追加後、エラーメッセージを返す
+  String? addCardNoToDeck(
+      String cardNo, Map<String, Map<String, dynamic>> cardNoMap) {
     Map<String, dynamic>? card = cardNoMap[cardNo];
     if (card == null) {
-      return 'カードが見つかりません'; // カードが見つからない場合はエラーメッセージを返す
+      return 'カードが見つかりません';
     }
     if (card['type'] == 'キャラ' || card['type'] == 'イベント') {
       List<String> sameIdCards =
@@ -102,33 +59,45 @@ List<String> get deck => _deck;
       int sameCardCount = sameIdCards.length;
       if (sameCardCount < 3) {
         _deck.add(cardNo);
+
+        // try {
+        //   _deck.sort((a, b) {
+        //     var lvA = cardNoMap[a]?['Lv.'];
+        //     var lvB = cardNoMap[b]?['Lv.'];
+        //     if (lvA == null || lvB == null) {
+        //       throw Exception('カードのレベルが見つかりませんでした(バグ)');
+        //     }
+        //     return lvA.compareTo(lvB);
+        //   });
+        // } catch (e) {
+        //   return e.toString();
+        // }
+
         notifyListeners();
-        return null; // カードが追加された場合はnullを返す
+        return null;
       } else {
         List<String> sameIdDifferentNumbers = sameIdCards
             .where((no) => cardNoMap[no]?['No.'] != card['No.'])
             .toList();
         if (sameIdDifferentNumbers.isEmpty) {
-          return '同じカードは3枚まで'; // 同じIDの同じNo.のカードがすでに3枚ある場合
+          return '同じカードは3枚まで';
         } else {
           removeCardFromDeck(sameIdDifferentNumbers[0]); // 最初の異なるNo.のカードを削除
-          _deck.add(cardNo); // 新しいカードを追加
-          return '異なるNo.のカードと入れ替え'; // 異なるNo.のカードと入れ替えた場合
+          _deck.add(cardNo);
+          return '同じIDで異なるNo.のカードと入替え';
         }
       }
     }
-    return '無効なカードタイプ'; // カードタイプが無効な場合はエラーメッセージを返す
+    return '無効なカードタイプ';
   }
 
   void setPartner(String cardNo) {
-    // 変更
-    _partner = cardNo; // 変更
+    _partner = cardNo;
     notifyListeners();
   }
 
   void setCase(String cardNo) {
-    // 変更
-    _case = cardNo; // 変更
+    _case = cardNo;
     notifyListeners();
   }
 
@@ -138,8 +107,7 @@ List<String> get deck => _deck;
   }
 
   void removeCardFromDeck(String cardNo) {
-    // 変更
-    _deck.remove(cardNo); // 変更
+    _deck.remove(cardNo);
     notifyListeners();
   }
 
@@ -154,28 +122,25 @@ List<String> get deck => _deck;
   }
 
   void copyFrom(CardSetNo other) {
-    _deck = List.from(other._deck); // 変更
-    _partner = other._partner; // 変更
-    _case = other._case; // 変更
+    _deck = List.from(other._deck);
+    _partner = other._partner;
+    _case = other._case;
     _name = other._name;
     notifyListeners();
   }
 
   set deck(List<String> deck) {
-    // 変更
-    _deck = deck; // 変更
+    _deck = deck;
     notifyListeners();
   }
 
   set partner(String? partner) {
-    // 変更
-    _partner = partner ?? ''; // 変更
+    _partner = partner ?? '';
     notifyListeners();
   }
 
   set caseCard(String? caseCard) {
-    // 変更
-    _case = caseCard ?? ''; // 変更
+    _case = caseCard ?? '';
     notifyListeners();
   }
 
@@ -183,8 +148,8 @@ List<String> get deck => _deck;
     _name = name;
     notifyListeners();
   }
-  
-set date(DateTime date) {
+
+  set date(DateTime date) {
     _date = date; // 追加
     notifyListeners();
   }
@@ -198,14 +163,13 @@ set date(DateTime date) {
       'date': _date.toIso8601String(), // 追加
     };
   }
-  }
+}
 
 // CardSetsクラス：複数のカードセットを管理します。カードセットはCardSetNoオブジェクトのリストとして保持されます。
 class CardSets with ChangeNotifier {
   List<CardSetNo> _cardSets;
 
-  CardSets([List<CardSetNo>? cardSets]) 
-    : _cardSets = cardSets ?? [];
+  CardSets([List<CardSetNo>? cardSets]) : _cardSets = cardSets ?? [];
 
   List<CardSetNo> get cardSets => _cardSets;
 
@@ -232,9 +196,8 @@ class CardSets with ChangeNotifier {
   Future<void> _updateLocalStorage() async {
     // ローカルストレージに保存
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> cardSetsData = _cardSets
-        .map((cardSet) => jsonEncode(cardSet.toJson()))
-        .toList();
+    List<String> cardSetsData =
+        _cardSets.map((cardSet) => jsonEncode(cardSet.toJson())).toList();
     await prefs.setStringList(getStorageKey('cardSets'), cardSetsData);
   }
 
@@ -242,10 +205,6 @@ class CardSets with ChangeNotifier {
     final editingKey = Provider.of<EditingCardSetKey>(context, listen: false);
     return _cardSets.indexWhere((cardSet) => cardSet.date == editingKey.date);
   }
-
-
-
-
 }
 
 // CardSetクラス：カードセットの状態を管理します。カードセットはdeck, partner, caseから構成されます。
@@ -404,7 +363,6 @@ class CardSets with ChangeNotifier {
 //   }
 // }
 
-
 // EditingCardSetIndexクラス：編集中のカードセットのインデックスを管理します。サイトに最初にアクセスしたとき、CardSets[0]が編集中のカードセットになります。
 class EditingCardSetIndex with ChangeNotifier {
   int _index = 0;
@@ -433,4 +391,3 @@ class EditingCardSetKey with ChangeNotifier {
     notifyListeners();
   }
 }
-

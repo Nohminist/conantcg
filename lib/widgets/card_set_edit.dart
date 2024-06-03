@@ -48,7 +48,7 @@ class CardSetEdit extends StatelessWidget {
   }
 }
 
-class CardSetEdit2 extends StatelessWidget {
+class CardSetEditVertical extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double displayableWidth = MediaQuery.of(context).size.width;
@@ -58,10 +58,12 @@ class CardSetEdit2 extends StatelessWidget {
     return Container(
       // color: getRelativeColor(context, 0.15),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             cardSetManage.name.isEmpty ? 'デッキ名' : cardSetManage.name,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style:
+                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           UpdatedDate(date: cardSetManage.date),
           CardSetOutline(

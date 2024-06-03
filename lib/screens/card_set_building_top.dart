@@ -10,17 +10,15 @@ import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:conantcg/widgets/deck_edit.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/level_icons.dart';
-import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';
 import 'package:conantcg/widgets/common_show_modal_bottom_sheet.dart';
-import 'package:conantcg/widgets/transparent_button.dart';
 import 'package:flutter/material.dart';
 import '../widgets/card_display_setting.dart';
 import '../widgets/card_set_edit.dart';
 import '../widgets/card_grid.dart';
-import 'package:flutter/gestures.dart'; // 追加
-import 'package:flutter/rendering.dart';
 import '../providers/card_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 
 class CardSetBuildingTop extends StatelessWidget {
   @override
@@ -102,8 +100,8 @@ class VerticalLayout extends StatefulWidget {
 }
 
 class _VerticalLayoutState extends State<VerticalLayout> {
-  bool _isExpanded = true;
-  bool _isThirdChild = false;
+  bool _isCardSetHide = false;
+  bool _isDeckDisplay = false;
 
   @override
   Widget build(BuildContext context) {
@@ -123,7 +121,7 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                 children: [
                   Container(
                     color: cardSetBgColor,
-                    child: _isThirdChild
+                    child: _isCardSetHide
                         ? Container()
                         : AnimatedCrossFade(
                             duration: Duration(milliseconds: 200),
@@ -142,27 +140,26 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                                   SizedBox(height: 2),
                                   cardSetManage.deck.length == 0
                                       ? Container(
-                                        height: displayableWidth /8 *1.4,
+                                          height: displayableWidth / 8 * 1.4,
                                           decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(
-                                                5),
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                           child: const Center(
-                                            child:
-                                                Text('デッキ（レベル別）'), 
+                                            child: Text('デッキ（レベル別）'),
                                           ),
                                         )
                                       : DeckEditWithHeightRestriction(
                                           deckNos: cardSetManage.deck,
-                                          displayableWidth: screenWidth,
+                                          displayableWidth: screenWidth - 10,
                                           screenHeight: screenHeight,
                                         ),
                                 ],
                               ),
                             ),
-                            crossFadeState: _isExpanded
+                            crossFadeState: _isDeckDisplay
                                 ? CrossFadeState.showSecond
                                 : CrossFadeState.showFirst,
                           ),
@@ -173,6 +170,7 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                     padding: const EdgeInsets.all(5.0),
                     child: CardGrid(extraScroll: 80),
                   )),
+
                 ],
               ),
               const Positioned(
@@ -192,13 +190,14 @@ class _VerticalLayoutState extends State<VerticalLayout> {
               CardSetSelectOpenButton(),
               CardSetSaveButton(),
               CardSetNameEditButton(),
+              FullViewButton(),
               CommonIconButton(
                 icon: const Icon(Icons.add_box),
                 text: 'デッキ外',
                 onPressed: () {
                   setState(() {
-                    _isExpanded = false;
-                    _isThirdChild = false;
+                    _isDeckDisplay = false;
+                    _isCardSetHide = false;
                   });
                 },
               ),
@@ -207,18 +206,17 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                 text: 'デッキ内',
                 onPressed: () {
                   setState(() {
-                    _isExpanded = true;
-                    _isThirdChild = false;
+                    _isDeckDisplay = true;
+                    _isCardSetHide = false;
                   });
                 },
               ),
-              FullViewButton(),
               CommonIconButton(
                 icon: const Icon(Icons.hide_source),
                 text: '非表示',
                 onPressed: () {
                   setState(() {
-                    _isThirdChild = true;
+                    _isCardSetHide = true;
                   });
                 },
               ),
@@ -245,7 +243,7 @@ class FullViewButton extends StatelessWidget {
       icon: const Icon(Icons.fullscreen),
       text: '全容',
       onPressed: () {
-        commonShowModalBottomSheet(context, CardSetEdit2());
+        commonShowModalBottomSheet(context, CardSetEditVertical());
       },
     );
   }
@@ -266,3 +264,54 @@ class CardsDisplaySettingOpenButton extends StatelessWidget {
     );
   }
 }
+
+
+class MyWidget extends StatefulWidget {
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+class _MyWidgetState extends State<MyWidget> {
+  late NativeAd _ad;
+  bool _isAdLoaded = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // 広告ユニット ID を設定
+    final adUnitId = 'ca-pub-2638532378115029/6141218897';
+
+    // 広告ウィジェットを作成
+    _ad = NativeAd(
+      adUnitId: adUnitId,
+      factoryId: 'adFactoryExample',
+      request: AdRequest(),
+      listener: NativeAdListener(
+        onAdLoaded: (Ad ad) {
+          setState(() {
+            _isAdLoaded = true;
+          });
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          setState(() {
+            _isAdLoaded = false;
+          });
+        },
+      ),
+    )..load();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: _isAdLoaded ? AdWidget(ad: _ad) : Container(),
+    );
+  }
+
+  @override
+  void dispose() {
+    _ad.dispose();
+    super.dispose();
+  }
+}
+

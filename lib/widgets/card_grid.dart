@@ -6,7 +6,6 @@ import '../widgets/operable_card.dart';
 import '../providers/card_provider.dart';
 import '../widgets/quantity_badge.dart';
 import '../utils/csv_data.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../utils/handle_card.dart';
 import 'dart:math';
 
@@ -106,51 +105,3 @@ class CardGrid extends StatelessWidget {
   }
 }
 
-class MyWidget extends StatefulWidget {
-  @override
-  _MyWidgetState createState() => _MyWidgetState();
-}
-
-class _MyWidgetState extends State<MyWidget> {
-  late NativeAd _ad;
-  bool _isAdLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // 広告ユニット ID を設定
-    final adUnitId = 'ca-pub-2638532378115029/6141218897';
-
-    // 広告ウィジェットを作成
-    _ad = NativeAd(
-      adUnitId: adUnitId,
-      factoryId: 'adFactoryExample',
-      request: AdRequest(),
-      listener: NativeAdListener(
-        onAdLoaded: (Ad ad) {
-          setState(() {
-            _isAdLoaded = true;
-          });
-        },
-        onAdFailedToLoad: (Ad ad, LoadAdError error) {
-          setState(() {
-            _isAdLoaded = false;
-          });
-        },
-      ),
-    )..load();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: _isAdLoaded ? AdWidget(ad: _ad) : Container(),
-    );
-  }
-
-  @override
-  void dispose() {
-    _ad.dispose();
-    super.dispose();
-  }
-}
