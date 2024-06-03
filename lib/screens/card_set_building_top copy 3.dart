@@ -285,9 +285,9 @@ class _VerticalEditingCardSetState extends State<VerticalEditingCardSet> {
                   children: [
                     LevelIcons(),
                     SizedBox(height: 2),
-                    DeckEdit3(
+                    DeckEditWithHeightRestriction(
                       deckNos: cardSetManage.deck,
-                      screenWidth: screenWidth,
+                      displayableWidth: screenWidth,
                       screenHeight: screenHeight,
                     ),
                   ],

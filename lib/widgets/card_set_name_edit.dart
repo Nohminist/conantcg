@@ -68,7 +68,9 @@ class _CardSetNameEditButtonState extends State<CardSetNameEditButton> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final current = Provider.of<CardSetNo>(context);
-    _controller.text = current.name;
+    Future.delayed(Duration.zero, () {
+      _controller.text = current.name;
+    });
   }
 
   @override
@@ -82,22 +84,22 @@ class _CardSetNameEditButtonState extends State<CardSetNameEditButton> {
     final current = Provider.of<CardSetNo>(context);
     return CommonIconButton(
         onPressed: () {
-commonShowModalBottomSheet(
-  context,
-  Padding(
-    padding: const EdgeInsets.all(5.0),
-    child: CommonTextField(
-      prefixIcon: Icons.edit,
-      labelText: 'デッキ名',
-      controller: _controller,
-      onSubmitted: (value) {
-        current.setName(value);
-        Navigator.of(context).pop();
-      },
-    ),
-  ),
-  heightFactor: 0.5,  // ここでheightFactorを指定します
-);
+          commonShowModalBottomSheet(
+            context,
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: CommonTextField(
+                prefixIcon: Icons.edit,
+                labelText: 'デッキ名',
+                controller: _controller,
+                onSubmitted: (value) {
+                  current.setName(value);
+                  // Navigator.of(context).pop();
+                },
+              ),
+            ),
+            heightFactor: 0.5, // ここでheightFactorを指定します
+          );
         },
         text: 'デッキ名',
         icon: const Icon(Icons.edit));

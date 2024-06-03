@@ -39,6 +39,7 @@ class CardGrid extends StatelessWidget {
 
           return GridView.builder(
             controller: scrollController,
+            padding: EdgeInsets.only(bottom: extraScroll),
             addAutomaticKeepAlives: false,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 4,

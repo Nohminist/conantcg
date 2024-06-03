@@ -1,4 +1,5 @@
 // widget/card_set_select_open_button.dart
+import 'package:conantcg/widgets/card_set_outline2.dart';
 import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:conantcg/widgets/common_show_modal_bottom_sheet.dart';
 import 'package:conantcg/widgets/updated_date.dart';
@@ -12,7 +13,8 @@ import 'package:intl/intl.dart'; // DateFormatをインポート
 
 class CardSetSelectOpenButton extends StatefulWidget {
   @override
-  _CardSetSelectOpenButtonState createState() => _CardSetSelectOpenButtonState();
+  _CardSetSelectOpenButtonState createState() =>
+      _CardSetSelectOpenButtonState();
 }
 
 class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
@@ -34,9 +36,7 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
         commonShowModalBottomSheet(
           context,
           SizedBox(
-            width: screenWidth > screenHeight
-                ? screenWidth / 2
-                : screenWidth,
+            width: screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
             child: ListView.builder(
               itemCount: tempCardSets.length + 1, // 選択肢の数を追加
               itemBuilder: (context, index) {
@@ -113,22 +113,10 @@ class CardSetOption extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            cardSet.name.isEmpty ? 'デッキ名' : cardSet.name,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-          UpdatedDate(date: cardSet.date),
-          CardSetOutline(
-            cardSetManage: cardSet,
-            widgetWidth:
-                screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
-            isReadOnly: true,
-          ),
-        ],
-      ),
+      title: CardSetOutline2(
+          cardSet: cardSet,
+          screenWidth: screenWidth,
+          screenHeight: screenHeight),
       onTap: () async {
         var selectedCardSet = cardSetsManager.cardSets
             .firstWhere((set) => set.date == cardSet.date);

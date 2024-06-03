@@ -1,4 +1,3 @@
-// widgets/editing_card_set.dart
 import '../providers/card_provider.dart';
 import '../utils/color.dart';
 import '../widgets/card_image.dart';
@@ -8,7 +7,6 @@ import '../widgets/operable_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
-
 
 class CardSetOutline extends StatelessWidget {
   final CardSetNo cardSetManage;
@@ -95,18 +93,18 @@ class CardWidget extends StatelessWidget {
                 )
               : OperableCard(
                   cardNo: cardNo,
-                  cards:[cardNo],
+                  cards: [cardNo],
                   onTap: removeCard,
                 )
           : Container(
               decoration: BoxDecoration(
-                color: getRelativeColor(context, 0.1), // 背景色を設定
-                borderRadius: BorderRadius.circular(max(width, height) / 25), // 角を丸くする
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(max(width, height) / 25),
               ),
               child: Center(
                 child: Text(
                   cardType,
-                  style: TextStyle(fontSize: height/8), // 文字サイズを設定
+                  style: TextStyle(fontSize: height / 8),
                 ),
               ),
             ),

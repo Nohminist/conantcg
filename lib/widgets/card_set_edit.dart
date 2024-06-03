@@ -4,6 +4,7 @@ import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';
 import 'package:conantcg/widgets/deck_edit3.dart';
 import 'package:conantcg/widgets/level_icons.dart';
+import 'package:conantcg/widgets/updated_date.dart';
 import '../widgets/cardset_outline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ import 'deck_edit.dart';
 class CardSetEdit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double displayableWidth = MediaQuery.of(context).size.width;
     final cardSetManage = Provider.of<CardSetNo>(context);
 
     return Padding(
@@ -36,12 +37,12 @@ class CardSetEdit extends StatelessWidget {
           SizedBox(height: 5),
           CardSetOutline(
             cardSetManage: cardSetManage,
-            widgetWidth: screenWidth / 2,
+            widgetWidth: displayableWidth / 2,
           ),
           SizedBox(height: 5),
           LevelIcons(),
           SizedBox(height: 2),
-          DeckEdit(deckNos: cardSetManage.deck),
+          DeckEditExpanded(deckNos: cardSetManage.deck),
         ],
       ),
     );
@@ -51,42 +52,40 @@ class CardSetEdit extends StatelessWidget {
 class CardSetEdit2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double displayableWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final cardSetManage = Provider.of<CardSetNo>(context);
 
     return Container(
-      color: getRelativeColor(context, 0.15),
+      // color: getRelativeColor(context, 0.15),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                CardSetSelectOpenButton(),
-                SizedBox(width: 5),
-                CardSetSaveButton(),
-                SizedBox(width: 5),
-
-                Expanded(
-                  child: CardSetNameEdit(),
-                ),
-                // SaveImageButton(cardSet: cardSetManage),機能しない
-              ],
-            ),
+          Text(
+            cardSetManage.name.isEmpty ? 'デッキ名' : cardSetManage.name,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          UpdatedDate(date: cardSetManage.date),
           CardSetOutline(
             cardSetManage: cardSetManage,
-            widgetWidth: screenWidth,
+            widgetWidth: displayableWidth,
           ),
           SizedBox(height: 5),
           LevelIcons(),
           SizedBox(height: 2),
-          DeckEdit3(
-            deckNos: cardSetManage.deck,
-            screenWidth: screenWidth,
-            screenHeight: screenHeight,
-          )
+          cardSetManage.deck.length == 0
+              ? Container(
+                  height: displayableWidth / 8 * 1.4,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Center(
+                    child: Text('デッキ（レベル別）'),
+                  ),
+                )
+              : DeckEditExpanded(
+                  deckNos: cardSetManage.deck,
+                ),
         ],
       ),
     );

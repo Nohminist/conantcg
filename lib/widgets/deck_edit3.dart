@@ -8,14 +8,14 @@ import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
 import '../widgets/operable_card.dart';
 
-class DeckEdit3 extends StatelessWidget {
+class DeckEditWithHeightRestriction extends StatelessWidget {
   final List<String> deckNos;
-  double screenWidth;
+  double displayableWidth;
   double screenHeight;
 
-  DeckEdit3(
+  DeckEditWithHeightRestriction(
       {required this.deckNos,
-      required this.screenWidth,
+      required this.displayableWidth,
       required this.screenHeight});
 
   @override
@@ -70,7 +70,7 @@ class DeckEdit3 extends StatelessWidget {
 
     // GridView.countをExpandedでラップする必要がある
     return SizedBox(
-      height: min((screenWidth - 20) / 8 * 1.4 * maxLength + 10, screenHeight / 2.5),
+      height: min((displayableWidth) / 8 * 1.4 * maxLength, screenHeight / 2.5),
       child:  GridView.count(
           // shrinkWrap: true,// 要るのか分からない
           crossAxisCount: 8,

@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
 import '../widgets/operable_card.dart';
 
-class DeckEdit extends StatelessWidget {
+class DeckEditExpanded extends StatelessWidget {
   final List<String> deckNos;
 
-  DeckEdit({required this.deckNos});
+  DeckEditExpanded({required this.deckNos});
 
   @override
   Widget build(BuildContext context) {
