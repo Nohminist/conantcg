@@ -58,7 +58,7 @@ class MenuBar extends StatelessWidget {
         ),
         CommonIconButton(
           icon: Icon(Icons.upload),
-          text: 'CSV',
+          text: 'CSV読込',
           onPressed: () {
             selectFiles(context);
           },

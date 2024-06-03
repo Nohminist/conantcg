@@ -222,32 +222,11 @@ class SortButtons extends StatelessWidget {
             },
             isSelected: [filterState.isAscending, !filterState.isAscending],
             children: [
-              Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Row(
-                  children: [
-                    Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationX(math.pi),
-                      child: const Icon(Icons.sort),
-                    ),
-                    const Text('昇順'),
-                  ],
-                ),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(5.0),
-                child: Row(
-                  children: [
-                    Icon(Icons.sort),
-                    Text('降順'),
-                  ],
-                ),
-              ),
+              const Text('昇順'),
+              const Text('降順'),
             ],
           ),
         ),
-
         const SizedBox(width: 5),
         DropdownButton<String>(
           value: filterState.sortKey,
@@ -263,19 +242,6 @@ class SortButtons extends StatelessWidget {
             }
           },
         ),
-
-        // IconButton(
-        //   icon: filterState.isAscending
-        //       ? Transform(
-        //           alignment: Alignment.center,
-        //           transform: Matrix4.rotationX(math.pi),
-        //           child: Icon(Icons.sort),
-        //         )
-        //       : Icon(Icons.sort),
-        //   onPressed: () {
-        //     filterState.toggleSortOrder();
-        //   },
-        // ),
       ],
     );
   }
@@ -286,7 +252,8 @@ class FilterToggleButtonGroup extends StatelessWidget {
   final Function(int) toggleFunction;
   final List<bool> isSelected;
 
-  FilterToggleButtonGroup({
+  const FilterToggleButtonGroup({
+    super.key,
     required this.values,
     required this.toggleFunction,
     required this.isSelected,
@@ -296,25 +263,28 @@ class FilterToggleButtonGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     Color textColor = isDarkMode ? Colors.grey[200]! : Colors.grey[800]!;
-    Color borderColor = isDarkMode ? Colors.grey[400]! : Colors.grey[600]!;
-    Color fillColor = getRelativeColor(context, 0.1);
+    Color borderColor =  Colors.grey;
+    Color fillColor = getRelativeColor(context, 0);
 
     return Wrap(
       children: List.generate(values.length, (index) {
-        return Padding(
-          padding: EdgeInsets.all(2),
-          child: OutlinedButton(
-            onPressed: () => toggleFunction(index),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: borderColor, width: 1),
-              backgroundColor: isSelected[index] ? textColor : fillColor,
-              foregroundColor: isSelected[index] ? fillColor : textColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4), // 角丸の半径を調整します
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 0,horizontal: 0),
+          child: Padding(
+            padding: const EdgeInsets.all(2),
+            child: OutlinedButton(
+              onPressed: () => toggleFunction(index),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: borderColor, width: 1),
+                backgroundColor: isSelected[index] ? textColor : fillColor,
+                foregroundColor: isSelected[index] ? fillColor : textColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(values[index]),
             ),
-            child: Text(values[index]),
           ),
         );
       }),

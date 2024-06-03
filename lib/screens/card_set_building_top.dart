@@ -19,7 +19,6 @@ import '../providers/card_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-
 class CardSetBuildingTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -100,7 +99,6 @@ class VerticalLayout extends StatefulWidget {
 }
 
 class _VerticalLayoutState extends State<VerticalLayout> {
-  bool _isCardSetHide = false;
   bool _isDeckDisplay = false;
 
   @override
@@ -121,48 +119,50 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                 children: [
                   Container(
                     color: cardSetBgColor,
-                    child: _isCardSetHide
-                        ? Container()
-                        : AnimatedCrossFade(
-                            duration: Duration(milliseconds: 200),
-                            firstChild: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: CardSetOutline(
-                                cardSetManage: cardSetManage,
-                                widgetWidth: screenWidth,
-                              ),
+                    child: AnimatedCrossFade(
+                      duration: Duration(milliseconds: 200),
+                      firstChild: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          children: [
+                            CardSetNameEdit(),
+                            SizedBox(height: 5),
+                            CardSetOutline(
+                              cardSetManage: cardSetManage,
+                              widgetWidth: screenWidth,
                             ),
-                            secondChild: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  LevelIcons(),
-                                  SizedBox(height: 2),
-                                  cardSetManage.deck.length == 0
-                                      ? Container(
-                                          height: displayableWidth / 8 * 1.4,
-                                          decoration: BoxDecoration(
-                                            border:
-                                                Border.all(color: Colors.grey),
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                          ),
-                                          child: const Center(
-                                            child: Text('デッキ（レベル別）'),
-                                          ),
-                                        )
-                                      : DeckEditWithHeightRestriction(
-                                          deckNos: cardSetManage.deck,
-                                          displayableWidth: screenWidth - 10,
-                                          screenHeight: screenHeight,
-                                        ),
-                                ],
-                              ),
-                            ),
-                            crossFadeState: _isDeckDisplay
-                                ? CrossFadeState.showSecond
-                                : CrossFadeState.showFirst,
-                          ),
+                          ],
+                        ),
+                      ),
+                      secondChild: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          children: [
+                            LevelIcons(),
+                            SizedBox(height: 2),
+                            cardSetManage.deck.length == 0
+                                ? Container(
+                                    height: displayableWidth / 8 * 1.4,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                    child: const Center(
+                                      child: Text('デッキ（レベル別）'),
+                                    ),
+                                  )
+                                : DeckEditWithHeightRestriction(
+                                    deckNos: cardSetManage.deck,
+                                    displayableWidth: screenWidth - 10,
+                                    screenHeight: screenHeight,
+                                  ),
+                          ],
+                        ),
+                      ),
+                      crossFadeState: _isDeckDisplay
+                          ? CrossFadeState.showSecond
+                          : CrossFadeState.showFirst,
+                    ),
                   ),
                   // SizedBox(height: 5),
                   Expanded(
@@ -170,7 +170,6 @@ class _VerticalLayoutState extends State<VerticalLayout> {
                     padding: const EdgeInsets.all(5.0),
                     child: CardGrid(extraScroll: 80),
                   )),
-
                 ],
               ),
               const Positioned(
@@ -189,37 +188,36 @@ class _VerticalLayoutState extends State<VerticalLayout> {
             children: [
               CardSetSelectOpenButton(),
               CardSetSaveButton(),
-              CardSetNameEditButton(),
               FullViewButton(),
-              CommonIconButton(
-                icon: const Icon(Icons.add_box),
-                text: 'デッキ外',
-                onPressed: () {
-                  setState(() {
-                    _isDeckDisplay = false;
-                    _isCardSetHide = false;
-                  });
-                },
+              Column(
+                children: [
+                  SizedBox(height: 5),
+                  SizedBox(
+                    height: 35,
+                    child: ToggleButtons(
+                      children: <Widget>[
+                        Text('概要', style: TextStyle(fontSize: 14)),
+                        Text('詳細', style: TextStyle(fontSize: 14)),
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          _isDeckDisplay = index == 1;
+                        });
+                      },
+                      isSelected: [
+                        _isDeckDisplay == false,
+                        _isDeckDisplay == true
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              CommonIconButton(
-                icon: const Icon(Icons.add_to_photos),
-                text: 'デッキ内',
-                onPressed: () {
-                  setState(() {
-                    _isDeckDisplay = true;
-                    _isCardSetHide = false;
-                  });
-                },
-              ),
-              CommonIconButton(
-                icon: const Icon(Icons.hide_source),
-                text: '非表示',
-                onPressed: () {
-                  setState(() {
-                    _isCardSetHide = true;
-                  });
-                },
-              ),
+              Column(
+                children: [
+                  const SizedBox(height: 10),
+                  DeckCountText(deck: cardSetManage.deck),
+                ],
+              )
             ],
           ),
         ),
@@ -228,6 +226,40 @@ class _VerticalLayoutState extends State<VerticalLayout> {
           color: cardSetBgColor,
         ),
       ],
+    );
+  }
+}
+
+class DeckCountText extends StatelessWidget {
+  const DeckCountText({
+    super.key,
+    required this.deck,
+  });
+
+  final List<String> deck;
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: deck.length.toString(),
+            style: TextStyle(
+              color:
+                  deck.length == 40 ? getRelativeColor(context, 1) : Colors.red,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          TextSpan(
+            text: '/40',
+            style: TextStyle(
+              color: getRelativeColor(context, 1),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -241,7 +273,7 @@ class FullViewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonIconButton(
       icon: const Icon(Icons.fullscreen),
-      text: '全容',
+      text: '全表示',
       onPressed: () {
         commonShowModalBottomSheet(context, CardSetEditVertical());
       },
@@ -264,7 +296,6 @@ class CardsDisplaySettingOpenButton extends StatelessWidget {
     );
   }
 }
-
 
 class MyWidget extends StatefulWidget {
   @override
@@ -314,4 +345,3 @@ class _MyWidgetState extends State<MyWidget> {
     super.dispose();
   }
 }
-
