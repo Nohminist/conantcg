@@ -8,6 +8,7 @@ import '../widgets/quantity_badge.dart';
 import '../utils/csv_data.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../utils/handle_card.dart';
+import 'dart:math';
 
 class CardGrid extends StatelessWidget {
   final double topExtraScroll;
@@ -18,7 +19,7 @@ class CardGrid extends StatelessWidget {
     this.topExtraScroll = 0.0,
     this.extraScroll = 0.0,
     this.scrollController,
-  }); // デフォルト値を0.0に設定
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,52 +48,55 @@ class CardGrid extends StatelessWidget {
             ),
             itemCount: filteredCardNos.length,
             itemBuilder: (BuildContext context, int index) {
-              var cardNo = filteredCardNos[index];
-              var cardData = cardNoMap.data[cardNo];
+              return LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  var cardNo = filteredCardNos[index];
+                  var cardData = cardNoMap.data[cardNo];
 
-              if (cardData == null) {
-                return Container();
-              }
+                  if (cardData == null) {
+                    return Container();
+                  }
 
-              int count = 0;
-              String type = cardData['type'];
-              if (type == 'パートナー' && cardSet.partner == cardNo) {
-                count = 1;
-              } else if (type == '事件' &&
-                  cardSet.caseCard == cardNo) {
-                count = 1;
-              } else {
-                count = cardSet.deck.where((no) => no == cardNo).length;
-              }
+                  int count = 0;
+                  String type = cardData['type'];
+                  if (type == 'パートナー' && cardSet.partner == cardNo) {
+                    count = 1;
+                  } else if (type == '事件' && cardSet.caseCard == cardNo) {
+                    count = 1;
+                  } else {
+                    count = cardSet.deck.where((no) => no == cardNo).length;
+                  }
 
-              return Stack(
-                children: [
-                  OperableCard(
-                    cardNo: cardNo,
-                    cards: filteredCardNos,
-                    onTap: () {
-                      String? errorMessage = handleCardAdd(
-                          context, cardSet, cardNo, cardNoMap.data);
-                      if (errorMessage != null) {
-                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(errorMessage),
-                            duration: Duration(seconds: 2),
-                          ),
-                        );
-                      }
-                    },
-                  ),
-                  Positioned(
-                    top:0,
-                    right:0,
-                    child: QuantityBadge(
-                    count: count,
-                    type: type,
-                  )),
-                  
-                ],
+                  return Stack(
+                    children: [
+                      OperableCard(
+                        cardNo: cardNo,
+                        cards: filteredCardNos,
+                        onTap: () {
+                          String? errorMessage = handleCardAdd(
+                              context, cardSet, cardNo, cardNoMap.data);
+                          if (errorMessage != null) {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(errorMessage),
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      Positioned(
+                          top: 0,
+                          right: 0,
+                          child: QuantityBadge(
+                            count: count,
+                            type: type,
+                            size: max(constraints.maxWidth / 4, 24),
+                          )),
+                    ],
+                  );
+                },
               );
             },
           );

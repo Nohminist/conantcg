@@ -1,4 +1,6 @@
 // widgets/deck_edit.dart.dart
+import 'dart:math';
+
 import '../utils/csv_data.dart';
 import '../widgets/quantity_badge.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,7 @@ class DeckEditExpanded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var cardNoMap = Provider.of<CardNoMap>(context); // 追加
+    var cardNoMap = Provider.of<CardNoMap>(context);
     var uniqueDeckNos = deckNos.toSet().toList();
 
     // レベルごとにカードを分類
@@ -21,40 +23,39 @@ class DeckEditExpanded extends StatelessWidget {
     List<Map<String, int>> levelCardCounts = List.generate(8, (_) => {});
 
     for (var cardNo in deckNos) {
-      // 変更
-      var cardData = cardNoMap.data[cardNo]; // 追加
+      var cardData = cardNoMap.data[cardNo];
       if (cardData != null && cardData['Lv.'] != null) {
-        levelSortedDeck[cardData['Lv.'] - 1].add(cardNo); // 変更
+        levelSortedDeck[cardData['Lv.'] - 1].add(cardNo);
       }
     }
 
     for (int level = 0; level < 8; level++) {
       // 各カードの出現回数をカウント
-      Map<String, int> cardCounts = {}; // 変更
+      Map<String, int> cardCounts = {};
       for (var cardNo in levelSortedDeck[level]) {
-        // 変更
+       
         if (cardCounts.containsKey(cardNo)) {
-          // 変更
-          cardCounts[cardNo] = cardCounts[cardNo]! + 1; // 変更
+         
+          cardCounts[cardNo] = cardCounts[cardNo]! + 1;
         } else {
-          cardCounts[cardNo] = 1; // 変更
+          cardCounts[cardNo] = 1;
         }
       }
-      levelCardCounts[level] = cardCounts; // 変更
+      levelCardCounts[level] = cardCounts;
     }
 
     // 最も長い配列の長さを取得
     int maxLength =
         levelCardCounts.map((e) => e.length).reduce((a, b) => a > b ? a : b);
 
-    List<Map<String, int>?> newArray = []; // 変更
+    List<Map<String, int>?> newArray = [];
 
     for (int i = 0; i < maxLength; i++) {
       for (int level = 0; level < 8; level++) {
         if (levelCardCounts[level].length > i) {
           var keys = levelCardCounts[level].keys.toList();
           var values = levelCardCounts[level].values.toList();
-          newArray.add({keys[i]: values[i]}); // 変更
+          newArray.add({keys[i]: values[i]});
         } else {
           newArray.add(null);
         }
@@ -64,44 +65,159 @@ class DeckEditExpanded extends StatelessWidget {
     // GridView.countをExpandedでラップする必要がある
     return Expanded(
       child: GridView.count(
-        // shrinkWrap: true,// 要るのか分からない
         crossAxisCount: 8,
-        childAspectRatio: 1 / 1.4, // 横1：縦1.4の比率を設定
+        childAspectRatio: 1 / 1.4, 
         children: List.generate(newArray.length, (index) {
-          if (newArray[index] == null) {
-            return Container();
-          } else {
-            // print('newArray[$index]: ${newArray[index]!.keys.first}');
-            var cardNo = newArray[index]!.keys.first;
-            var count = newArray[index]!.values.first;
-            var cardData = cardNoMap.data[cardNo];
+          return LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              if (newArray[index] == null) {
+                return Container();
+              } else {
+                var cardNo = newArray[index]!.keys.first;
+                var count = newArray[index]!.values.first;
+                var cardData = cardNoMap.data[cardNo];
 
-            if (cardData == null || cardData['type'] == null) {
-              return Container();
-            }
+                if (cardData == null || cardData['type'] == null) {
+                  return Container();
+                }
 
-            return Stack(
-              children: [
-                OperableCard(
-                  cardNo: cardNo,
-                  cards: uniqueDeckNos,
-                  onTap: () {
-                    Provider.of<CardSetNo>(context, listen: false)
-                        .removeCardFromDeck(cardNo);
-                  },
-                ),
-                Positioned(
-                    top: 0,
-                    right: 0,
-                    child: QuantityBadge(
-                      count: count,
-                      type: cardData['type'],
-                    )),
-              ],
-            );
-          }
+                return Stack(
+                  children: [
+                    OperableCard(
+                      cardNo: cardNo,
+                      cards: uniqueDeckNos,
+                      onTap: () {
+                        Provider.of<CardSetNo>(context, listen: false)
+                            .removeCardFromDeck(cardNo);
+                      },
+                    ),
+                    Positioned(
+                        top: 0,
+                        right: 0,
+                        child: QuantityBadge(
+                          count: count,
+                          type: cardData['type'],
+                          size: max(constraints.maxWidth/4, 24) ,
+                        )),
+                  ],
+                );
+              }
+            },
+          );
         }),
       ),
     );
   }
 }
+
+class DeckEditWithHeightRestriction extends StatelessWidget {
+  final List<String> deckNos;
+  double displayableWidth;
+  double screenHeight;
+
+  DeckEditWithHeightRestriction(
+      {required this.deckNos,
+      required this.displayableWidth,
+      required this.screenHeight});
+
+  @override
+  Widget build(BuildContext context) {
+    var cardNoMap = Provider.of<CardNoMap>(context); 
+    var uniqueDeckNos = deckNos.toSet().toList();
+
+    // レベルごとにカードを分類
+    List<List<String>> levelSortedDeck = List.generate(8, (_) => []);
+    List<Map<String, int>> levelCardCounts = List.generate(8, (_) => {});
+
+    for (var cardNo in deckNos) {
+     
+      var cardData = cardNoMap.data[cardNo]; 
+      if (cardData != null && cardData['Lv.'] != null) {
+        levelSortedDeck[cardData['Lv.'] - 1].add(cardNo);
+      }
+    }
+
+    for (int level = 0; level < 8; level++) {
+      // 各カードの出現回数をカウント
+      Map<String, int> cardCounts = {};
+      for (var cardNo in levelSortedDeck[level]) {
+       
+        if (cardCounts.containsKey(cardNo)) {
+         
+          cardCounts[cardNo] = cardCounts[cardNo]! + 1;
+        } else {
+          cardCounts[cardNo] = 1;
+        }
+      }
+      levelCardCounts[level] = cardCounts;
+    }
+
+    // 最も長い配列の長さを取得
+    int maxLength =
+        levelCardCounts.map((e) => e.length).reduce((a, b) => a > b ? a : b);
+
+    List<Map<String, int>?> newArray = [];
+
+    for (int i = 0; i < maxLength; i++) {
+      for (int level = 0; level < 8; level++) {
+        if (levelCardCounts[level].length > i) {
+          var keys = levelCardCounts[level].keys.toList();
+          var values = levelCardCounts[level].values.toList();
+          newArray.add({keys[i]: values[i]});
+        } else {
+          newArray.add(null);
+        }
+      }
+    }
+
+    // GridView.countをExpandedでラップする必要がある
+    return SizedBox(
+      height: min((displayableWidth) / 8 * 1.4 * maxLength, screenHeight / 2.5),
+      child:  GridView.count(
+          crossAxisCount: 8,
+          childAspectRatio: 1 / 1.4, 
+          children: List.generate(newArray.length, (index) {
+            return LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (newArray[index] == null) {
+                  return Container();
+                } else {
+                  var cardNo = newArray[index]!.keys.first;
+                  var count = newArray[index]!.values.first;
+                  var cardData = cardNoMap.data[cardNo];
+
+                  if (cardData == null || cardData['type'] == null) {
+                    return Container();
+                  }
+
+                  return Stack(
+                    children: [
+                      OperableCard(
+                        cardNo: cardNo,
+                        cards: uniqueDeckNos,
+                        onTap: () {
+                          Provider.of<CardSetNo>(context, listen: false)
+                              .removeCardFromDeck(cardNo);
+                        },
+                      ),
+                      Positioned(
+                          top: 0,
+                          right: 0,
+                          child: QuantityBadge(
+                            count: count,
+                            type: cardData['type'],
+                            size: max(constraints.maxWidth/4, 24) ,
+                          )),
+                    ],
+                  );
+                }
+              },
+            );
+          }),
+        
+      ),
+    );
+  }
+}
+
+

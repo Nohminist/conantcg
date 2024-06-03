@@ -7,7 +7,7 @@ import 'package:conantcg/widgets/card_set_save_button.dart';
 import 'package:conantcg/widgets/card_set_select_open_button.dart';
 import 'package:conantcg/widgets/cardset_outline.dart';
 import 'package:conantcg/widgets/common_icon_button.dart';
-import 'package:conantcg/widgets/deck_edit3.dart';
+import 'package:conantcg/widgets/deck_edit.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/level_icons.dart';
 import 'package:conantcg/widgets/rotating_arrow_drop_icon.dart';

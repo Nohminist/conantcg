@@ -235,12 +235,12 @@ class DeckAnalysis extends StatelessWidget {
                           children: [
                             Container(
                               height: eventHeight,
-                              color: Colors.red[300], // ここで背景色を設定します
+                              color: Colors.red[300],
                               width: width / 8 - 1,
                             ),
                             Container(
                               height: charaHeight,
-                              color: Colors.blue[300], // ここで背景色を設定します
+                              color: Colors.blue[300],
                               width: width / 8 - 1,
                             ),
                           ],
@@ -250,8 +250,8 @@ class DeckAnalysis extends StatelessWidget {
                         height: bottomHeight,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: getRelativeColor(context, 0.8), // 背景色を設定します
-                          shape: BoxShape.circle, // 背景を円形にします
+                          color: getRelativeColor(context, 0.8),
+                          shape: BoxShape.circle,
                         ),
                         child: Text(
                           '${index + 1}',

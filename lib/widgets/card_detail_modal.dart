@@ -141,12 +141,8 @@ class _CardDetailModalState extends State<CardDetailModal> {
                                     },
                                   )),
                                   const SizedBox(width: 5),
-                                  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child:
-                                        QuantityBadge(count: count, type: type),
-                                  ),
+                                  QuantityBadge(
+                                      count: count, type: type, size: 40.0),
                                   const SizedBox(width: 5),
                                   Expanded(
                                       child: IconButton(
