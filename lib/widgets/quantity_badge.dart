@@ -1,22 +1,23 @@
 import '../utils/to_roman.dart';
 import 'package:flutter/material.dart';
-import '../utils/color.dart';
 
 class QuantityBadge extends StatelessWidget {
   final int count;
   final String type;
   final double size;
 
-  QuantityBadge(
-      {required this.count,
-      required this.type,
-      this.size = 24.0});
+  const QuantityBadge(
+      {super.key, required this.count, required this.type, required this.size});
 
   @override
   Widget build(BuildContext context) {
     if (count == 0) {
-      return Container();
+      return SizedBox(
+        width: size,
+        height: size,
+      );
     }
+    var iconSize = size * 0.7;
 
     return Container(
       width: size,
@@ -26,18 +27,18 @@ class QuantityBadge extends StatelessWidget {
             ? Colors.blue[300]
             : type == 'イベント'
                 ? Colors.red[300]
-                : getRelativeColor(context, 1),
+                : Colors.grey,
         shape: BoxShape.circle,
         boxShadow: const [BoxShadow(blurRadius: 3, color: Colors.black)],
       ),
       child: Center(
         child: type == '事件' || type == 'パートナー'
-            ? Icon(Icons.check, color: getRelativeColor(context, 0), size: 20.0)
+            ? Icon(Icons.check, color: Colors.white, size: iconSize)
             : Text(
                 toRoman(count),
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: size / 1.5,
+                    fontSize: iconSize,
                     fontWeight: FontWeight.bold),
               ),
       ),

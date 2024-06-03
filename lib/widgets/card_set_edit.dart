@@ -41,7 +41,18 @@ class CardSetEdit extends StatelessWidget {
           SizedBox(height: 5),
           LevelIcons(),
           SizedBox(height: 2),
-          DeckEditExpanded(deckNos: cardSetManage.deck),
+          cardSetManage.deck.length == 0
+              ? Container(
+                  height: displayableWidth / 16 * 1.4,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: const Center(
+                    child: Text('デッキ（レベル別）'),
+                  ),
+                )
+              : DeckEditExpanded(deckNos: cardSetManage.deck),
         ],
       ),
     );
@@ -62,8 +73,7 @@ class CardSetEditVertical extends StatelessWidget {
         children: [
           Text(
             cardSetManage.name.isEmpty ? 'デッキ名' : cardSetManage.name,
-            style:
-                const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           UpdatedDate(date: cardSetManage.date),
           CardSetOutline(
