@@ -1,15 +1,11 @@
-// widget/card_set_select_open_button.dart
 import 'package:conantcg/widgets/card_set_outline2.dart';
 import 'package:conantcg/widgets/common_icon_button.dart';
 import 'package:conantcg/widgets/common_show_modal_bottom_sheet.dart';
-import 'package:conantcg/widgets/updated_date.dart';
-import '../widgets/cardset_outline.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/card_provider.dart';
-import '../utils/csv_data.dart'; // PreCardSetをインポート
+import '../utils/csv_data.dart';
 import '../utils/update_local_too.dart';
-import 'package:intl/intl.dart'; // DateFormatをインポート
 
 class CardSetSelectOpenButton extends StatefulWidget {
   @override
@@ -31,7 +27,9 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
       text: '選択',
       onPressed: () {
         List<CardSetNo> tempCardSets =
-            List.from(cardSetsManager.cardSets); // 一時的なリストを作成
+            List.from(cardSetsManager.cardSets); // 一時的なリスト
+
+        List<int> removedIndexes = []; //一時的な削除インデックス
 
         commonShowModalBottomSheet(
           context,
@@ -46,7 +44,7 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
                     key: Key(cardSet.date.toString()),
                     onDismissed: (direction) {
                       setState(() {
-                        tempCardSets.removeAt(index); // 一時的なリストから削除
+                        removedIndexes.add(index); // 削除されたアイテムのインデックスを保存
                       });
                     },
                     child: CardSetOption(
@@ -56,8 +54,8 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
                         cardSetsManager: cardSetsManager),
                   );
                 } else {
-                  return addedableCardSetOptions(
-                    // addedableCardSetOptionsを追加
+                  return AddedableCardSetOptions(
+                    // AddedableCardSetOptionsを追加
                     cardSetsManager: cardSetsManager,
                     editingKey: editingKey,
                     tempCardSets: tempCardSets,
@@ -69,6 +67,12 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
             ),
           ),
         ).then((_) {
+          for (int i = tempCardSets.length - 1; i >= 0; i--) {
+            if (removedIndexes.contains(i)) {
+              tempCardSets.removeAt(i);
+            }
+          }
+
           // モーダルが閉じるときに状態を更新(削除したり追加したのをここで反映させる)
           cardSetsManager.cardSets = tempCardSets;
 
@@ -98,12 +102,12 @@ class _CardSetSelectOpenButtonState extends State<CardSetSelectOpenButton> {
 
 class CardSetOption extends StatelessWidget {
   const CardSetOption({
-    Key? key,
+    super.key,
     required this.cardSet,
     required this.screenWidth,
     required this.screenHeight,
     required this.cardSetsManager,
-  }) : super(key: key);
+  });
 
   final CardSetNo cardSet;
   final double screenWidth;
@@ -130,14 +134,15 @@ class CardSetOption extends StatelessWidget {
 }
 
 //スターターデッキなど新規作成用
-class addedableCardSetOptions extends StatelessWidget {
+class AddedableCardSetOptions extends StatelessWidget {
   final CardSets cardSetsManager;
   final EditingCardSetKey editingKey;
   final List<CardSetNo> tempCardSets; // tempCardSetsを追加
   final double screenWidth; // screenWidthを追加
   final double screenHeight; // screenWidthを追加
 
-  addedableCardSetOptions({
+  const AddedableCardSetOptions({
+    super.key,
     required this.cardSetsManager,
     required this.editingKey,
     required this.tempCardSets, // tempCardSetsを追加
@@ -182,7 +187,7 @@ class addedableCardSetOptions extends StatelessWidget {
         ...preCardSet.data.keys.map((key) {
           return Column(
             children: [
-              Container(
+              SizedBox(
                 width:
                     screenWidth > screenHeight ? screenWidth / 2 : screenWidth,
                 child: ElevatedButton(
@@ -196,31 +201,30 @@ class addedableCardSetOptions extends StatelessWidget {
                       _createNewCardSet(context, preCardSet.data[key], key),
                   child: Row(
                     children: [
-                      Icon(Icons.add), // 左側に「＋」アイコンを設ける
+                      const Icon(Icons.add), // 左側に「＋」アイコンを設ける
                       Text('$key で新規作成'),
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 2), // 縦方向に隙間2pxを設ける
+              const SizedBox(height: 2), // 縦方向に隙間2pxを設ける
             ],
           );
         }).toList(),
-        Container(
+        SizedBox(
           width: screenWidth > screenHeight
               ? screenWidth / 2
               : screenWidth, // 幅をscreenWidth / 2に設定
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: isDarkMode
-                  ? Colors.green[900]
-                  : Colors.green[100], // テーマモードに基づいて色を設定
+              backgroundColor:
+                  isDarkMode ? Colors.green[900] : Colors.green[100],
               alignment: Alignment.centerLeft, // ボタンの中身を左寄せに設定
             ),
             onPressed: () => _createNewCardSet(context, null, ''),
-            child: Row(
+            child: const Row(
               children: [
-                Icon(Icons.add), // 左側に「＋」アイコンを設ける
+                Icon(Icons.add),
                 Text('空デッキで新規作成'),
               ],
             ),

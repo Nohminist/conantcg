@@ -1,6 +1,4 @@
-// screens/card_set_building_top.dart
 import 'dart:math';
-
 import 'package:conantcg/utils/color.dart';
 import 'package:conantcg/widgets/card_set_name_edit.dart';
 import 'package:conantcg/widgets/card_set_save_button.dart';

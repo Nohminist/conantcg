@@ -1,5 +1,3 @@
-// widgets/common_icon__button.dart
-
 import 'package:flutter/material.dart';
 
 class CommonIconButton extends StatelessWidget {
