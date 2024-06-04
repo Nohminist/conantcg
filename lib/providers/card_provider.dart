@@ -126,6 +126,7 @@ class CardSetNo with ChangeNotifier {
     _partner = other._partner;
     _case = other._case;
     _name = other._name;
+    _date = other._date;
     notifyListeners();
   }
 

@@ -59,7 +59,12 @@ class CardSetEdit extends StatelessWidget {
   }
 }
 
-class CardSetEditVertical extends StatelessWidget {
+class CardSetEditVertical extends StatefulWidget {
+  @override
+  _CardSetEditVerticalState createState() => _CardSetEditVerticalState();
+}
+
+class _CardSetEditVerticalState extends State<CardSetEditVertical> {
   @override
   Widget build(BuildContext context) {
     double displayableWidth = MediaQuery.of(context).size.width;

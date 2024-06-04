@@ -154,7 +154,6 @@ class AddedableCardSetOptions extends StatelessWidget {
       Map<String, dynamic>? productData, String key) async {
     var newCardSet = CardSetNo();
     newCardSet.date = DateTime.now(); // 現在日時を設定
-    // print('date${newCardSet.date}');
 
     if (productData != null) {
       productData['deckNumbers']?.forEach((no) {
@@ -166,12 +165,19 @@ class AddedableCardSetOptions extends StatelessWidget {
     }
 
     tempCardSets.add(newCardSet); // tempCardSetsに新しいカードセットを追加
+        print('date${newCardSet.date}');
+
 
     await updateEditingKeyAndStorage(
         newCardSet.date, context); // updateEditingKeyAndStorage関数を呼び出す
 
-    Provider.of<CardSetNo>(context, listen: false)
-        .copyFrom(newCardSet); // newCardSetをコピー
+    // Provider.of<CardSetNo>(context, listen: false)
+    //     .copyFrom(newCardSet); // newCardSetをコピー
+
+var cardSetManage = Provider.of<CardSetNo>(context, listen: false);
+  cardSetManage.copyFrom(newCardSet); // newCardSetをコピー
+  // cardSetManage.notifyListeners(); // 状態が変更されたことを通知
+
 
     Navigator.pop(context);
   }
@@ -201,7 +207,7 @@ class AddedableCardSetOptions extends StatelessWidget {
                       _createNewCardSet(context, preCardSet.data[key], key),
                   child: Row(
                     children: [
-                      const Icon(Icons.add), // 左側に「＋」アイコンを設ける
+                      const Icon(Icons.add),
                       Text('$key で新規作成'),
                     ],
                   ),
