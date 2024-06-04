@@ -21,42 +21,43 @@ class CardSetOutline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CardWidget(
-          cardNo: cardSetManage.partner!,
-          width: widgetWidth / 8,
-          height: (widgetWidth / 8) * 1.4,
-          isReadOnly: isReadOnly,
-          cardType: 'パートナー',
-          removeCard: () {
-            Provider.of<CardSetNo>(context, listen: false).removePartner();
-          },
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CardWidget(
+              cardNo: cardSetManage.partner!,
+              width: widgetWidth / 6,
+              height: (widgetWidth / 6) * 1.4,
+              isReadOnly: isReadOnly,
+              cardType: 'パートナー',
+              removeCard: () {
+                Provider.of<CardSetNo>(context, listen: false).removePartner();
+              },
+            ),
+            SizedBox(width: 5),
+            CardWidget(
+              cardNo: cardSetManage.caseCard!,
+              width: (widgetWidth / 6) * 1.4 * 1.4,
+              height: widgetWidth / 6 * 1.4,
+              isReadOnly: isReadOnly,
+              cardType: '事件',
+              removeCard: () {
+                Provider.of<CardSetNo>(context, listen: false).removeCase();
+              },
+            ),
+            SizedBox(width: 5),
+            SizedBox(
+              width: (widgetWidth / 6) * 1.4 * 1.4,
+              height: (widgetWidth / 6) * 1.4,
+              child: DeckAnalysis(deckNos: cardSetManage.deck),
+            ),
+          ],
         ),
-        SizedBox(width: 5),
-        CardWidget(
-          cardNo: cardSetManage.caseCard!,
-          width: (widgetWidth / 8) * 1.4 * 1.4,
-          height: widgetWidth / 8 * 1.4,
-          isReadOnly: isReadOnly,
-          cardType: '事件',
-          removeCard: () {
-            Provider.of<CardSetNo>(context, listen: false).removeCase();
-          },
-        ),
-        SizedBox(width: 5),
-        SizedBox(
-          width: (widgetWidth / 8) * 1.4 * 1.4,
-          height: (widgetWidth / 8) * 1.4,
-          child: DeckAnalysis(deckNos: cardSetManage.deck),
-        ),
-        SizedBox(width: 5),
-        SizedBox(
-          width: (widgetWidth / 8) * 1.4,
-          height: (widgetWidth / 8) * 1.4,
-          child: DeckAnalysis2(deckNos: cardSetManage.deck),
-        ),
+        SizedBox(height: 1),
+        DeckAnalysis2(deckNos: cardSetManage.deck),
       ],
     );
   }
@@ -104,7 +105,7 @@ class CardWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   cardType,
-                  style: TextStyle(fontSize: height / 8),
+                  style: TextStyle(fontSize: height / 6),
                 ),
               ),
             ),

@@ -1,4 +1,3 @@
-// widgets/deck_analysis2.dart
 import 'package:flutter/material.dart';
 import '../utils/csv_data.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +12,9 @@ class DeckAnalysis2 extends StatelessWidget {
     '突撃［事件］',
     'ブレット',
     'ミスリード1',
-    '捜査1'
+    '捜査1',
+    'カットイン',
+    'ヒラメキ',
   ];
 
   DeckAnalysis2({required this.deckNos});
@@ -21,77 +22,75 @@ class DeckAnalysis2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cardData = Provider.of<CardNoMap>(context).data;
+    final double height = 20; //constraints.maxHeight;
 
-    // キーワードごとのカード枚数をカウントするマップを初期化
     Map<String, int> keywordCounts = {};
     for (var keyword in keywords) {
       keywordCounts[keyword] = 0;
     }
 
-    // デッキ内の各カードについて、能力をチェック
     for (var cardNo in deckNos) {
       var abilities = cardData[cardNo]?['abilities'] ?? [];
       for (var ability in abilities) {
         for (var keyword in keywords) {
+          if( keyword == 'カットイン' || keyword == 'ヒラメキ') continue;
           if (ability.contains(keyword)) {
             keywordCounts[keyword] = (keywordCounts[keyword] ?? 0) + 1;
           }
         }
       }
+
+      String? cutIn = cardData[cardNo]?['cutIn'];
+      if (cutIn != null && cutIn.isNotEmpty) {
+        keywordCounts['カットイン'] = (keywordCounts['カットイン'] ?? 0) + 1;
+      }
+
+      String? inspiration = cardData[cardNo]?['inspiration'];
+      if (inspiration != null && inspiration.isNotEmpty) {
+        keywordCounts['ヒラメキ'] = (keywordCounts['ヒラメキ'] ?? 0) + 1;
+      }
     }
 
-    // LayoutBuilderを使用して親ウィジェットからサイズを読み込む
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
-
-        // Columnを作成
-        return Column(
-          children: keywords
-              .expand((keyword) => [
-                    Container(
-                      height: height / 7 - 1,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: getRelativeColor(context, 0.1), // 背景色を設定
-                        borderRadius: BorderRadius.circular(height/7/4), // 角を丸くする
-                      ),
-                      child: Row(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.center, // 行の高さ方向の中央寄せ
-                        children: <Widget>[
-                          Padding(
-                            padding:
-                                EdgeInsets.symmetric(horizontal: width / 20), //
-                            child: Text(
-                              '$keyword',
-                              style: TextStyle(
-                                  fontSize: height / 12,
-                                  fontWeight: FontWeight.bold), // 文字を太くする
-                            ),
+    return Wrap(
+      children: keywords.map((keyword) {
+        if (keywordCounts[keyword] == 0) return const SizedBox.shrink();
+        return Padding(
+          padding: const EdgeInsets.all(1.0),
+          child: Container(
+            height: height,
+            padding: const EdgeInsets.all(0.0),
+            decoration: BoxDecoration(
+              color: getRelativeColor(context, 0),
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(height / 5),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                const SizedBox(width: 4.0),
+                keyword == 'カットイン'
+                    ? Image.asset('assets/images/icon-cutIn.png')
+                    : keyword == 'ヒラメキ'
+                        ? Image.asset('assets/images/icon-inspiration.png')
+                        : Text(
+                            '$keyword',
+                            style: TextStyle(
+                                fontSize: height / 2,
+                                fontWeight: FontWeight.bold),
                           ),
-                          Spacer(),
-                          if (keywordCounts[keyword] !=
-                              0) // keywordCounts[keyword]が0の場合、0は表示しない
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: width / 20), //
-                              child: Text(
-                                '${keywordCounts[keyword]}',
-                                style: TextStyle(
-                                    fontSize: height / 12,
-                                    fontWeight: FontWeight.bold), // 文字を太くする
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 1), // 行と行の間に1pxの隙間を設ける
-                  ])
-              .toList(),
+                const SizedBox(width: 8.0),
+                Text(
+                  '${keywordCounts[keyword]}',
+                  style: TextStyle(
+                      fontSize: height / 2, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 4.0),
+              ],
+            ),
+          ),
         );
-      },
+      }).toList(),
     );
   }
 }

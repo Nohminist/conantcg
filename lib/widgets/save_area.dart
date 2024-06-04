@@ -21,12 +21,12 @@ class SaveArea extends StatelessWidget {
       decoration: BoxDecoration(
         color: getRelativeColor(context, 0),
         border: Border.all(
-          color: getRelativeColor(context, 0.5), // 白い枠線を設定
-          width: 1.0, // 枠線の幅を設定
+          color: getRelativeColor(context, 0.5),
+          width: 1.0,
         ),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child: Column(
           children: [
             Expanded(
@@ -63,7 +63,7 @@ class SaveArea extends StatelessWidget {
                   ),
                   SizedBox(width: 5),
                   SizedBox(
-                    width: (size / 14) * 2,
+                    width: (size / 14) * 2 *1.4,
                     height: (size / 14) * 2,
                     child: DeckAnalysis2(deckNos: cardSet.deck),
                   ),

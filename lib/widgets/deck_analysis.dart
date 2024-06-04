@@ -1,4 +1,5 @@
 // widgets/deck_analysis.dart
+import 'package:conantcg/widgets/deck_count_text.dart';
 import 'package:flutter/material.dart';
 import '../utils/csv_data.dart';
 import 'package:provider/provider.dart';
@@ -93,6 +94,7 @@ class DeckAnalysis extends StatelessWidget {
             Row(
               children: [
                 Expanded(
+                  flex: 1,
                   child: Container(
                     height: topHeight,
                     alignment: Alignment.center,
@@ -108,13 +110,13 @@ class DeckAnalysis extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontSize,
-                                              color: Colors.white,
-
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
                 Expanded(
+                  flex: 1,
                   child: Container(
                     height: topHeight,
                     alignment: Alignment.center,
@@ -130,73 +132,85 @@ class DeckAnalysis extends StatelessWidget {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: fontSize,
-                      color: Colors.white,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
                 SizedBox(width: topHeight / 10),
-                Expanded(
-                  child: Container(
-                    height: topHeight,
-                      decoration: BoxDecoration(
-                        color: getRelativeColor(context, 0.1), // 背景色を設定
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(topHeight / 5),
-                        bottomLeft: Radius.circular(topHeight / 5),
-                      ),
-                      ),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/icon-cutIn.png',
-                          width: topHeight,
-                          height: topHeight,
-                        ),
-                        Text(
-                          '$cutInCount',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontSize,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: topHeight,
-                                          decoration: BoxDecoration(
-                        color: getRelativeColor(context, 0.1), // 背景色を設定
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(topHeight / 5),
-                        bottomRight: Radius.circular(topHeight / 5),
-                      ),
-                      ),
 
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/icon-inspiration.png',
-                          width: topHeight,
-                          height: topHeight,
-                        ),
-                        Text(
-                          '$inspirationCount',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: fontSize,
-                          ),
-                        ),
-                      ],
+                Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: EdgeInsets.only(right: 5.0),
+                      child: DeckCountText(deck: deckNos, fontSize:fontSize),
                     ),
                   ),
-                ),
+                )
+
+                // Expanded(
+                //   child: Container(
+                //     height: topHeight,
+                //       decoration: BoxDecoration(
+                //         color: getRelativeColor(context, 0.1),
+                //       borderRadius: BorderRadius.only(
+                //         topLeft: Radius.circular(topHeight / 5),
+                //         bottomLeft: Radius.circular(topHeight / 5),
+                //       ),
+                //       ),
+                //     alignment: Alignment.center,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Image.asset(
+                //           'assets/images/icon-cutIn.png',
+                //           width: topHeight,
+                //           height: topHeight,
+                //         ),
+                //         Text(
+                //           '$cutInCount',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: fontSize,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // Expanded(
+                //   child: Container(
+                //     height: topHeight,
+                //                           decoration: BoxDecoration(
+                //         color: getRelativeColor(context, 0.1), // 背景色を設定
+                //       borderRadius: BorderRadius.only(
+                //         topRight: Radius.circular(topHeight / 5),
+                //         bottomRight: Radius.circular(topHeight / 5),
+                //       ),
+                //       ),
+                //     alignment: Alignment.center,
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.center,
+                //       children: [
+                //         Image.asset(
+                //           'assets/images/icon-inspiration.png',
+                //           width: topHeight,
+                //           height: topHeight,
+                //         ),
+                //         Text(
+                //           '$inspirationCount',
+                //           style: TextStyle(
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: fontSize,
+                //           ),
+                //         ),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+              
               ],
             ),
             Row(
@@ -228,7 +242,7 @@ class DeckAnalysis extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         height: middleHeight,
                         child: Stack(
                           alignment: Alignment.bottomCenter,

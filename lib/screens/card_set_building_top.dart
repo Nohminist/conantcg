@@ -7,6 +7,7 @@ import 'package:conantcg/widgets/card_set_save_button.dart';
 import 'package:conantcg/widgets/card_set_select_open_button.dart';
 import 'package:conantcg/widgets/cardset_outline.dart';
 import 'package:conantcg/widgets/common_icon_button.dart';
+import 'package:conantcg/widgets/deck_count_text.dart';
 import 'package:conantcg/widgets/deck_edit.dart';
 import 'package:conantcg/widgets/hover_card.dart';
 import 'package:conantcg/widgets/level_icons.dart';
@@ -226,40 +227,6 @@ class _VerticalLayoutState extends State<VerticalLayout> {
           color: cardSetBgColor,
         ),
       ],
-    );
-  }
-}
-
-class DeckCountText extends StatelessWidget {
-  const DeckCountText({
-    super.key,
-    required this.deck,
-  });
-
-  final List<String> deck;
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-            text: deck.length.toString(),
-            style: TextStyle(
-              color:
-                  deck.length == 40 ? getRelativeColor(context, 1) : Colors.red,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          TextSpan(
-            text: '/40',
-            style: TextStyle(
-              color: getRelativeColor(context, 1),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
