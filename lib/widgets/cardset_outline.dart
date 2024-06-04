@@ -56,7 +56,7 @@ class CardSetOutline extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 1),
+        SizedBox(height: 5),
         DeckAnalysis2(deckNos: cardSetManage.deck),
       ],
     );
@@ -105,7 +105,7 @@ class CardWidget extends StatelessWidget {
               child: Center(
                 child: Text(
                   cardType,
-                  style: TextStyle(fontSize: height / 6),
+                  style: TextStyle(fontSize: height / 8),
                 ),
               ),
             ),

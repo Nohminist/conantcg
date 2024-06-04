@@ -25,7 +25,7 @@ class DeckCountText extends StatelessWidget {
             ),
           ),
           TextSpan(
-            text: ' /40',
+            text: ' / 40',
             style: TextStyle(
               color: getRelativeColor(context, 1),
               fontWeight: FontWeight.bold,
